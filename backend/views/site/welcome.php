@@ -23,6 +23,24 @@ use yii\helpers\Html;
 			color: #3e8f3e;
 			font-size: 16px;
 		}
+		.layui-form-checkbox[lay-skin=primary] {
+			margin: 6px 5px;
+		}
+		.add-todo {
+			padding: 0 0 15px 5px;
+		}
+		.add-todo-input {
+			border-width: 0px;
+			border-bottom-width: 1px;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+			border-radius: 4px !important;
+		}
+		.add-todo-input:hover {
+			border-radius: 5px !important;
+			border-color: #40a9ff !important;
+			border-right-width: 1px !important;
+		}
 	</style>
 </head>
 <?php $this->beginBody() ?>
@@ -147,35 +165,28 @@ use yii\helpers\Html;
 			</div>
 		</div>
 	</div>
+</div>
+<div class="layui-row layui-col-space10 my-index-main">
 	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
 		<div class="layui-collapse">
 			<div class="layui-colla-item">
 				<h2 class="layui-colla-title">待办事项</h2>
 				<div class="layui-colla-content layui-show">
-					<table class="layui-table">
-						<colgroup>
-							<col width="150">
-							<col width="200">
-							<col>
-						</colgroup>
-						<thead>
-						<tr>
-							<th>昵称</th>
-							<th>IP</th>
-							<th>登录时间</th>
-						</tr>
-						</thead>
-						<tbody>
-						<?php foreach ($loginHistory as $item):?>
-							<tr>
-								<td><?=$item['nickname']?></td>
-								<td><?=$item['login_ip']?></td>
-								<td><?=date('Y-m-d H:i:s', $item['login_at'])?></td>
-							</tr>
-						<?php endforeach;?>
-						</tbody>
-					</table>
-
+					<div class="layui-form">
+						<div class="add-todo">
+							<input type="text" name="title"  placeholder="Add new todo, press Enter to Submit" autocomplete="off" class="layui-input add-todo-input">
+						</div>
+						<div class="todolist-item">
+							<input type="checkbox" name="" title="权限节点验证功能" checked lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="个人信息修改功能" checked lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="系统设置功能" lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="菜单设置功能" checked lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="添加系统操作日志" checked lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="权限管理功能" checked lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="登录功能" checked lay-skin="primary"> <br/>
+							<input type="checkbox" name="" title="layui升级到2.4.3" checked lay-skin="primary"> <br/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
