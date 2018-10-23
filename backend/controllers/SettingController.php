@@ -1,0 +1,74 @@
+<?php
+/**
+ * Desc:
+ * Created by PhpStorm.
+ * User: shantong
+ * Date: 2018/9/11
+ * Time: 20:02
+ */
+
+namespace backend\controllers;
+
+
+use backend\services\setting\SettingService;
+use common\helpers\Helpers;
+use Yii;
+
+class SettingController extends AdminLogController
+{
+	public function actionMenus()
+	{
+		$menusTree  = SettingService::instance()->getMenus();
+		$treeSelect = Helpers::getTreeSelect($menusTree);
+		return $this->render('menus', [
+			'menusTree' => $menusTree,
+			'treeSelect' => $treeSelect,
+		]);
+	}
+
+	/**
+	 * @Desc: 获取菜单列表
+	 * @return array
+	 */
+	public function actionGetMenus()
+	{
+		$menus = SettingService::instance()->getMenus();
+
+		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $menus);
+	}
+
+	/**
+	 * @Desc: 删除菜单
+	 * @return array
+	 */
+	public function actionDeleteMenu()
+	{
+		$id = Yii::$app->request->post('id', 0);
+		SettingService::instance()->deleteMenus($id);
+
+		return self::ajaxSuccess('删除成功');
+	}
+
+	/**
+	 * @Desc: 修改菜单
+	 * @return array
+	 */
+	public function actionSaveMenu()
+	{
+		$params = Yii::$app->request->post();
+		SettingService::instance()->saveMenus($params);
+		return self::ajaxSuccess('更新成功');
+	}
+
+	/**
+	 * @Desc: 添加菜单
+	 * @return array
+	 */
+	public function actionAddMenu()
+	{
+		$params = Yii::$app->request->post();
+		SettingService::instance()->addMenus($params);
+
+		return self::ajaxSuccess('添加成功');
+	}
+}
