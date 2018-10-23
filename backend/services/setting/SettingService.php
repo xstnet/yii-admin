@@ -20,14 +20,19 @@ class SettingService extends BaseService implements SettingServiceInterface
 {
 	/**
 	 * @Desc: 获取菜单列表
+	 * @param $onlyActive // 是否只获取启用菜单
 	 * @return array|mixed
 	 */
-	public function getMenus()
+	public function getMenus($onlyActive = false)
 	{
 		$result = [];
-		$menus = Menus::find()
-			->select(Menus::getList())
-			->orderBy(['sort_value' => SORT_ASC])
+		$query = Menus::find()
+			->select(Menus::getList());
+		if ($onlyActive) {
+			$query->andWhere(['status' => Menus::STATUS_ACTIVE]);
+		}
+
+		$menus = $query->orderBy(['sort_value' => SORT_ASC])
 			->asArray()
 			->all();
 		if (empty($menus)) {

@@ -21,7 +21,6 @@ class SettingController extends AdminLogController
 		$menusTree  = SettingService::instance()->getMenus();
 		$treeSelect = Helpers::getTreeSelect($menusTree);
 		return $this->render('menus', [
-			'menusTree' => $menusTree,
 			'treeSelect' => $treeSelect,
 		]);
 	}
@@ -33,6 +32,17 @@ class SettingController extends AdminLogController
 	public function actionGetMenus()
 	{
 		$menus = SettingService::instance()->getMenus();
+
+		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $menus);
+	}
+
+	/**
+	 * @Desc: 获取活动菜单
+	 * @return array
+	 */
+	public function actionGetActiveMenus()
+	{
+		$menus = SettingService::instance()->getMenus(true);
 
 		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $menus);
 	}

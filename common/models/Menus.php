@@ -19,6 +19,12 @@ use Yii;
  */
 class Menus extends BaseModel
 {
+	/**
+	 * 状态
+	 */
+	const STATUS_ACTIVE = 0;  // 启用
+	const STATUS_DISABLED = 1; // 禁用
+
     /**
      * @inheritdoc
      */
@@ -93,7 +99,7 @@ class Menus extends BaseModel
 			'sort_value',
 			'url',
 			'href' => 'url',
-//			'status',
+			'status',
 			'icon',
 		];
 	}

@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use backend\services\setting\SettingService;
+use common\models\AdminLoginHistory;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -65,9 +66,22 @@ class SiteController extends AdminLogController
         return $this->render('index');
     }
 
+	/**
+	 * @Desc: 欢迎页面
+	 * @return string
+	 */
     public function actionWelcome()
 	{
-		return $this->render('welcome');
+		$loginHistory = AdminLoginHistory::find()
+			->where(['user_id' => Yii::$app->user->id])
+			->orderBy('created_at desc')
+			->limit(10)
+			->asArray()
+			->all();
+
+		return $this->render('welcome', [
+			'loginHistory' => $loginHistory
+		]);
 	}
 
 
