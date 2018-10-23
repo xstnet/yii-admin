@@ -29,7 +29,7 @@ $name = '菜单';
 	<div class="my-btn-box">
     <span class="fl">
         <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete">删除</a>
-<!--        <a class="layui-btn btn-add btn-default" id="btn-add">添加--><?//= $name?><!--</a>-->
+		<!--        <a class="layui-btn btn-add btn-default" id="btn-add">添加--><?//= $name?><!--</a>-->
     </span>
 		<span class="fr">
          <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon layui-icon-refresh"></i></a>

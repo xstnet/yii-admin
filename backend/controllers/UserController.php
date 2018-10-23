@@ -9,6 +9,8 @@
 
 namespace backend\controllers;
 
+use common\exceptions\ParameterException;
+use common\models\AdminUser;
 use yii\filters\VerbFilter;
 use Yii;
 
@@ -38,7 +40,7 @@ class UserController extends AdminLogController
 	}
 
 	/**
-	 * @Desc: 用户管理，页面
+	 * @Desc: 个人信息，页面
 	 * @return string
 	 */
 	public function actionProfile()
@@ -48,9 +50,28 @@ class UserController extends AdminLogController
 		]);
 	}
 
+	/**
+	 * @Desc: 更新个人信息
+	 */
 	public function actionSaveUserProfile()
 	{
+		$params = Yii::$app->request->post();
+		$user = AdminUser::findOne(Yii::$app->user->id);
+		if (empty($user)) {
+			throw new ParameterException(ParameterException::INVALID, '用户不存在');
+		}
+		$user->avatar = $params['avatar'];
+		if (empty($params['nickname'])) {
+			throw new ParameterException(ParameterException::INVALID, '昵称不能为空');
+		}
+		if (!empty($params['password'])) {
+			$user->setPassword($params['password']);
+		}
+		$user->email = $params['email'];
+		$user->nickname = $params['nickname'];
+		$user->saveModel();
 
+		return self::ajaxSuccess('更新信息成功');
 	}
 
 }

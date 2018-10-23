@@ -17,19 +17,6 @@ use Yii;
 
 class MemberService extends BaseService implements MemberServiceInterface
 {
-	public function getMemberInfo()
-	{
-		$userInfo = Yii::$app->user->identity;
-		$result = [
-			'username' => $userInfo->username,
-			'nickname' => $userInfo->nickname,
-			'login_ip' => $userInfo->login_ip,
-			'login_at' => date('Y-m-d H:i:s', $userInfo->login_at),
-			'avatar' => $userInfo->avatar ? : 'http://bpic.588ku.com/element_origin_min_pic/18/06/10/ba798f97363be09b22239a6210bc991c.jpg',
-		];
-
-		return $result;
-	}
 
 	/**
 	 * @Desc: 获取用户列表
@@ -95,6 +82,7 @@ class MemberService extends BaseService implements MemberServiceInterface
 		$user->login_count = 0;
 //		$user->status = AdminUser::STATUS_ACTIVE;
 		$user->nickname = empty($user->nickname) ? $user->username : $user->nickname;
+		$user->avatar = 'static/backend/images/default-head.jpg';
 
 		$transaction = Yii::$app->db->beginTransaction();
 		try {

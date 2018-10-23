@@ -11,6 +11,6 @@ namespace backend\services\member;
 
 interface MemberServiceInterface
 {
-	public function getMemberInfo();
+
 
 }
