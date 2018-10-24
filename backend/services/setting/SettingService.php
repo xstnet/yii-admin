@@ -13,45 +13,86 @@ use backend\services\BaseService;
 use common\exceptions\ParameterException;
 use common\helpers\Helpers;
 use common\models\Menus;
+use common\models\Roles;
 use common\models\RolesPermissions;
+use common\models\UsersRoles;
 use Yii;
 
 class SettingService extends BaseService implements SettingServiceInterface
 {
 	/**
 	 * @Desc: 获取菜单列表
-	 * @param $onlyActive // 是否只获取启用菜单
 	 * @return array|mixed
 	 */
-	public function getMenus($onlyActive = false)
+	public function getMenus()
 	{
-		$result = [];
-		$query = Menus::find()
-			->select(Menus::getList());
-		if ($onlyActive) {
-			$query->andWhere(['status' => Menus::STATUS_ACTIVE]);
-		}
-
-		$menus = $query->orderBy(['sort_value' => SORT_ASC])
+		$menus = Menus::find()
+			->select(Menus::getList())
+			->orderBy(['sort_value' => SORT_ASC])
 			->asArray()
 			->all();
 		if (empty($menus)) {
-			return $result;
+			return [];
 		}
-		$mapUrl = []; $mapId = [];
+
+		$data = self::getMenuTreeByData($menus);
+
+		$result = Helpers::getTree($data);
+
+		return $result;
+	}
+
+	protected static function getMenuTreeByData($menus)
+	{
+		$mapId = [];
 		$urlPreFix = Yii::$app->urlManager->createUrl('');
 		foreach ($menus as $k => &$v) {
 			$v['router'] = $v['url'];
 			$v['url'] = $urlPreFix . $v['url'];
 			$v['href'] = $urlPreFix . $v['href'];
 
-			$mapUrl[ $v['url'] ] = $v;
 			$mapId[ $v['id'] ] = $v;
 		}
-		unset($menus);
 
-//		$result['mapUrl'] = $mapUrl;
-		$result = Helpers::getTree($mapId);
+		return $mapId;
+	}
+
+	public function getActiveMenus()
+	{
+		$menusPermission = UsersRoles::find()
+			->select(['role_permission.permission_id'])
+			->alias('user_role')
+			->leftJoin(['role' => Roles::tableName()], 'role.id = user_role.role_id')
+			->leftJoin(['role_permission' => RolesPermissions::tableName()], 'user_role.role_id = role_permission.role_id')
+			->where(['user_role.user_id' => Yii::$app->user->id])
+			->andWhere(['role.status' => Roles::STATUS_ACTIVE])
+			->andWhere(['role_permission.permission_type' => RolesPermissions::PERMISSION_TYPE_MENU])
+			->asArray()
+			->all();
+		if (empty($menusPermission)) {
+			return [];
+		}
+		$menuIdList = [];
+		foreach ($menusPermission as $item) {
+			$menuIdList[ $item['permission_id'] ] = $item['permission_id'];
+		}
+		$menuIdList = array_values($menuIdList);
+		$menus = Menus::find()
+			->select(Menus::getList())
+			->where(['status' => Menus::STATUS_ACTIVE])
+			->andWhere(['id' => $menuIdList])
+			->orderBy(['sort_value' => SORT_ASC])
+			->asArray()
+			->all();
+		if (empty($menus)) {
+			return [];
+		}
+
+//		print_r($menus);die;
+
+		$data = self::getMenuTreeByData($menus);
+
+		$result = Helpers::getTree($data);
 
 		return $result;
 	}

@@ -77,7 +77,7 @@ use yii\helpers\Json;
 				<input type="radio" name="status" value="1" title="禁用" >
 			</div>
 		</div>
-		<input type="hidden" name="id" value="0">
+		<input type="hidden" id="rowId" name="id" value="0">
 		<button id="submitBtn" lay-submit="" lay-filter="form-submit"></button>
 	</form>
 </div>
@@ -180,6 +180,7 @@ use yii\helpers\Json;
 		// 添加按钮 点击事件
 		$('#btn-add').click(function () {
 			showMenusInfo('add');
+			$('#rowId').val(0);
 		});
 
 		function showMenusInfo(type) {
@@ -234,10 +235,10 @@ use yii\helpers\Json;
 						if (data.field.id > 0) {
 							rowObj.update(data.field);
 							form.render('checkbox') // 实现局部刷新，只刷新switch开关
+							layer.close(layerIndex);
 						} else {
 							tableIns.reload();
 						}
-						layer.close(layerIndex);
 					}
 
 				},

@@ -42,7 +42,7 @@ class SettingController extends AdminLogController
 	 */
 	public function actionGetActiveMenus()
 	{
-		$menus = SettingService::instance()->getMenus(true);
+		$menus = SettingService::instance()->getActiveMenus();
 
 		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $menus);
 	}

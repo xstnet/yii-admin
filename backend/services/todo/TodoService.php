@@ -24,7 +24,7 @@ class TodoService extends BaseService implements TodoServiceInterface
 		$userId = Yii::$app->user->id;
 		$query = Todolist::find()
 			->select(['id', 'name', 'status'])
-//			->where(['user_id' => $userId, 'status' => Todolist::STATUS_UNDERWAY])
+			->where(['user_id' => $userId])
 			->andWhere(['<>', 'status', Todolist::STATUS_DELETE]);
 
 		list ($count, $page) = self::getPage($query);

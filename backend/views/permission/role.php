@@ -72,7 +72,7 @@ use yii\helpers\Json;
 				<input type="radio" name="status" value="1" title="禁用" >
 			</div>
 		</div>
-		<input type="hidden" name="id" value="0">
+		<input type="hidden" id="rowId" name="id" value="0">
 		<button id="submitBtn" lay-submit="" lay-filter="form-submit"></button>
 	</form>
 </div>
@@ -182,6 +182,7 @@ use yii\helpers\Json;
 
 		$('#btn-add').click(function () {
 			showRolesInfo('add');
+			$('#rowId').val(0);
 		})
 
 		function showSettingPermission() {

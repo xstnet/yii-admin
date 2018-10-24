@@ -28,7 +28,7 @@ class BaseController extends Controller
 
 	const AJAX_MESSAGE_SUCCESS = 'ok';
 
-	const AJAX_MESSAGE_NO_PERMISSION = '无操作权限';
+	const AJAX_MESSAGE_NO_PERMISSION = '你没有权限操作';
 
 	const DEFAULT_AJAX_DATA = null;
 
