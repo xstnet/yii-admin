@@ -38,6 +38,10 @@ return [
 			'user/profile' => '访问个人信息页面',
 			'user/save-user-profile' => '更新个人信息',
 
+			'todo/add-todo' => '添加Todo',
+			'todo/change-status' => '更新Todo状态',
+			'todo/delete-todo' => '删除Todo',
+
 			'login/login' => '登录',
 			'login/logout' => '登出',
 		],
