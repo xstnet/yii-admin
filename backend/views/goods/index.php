@@ -82,6 +82,9 @@ use yii\helpers\Html;
 			, page: true
 			, limits: [30, 60, 90, 150, 300]
 			, limit: 30 //默认采用30
+			, page: {
+				layout: ['prev', 'page', 'next', 'skip', 'count', 'refresh','limit', ]
+			}
 			, loading: false
 			, done: function (res, curr, count) {
 				//如果是异步请求数据方式，res即为你接口返回的信息。

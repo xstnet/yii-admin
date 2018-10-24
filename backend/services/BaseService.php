@@ -15,6 +15,8 @@ class BaseService
 {
 	protected static $_instance = [];
 
+	public static $defaultPageSie = 20;
+
 	/**
 	 * @Desc: 创建实例
 	 * @param array $params
@@ -39,7 +41,7 @@ class BaseService
 	 */
 	public static function getPage($query)
 	{
-		$defaultPageSie = 20;
+		$defaultPageSie = self::$defaultPageSie;
 		$page = (int) Yii::$app->request->get('page', 1);
 		$pageSize = (int) Yii::$app->request->get('pageSize', $defaultPageSie);
 

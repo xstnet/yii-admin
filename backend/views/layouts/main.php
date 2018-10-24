@@ -52,7 +52,7 @@ use yii\helpers\Html;
 				</dl>
 			</li>
 			<li class="layui-nav-item">
-				<a class="name" href="javascript:;"><img src="<?=Yii::$app->user->identity->avatar ? : '/static/backend/images/default-head.jpg'?>" alt="logo"> <?=Yii::$app->user->identity->nickname?> </a>
+				<a class="name" href="javascript:;"><img src="<?=Yii::$app->user->identity->avatar ? : '/'. Yii::$app->params['defaultAvatar']?>" alt="logo"> <?=Yii::$app->user->identity->nickname?> </a>
 				<dl class="layui-nav-child">
 					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('user/profile')?>"><i class="layui-icon layui-icon-edit"></i>修改个人信息</a></dd>
 					<dd><a href="<?=Yii::$app->urlManager->createUrl(['login/logout'])?>"><i class="layui-icon layui-icon-close"></i>退出</a></dd>

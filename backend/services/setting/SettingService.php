@@ -82,10 +82,11 @@ class SettingService extends BaseService implements SettingServiceInterface
 		$menu->scenario = Menus::SCENARIO_INSERT;
 		$menu->saveModel();
 	}
+
 	/**
 	 * @Desc: 删除菜单
 	 * @param $id
-	 * @return mixed
+	 * @throws \Exception
 	 */
 	public function deleteMenus($id)
 	{

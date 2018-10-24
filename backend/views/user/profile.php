@@ -82,11 +82,11 @@ $name = '个人信息';
 								<div class="layui-input-inline">
 									<div class="layui-upload">
 										<div class="layui-upload-list">
-											<img class="layui-upload-img" src="<?=Yii::$app->user->identity->avatar ? : '/static/backend/images/default-head.jpg'?>" id="headImg">
+											<img class="layui-upload-img" src="<?=Yii::$app->user->identity->avatar ? : '/'. Yii::$app->params['defaultAvatar']?>" id="headImg">
 											<p id="demoText"></p>
 										</div>
 										<button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="uploadHeadImg">选择图片</button>
-										<input type="hidden" id="headImgInput" name="avatar" value="<?=Yii::$app->user->identity->avatar ? : 'static/backend/images/default-head.jpg'?>">
+										<input type="hidden" id="headImgInput" name="avatar" value="<?=Yii::$app->user->identity->avatar ? : Yii::$app->params['defaultAvatar']?>">
 									</div>
 								</div>
 							</div>

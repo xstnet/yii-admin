@@ -126,6 +126,9 @@ use yii\helpers\Json;
 			, page: true
 			, limits: [10, 20, 30, 50, 100]
 			, limit: 20 //默认采用20
+			, page: {
+				layout: ['prev', 'page', 'next', 'skip', 'count', 'refresh','limit', ]
+			}
 			, loading: false
 			, parseData: function(res){ //res 即为原始返回的数据
 				return {

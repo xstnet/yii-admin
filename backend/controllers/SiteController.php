@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use backend\services\setting\SettingService;
+use backend\services\todo\TodoService;
 use common\models\AdminLoginHistory;
 use Yii;
 use yii\filters\VerbFilter;
@@ -75,12 +76,16 @@ class SiteController extends AdminLogController
 		$loginHistory = AdminLoginHistory::find()
 			->where(['user_id' => Yii::$app->user->id])
 			->orderBy('created_at desc')
-			->limit(10)
+			->limit(3)
 			->asArray()
 			->all();
 
+		TodoService::$defaultPageSie = 7;
+		$todos = TodoService::instance()->getTodoList();
+
 		return $this->render('welcome', [
-			'loginHistory' => $loginHistory
+			'loginHistory' => $loginHistory,
+			'todos' => $todos,
 		]);
 	}
 

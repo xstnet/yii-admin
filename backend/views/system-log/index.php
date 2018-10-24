@@ -82,6 +82,9 @@ $name = '操作日志';
 				, limits: [10, 20, 30, 50, 100]
 				, limit: 20 //默认采用20
 				, loading: false
+				, page: {
+					layout: ['prev', 'page', 'next', 'skip', 'count', 'refresh','limit', ]
+				}
 				, parseData: function(res){ //res 即为原始返回的数据
 					return {
 						"code": res.code, //解析接口状态

@@ -82,7 +82,7 @@ class MemberService extends BaseService implements MemberServiceInterface
 		$user->login_count = 0;
 //		$user->status = AdminUser::STATUS_ACTIVE;
 		$user->nickname = empty($user->nickname) ? $user->username : $user->nickname;
-		$user->avatar = 'static/backend/images/default-head.jpg';
+		$user->avatar = Yii::$app->params['defaultAvatar'];
 
 		$transaction = Yii::$app->db->beginTransaction();
 		try {

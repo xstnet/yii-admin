@@ -4,6 +4,7 @@
 /* @var $model \common\models\LoginForm */
 
 use yii\helpers\Html;
+use yii\helpers\Json;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -12,7 +13,6 @@ use yii\helpers\Html;
 	<title>控制台</title>
 	<?= $this->render('../public/header.php')?>
 	<!--<link rel="stylesheet" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">-->
-
 	<?php $this->head() ?>
 	<style>
 		.laytable-cell-1-image{  /*最后的pic为字段的field*/
@@ -41,13 +41,22 @@ use yii\helpers\Html;
 			border-color: #40a9ff !important;
 			border-right-width: 1px !important;
 		}
+		.todolist-item .layui-form-checked span {
+			text-decoration: line-through;
+			color: #636060 !important;
+		}
+		.todolist-item {
+			padding: 10px 0 0 5px;
+		}
 	</style>
 </head>
 <?php $this->beginBody() ?>
 <body class="body">
+<span id="csrfToken"><?=Yii::$app->request->csrfToken?></span>
 <blockquote class="layui-elem-quote">
 	<span class="layui-bg-gray">
 		欢迎你，<span class="notice-text"><?=Yii::$app->user->identity->nickname?>！</span>
+		现在是： <span class="notice-text"><?=date('Y年m月d日 H时i分s秒')?></span>,
 		本次登录时间为： <span class="notice-text"><?=date('Y-m-d H:i:s', Yii::$app->user->identity->login_at)?></span>,
 		上次登录时间为： <span class="notice-text"><?=date('Y-m-d H:i:s', Yii::$app->user->identity->last_login_at)?></span>，
 		本次登录IP为： <span class="notice-text"><?=Yii::$app->user->identity->login_ip?></span>，
@@ -172,20 +181,14 @@ use yii\helpers\Html;
 			<div class="layui-colla-item">
 				<h2 class="layui-colla-title">待办事项</h2>
 				<div class="layui-colla-content layui-show">
-					<div class="layui-form">
+					<div>
+						<form class="layui-form" id="todoForm" action="">
 						<div class="add-todo">
-							<input type="text" name="title"  placeholder="Add new todo, press Enter to Submit" autocomplete="off" class="layui-input add-todo-input">
+							<input type="text" id="todoName" placeholder="Add new todo, press Enter to submit" autocomplete="off" class="layui-input add-todo-input">
 						</div>
-						<div class="todolist-item">
-							<input type="checkbox" name="" title="权限节点验证功能" checked lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="个人信息修改功能" checked lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="系统设置功能" lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="菜单设置功能" checked lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="添加系统操作日志" checked lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="权限管理功能" checked lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="登录功能" checked lay-skin="primary"> <br/>
-							<input type="checkbox" name="" title="layui升级到2.4.3" checked lay-skin="primary"> <br/>
-						</div>
+						<div class="todolist-item" id="todolistItem"></div>
+						<div id="todoPage"></div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -195,13 +198,14 @@ use yii\helpers\Html;
 <?= $this->render('../public/footer_js.php')?>
 <?= Html::jsFile('@static_backend/js/index.js')?>
 <script type="text/javascript">
-	layui.use(['element', 'form', 'table', 'layer', 'vip_tab'], function () {
+	var todos = <?=Json::encode($todos)?>;
+
+	layui.use(['element', 'form', 'table', 'layer', 'laypage', 'vip_tab'], function () {
 		var form = layui.form
-			, table = layui.table
 			, layer = layui.layer
 			, vipTab = layui.vip_tab
-			, element = layui.element
-			, $ = layui.jquery;
+			, $ = layui.jquery
+			, laypage = layui.laypage;
 
 
 		// 打开选项卡
@@ -211,11 +215,93 @@ use yii\helpers\Html;
 				vipTab.add($(this),'<i class="layui-icon">'+$(this).find("button").html()+'</i>'+$(this).find('p:last-child').html(),$(this).attr('data-href'));
 			}
 		});
+		// todolist 分页
+		laypage.render({
+			elem: 'todoPage', //注意，这里的 todoPage 是 ID，不用加 # 号
+			count: todos.total, //数据总数，从服务端得到
+			limit: 7,
+			first: false,
+			last: false,
+			prev: '<em>←</em>',
+			next: '<em>→</em>',
+			jump: function(obj, first){
+				//首次不执行
+				if(!first){
+					var url = '<?=Yii::$app->urlManager->createUrl('todo/get-todos')?>';
+					$.getJSON(
+						url,
+						{page: obj.curr, pageSize: obj.limit},
+						function (result) {
+							if (result.code === AJAX_STATUS_SUCCESS) {
+								todos = result.data;
+								genderTodoList();
+								return false;
+							}
+							layer.msg(result.message);
+						}
+					)
+				}
+			}
+		});
 
-		// you code ...
+		function genderTodoList() {
+			$('#todolistItem').html('');
+			if (todos.list.length > 0) {
+				var todoHtml = '',
+					item,
+					checked;
+				for (var i=0; i<todos.list.length; i++) {
+					item = todos.list[i];
+					checked = (item.status == 1 ? "checked" : "");
+					todoHtml += '<input type="checkbox" lay-filter="todoitem" value="'+item.id+'" title="'+item.name+'" '+checked+' lay-skin="primary">';
+					todoHtml += '<br/>';
+				}
+				$('#todolistItem').html(todoHtml);
+				form.render('checkbox');
+			}
+		}
+		// 添加 newtodo
+		$('form').on('submit', function () {
+			var todoName = $.trim($('#todoName').val());
+			if (todoName.length <= 0) {
+				return false;
+			}
+			$.post(
+				'<?=Yii::$app->urlManager->createUrl('todo/add-todo')?>',
+				{name: todoName},
+				function (result) {
+					layer.msg(result.message);
+					if (result.code === AJAX_STATUS_SUCCESS) {
+						var newTodo = '<input type="checkbox" lay-filter="todoitem" value="'+result.data.id+'" title="'+todoName+'" lay-skin="primary"> <br/>'
+						$('#todolistItem').prepend(newTodo);
+						$('#todoName').val('')
+						form.render('checkbox');
+					}
+				},
+				'json'
+			);
+			return false;
+		})
 
-
+		//更新 totod状态
+		form.on('checkbox(todoitem)', function(data){
+			$.post(
+				'<?=Yii::$app->urlManager->createUrl('todo/change-status')?>',
+				{id: data.value},
+				function (result) {
+					layer.msg(result.message);
+					if (result.code && result.code !== AJAX_STATUS_SUCCESS) {
+						$(data.elem).prop('checked', !data.elem.checked);
+						form.render('checkbox');
+					}
+				},
+				'json'
+			)
+		});
+		genderTodoList();
+		
 	});
+
 </script>
 <?php $this->endBody() ?>
 </body>
