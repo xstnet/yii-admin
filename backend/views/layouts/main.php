@@ -73,7 +73,7 @@ use yii\helpers\Html;
 	<div class="layui-body my-body">
 		<div class="layui-tab layui-tab-card my-tab" lay-filter="card" lay-allowClose="true">
 			<ul class="layui-tab-title">
-				<li class="layui-this" lay-id="1"><span><i class="layui-icon layui-icon-layer"></i>欢迎页</span></li>
+				<li class="layui-this" lay-id="1"><span><i class="layui-icon layui-icon-layer"></i>控制台</span></li>
 			</ul>
 			<div class="layui-tab-content">
 				<div class="layui-tab-item layui-show">
@@ -84,8 +84,8 @@ use yii\helpers\Html;
 	</div>
 	<!-- footer -->
 	<div class="layui-footer my-footer">
-		<p><a href="http://vip-admin.com" target="_blank">vip-admin后台模板v1.8.0</a>&nbsp;&nbsp;&&nbsp;&nbsp;<a href="http://vip-admin.com/index/gather/index.html" target="_blank">vip-admin管理系统v1.2.0</a></p>
-		<p>2017 © copyright 蜀ICP备17005881号</p>
+		<p><a href="http://vip-admin.com" target="_blank">Yii-admin后台管理系统v1.0.0 by 醉丶春风丶</a>&nbsp</p>
+		<p>Copyrights © 2016-2017 醉丶春风 , All rights reserved. 皖ICP备15015582号-1</p>
 	</div>
 </div
 

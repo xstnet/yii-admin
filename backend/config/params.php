@@ -6,7 +6,7 @@ return [
 		// 默认模块
 		'app-backend' => [
 			'site/index' => '进入管理后台',
-			'site/welcome' => '访问欢迎页面',
+			'site/welcome' => '访问控制台页面',
 
 			'setting/menus' => '访问菜单管理页面',
 			'setting/delete-menu' => '删除菜单',

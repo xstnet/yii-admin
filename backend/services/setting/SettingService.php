@@ -59,6 +59,16 @@ class SettingService extends BaseService implements SettingServiceInterface
 
 	public function getActiveMenus()
 	{
+		$result = [
+//			[
+//				'href' => Yii::$app->urlManager->createUrl('site/welcome'),
+//				'icon' => 'layui-icon-home',
+//				'label' => '控制台',
+//				'parent_id' => '0',
+//				'sort_value' => '1',
+//				'url' => Yii::$app->urlManager->createUrl('site/welcome'),
+//			]
+		];
 		$menusPermission = UsersRoles::find()
 			->select(['role_permission.permission_id'])
 			->alias('user_role')
@@ -92,7 +102,7 @@ class SettingService extends BaseService implements SettingServiceInterface
 
 		$data = self::getMenuTreeByData($menus);
 
-		$result = Helpers::getTree($data);
+		$result = array_merge($result, Helpers::getTree($data));
 
 		return $result;
 	}
