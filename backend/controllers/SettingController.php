@@ -87,6 +87,10 @@ class SettingController extends AdminLogController
 	 */
 	public function actionSetting()
 	{
-		return $this->render('setting');
+		list ($cagegories, $systemConfigs) = SettingService::instance()->getSystemConfigs();
+		return $this->render('setting', [
+			'categories' => $cagegories,
+			'systemConfigs' => $systemConfigs,
+		]);
 	}
 }

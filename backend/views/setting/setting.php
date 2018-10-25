@@ -25,7 +25,8 @@ $name = '菜单';
 				background-color: #F2F2F2;
 			}
 			.setting-img {
-				max-width: 360px;
+				max-width: 700px;
+				min-width: 120px;
 				height: 120px;
 			}
 		</style>
@@ -34,9 +35,9 @@ $name = '菜单';
 	<?php $this->beginBody() ?>
 	<body class="body">
 	<!-- 工具集 -->
-	<div class="my-btn-box">
+	<div class="my-btn-box" style="padding: 0 20px;">
     <span class="fl">
-<!--        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete">删除</a>-->
+        <a class="layui-btn btn-add btn-default " id="btn-add">添加</a>
     </span>
 		<span class="fr">
          <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon layui-icon-refresh"></i></a>
@@ -47,11 +48,9 @@ $name = '菜单';
 	<div style="padding: 0 20px;">
 		<div class="layui-tab layui-tab-card" style="background: #fff">
 			<ul class="layui-tab-title">
-				<li class="layui-this">网站设置</li>
-				<li>用户管理</li>
-				<li>权限分配</li>
-				<li>商品管理</li>
-				<li>订单管理</li>
+				<?php $i = 0; foreach ($categories as $k => $item): $i++;?>
+				<li class="<?=$i === 1 ? 'layui-this' : ''?>"><?=$item['name']?></li>
+				<?php endforeach;?>
 			</ul>
 			<form class="layui-form" action="" style="padding:20px">
 			<div class="layui-tab-content">
@@ -60,7 +59,19 @@ $name = '菜单';
 						<label class="layui-form-label">网站名称</label>
 						<div class="layui-input-block">
 							<input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="网站名称" class="layui-input">
+							<div class="layui-form-mid layui-word-aux">调用代码：SYS_ITEM</div>
 						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">网站域名</label>
+						<div class="layui-input-inline" style="width: 70%;">
+							<input type="text" name="price_min" placeholder="http://www.xstnet.com" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-form-mid">-</div>
+						<div class="layui-input-inline" style="width: 200px;">
+							<input type="text" name="price_max" placeholder="调用代码" autocomplete="off" class="layui-input">
+						</div>
+					</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">网站域名</label>
@@ -70,7 +81,7 @@ $name = '菜单';
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">网站Logo</label>
-						<div class="layui-input-inline">
+						<div class="layui-input-inline" style="width: 70%">
 							<div class="layui-upload">
 								<div class="layui-upload-list">
 									<img class="layui-upload-img setting-img" src="<?=Yii::$app->user->identity->avatar ? : '/'. Yii::$app->params['defaultAvatar']?>">
@@ -79,6 +90,10 @@ $name = '菜单';
 								<button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="uploadHeadImg">选择图片</button>
 								<input type="hidden" id="headImgInput" name="avatar" value="<?=Yii::$app->user->identity->avatar ? : Yii::$app->params['defaultAvatar']?>">
 							</div>
+						</div>
+						<div class="layui-form-mid">-</div>
+						<div class="layui-input-inline" style="width: 200px;">
+							<input type="text" name="price_max" placeholder="调用代码" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -102,46 +117,7 @@ $name = '菜单';
 						</div>
 					</div>
 
-					<div class="layui-form-item">
-						<label class="layui-form-label">验证身份证</label>
-						<div class="layui-input-block">
-							<input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">自定义验证</label>
-						<div class="layui-input-inline">
-							<input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
-						</div>
-						<div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
-					</div>
 
-					<div class="layui-form-item">
-						<div class="layui-inline">
-							<label class="layui-form-label">范围</label>
-							<div class="layui-input-inline" style="width: 100px;">
-								<input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
-							</div>
-							<div class="layui-form-mid">-</div>
-							<div class="layui-input-inline" style="width: 100px;">
-								<input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
-							</div>
-						</div>
-					</div>
-
-					<div class="layui-form-item">
-						<label class="layui-form-label">单行选择框</label>
-						<div class="layui-input-block">
-							<select name="interest" lay-filter="aihao">
-								<option value=""></option>
-								<option value="0">写作</option>
-								<option value="1" selected="">阅读</option>
-								<option value="2">游戏</option>
-								<option value="3">音乐</option>
-								<option value="4">旅行</option>
-							</select>
-						</div>
-					</div>
 				</div>
 				<div class="layui-tab-item">2</div>
 				<div class="layui-tab-item">3</div>

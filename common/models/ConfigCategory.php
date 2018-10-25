@@ -9,7 +9,6 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
- * @property string $prefix
  * @property integer $sort_value
  * @property string $code
  * @property integer $status
@@ -18,6 +17,8 @@ use Yii;
  */
 class ConfigCategory extends BaseModel
 {
+	const STATUS_ACTIVE = 1;  // 启用
+	const STATUS_DISABLED = 0; // 禁用
     /**
      * @inheritdoc
      */
@@ -34,7 +35,7 @@ class ConfigCategory extends BaseModel
         return [
             [['sort_value', 'status', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 30],
-            [['prefix', 'code'], 'string', 'max' => 20],
+            [['code'], 'string', 'max' => 20],
         ];
     }
 
@@ -46,7 +47,6 @@ class ConfigCategory extends BaseModel
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'prefix' => 'Prefix',
             'sort_value' => 'Sort Value',
             'code' => 'Code',
             'status' => 'Status',

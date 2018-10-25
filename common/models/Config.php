@@ -22,6 +22,8 @@ use Yii;
  */
 class Config extends BaseModel
 {
+	const STATUS_ACTIVE = 1;  // 启用
+	const STATUS_DISABLED = 0; // 禁用
     /**
      * @inheritdoc
      */

@@ -12,6 +12,8 @@ namespace backend\services\setting;
 use backend\services\BaseService;
 use common\exceptions\ParameterException;
 use common\helpers\Helpers;
+use common\models\Config;
+use common\models\ConfigCategory;
 use common\models\Menus;
 use common\models\Roles;
 use common\models\RolesPermissions;
@@ -175,6 +177,39 @@ class SettingService extends BaseService implements SettingServiceInterface
 		}
 
 		return $menu;
+	}
+
+	/**
+	 * 获取系统设置和分类
+	 * @return array
+	 */
+	public function getSystemConfigs()
+	{
+		$categories = ConfigCategory::find()
+			->where(['status' => ConfigCategory::STATUS_ACTIVE])
+			->orderBy(['sort_value' => SORT_ASC])
+			->asArray()
+			->all();
+		$mapIdToCategory = []; $systemConfigs = [];
+		foreach ($categories as $category) {
+			$mapIdToCategory[ $category['id'] ] = $category;
+			$systemConfigs[ $category['id'] ] = [];
+		}
+
+		$configs = Config::find()
+			->orderBy(['sort_value' => SORT_ASC])
+			->asArray()
+			->all();
+		foreach ($configs as $item) {
+			// 没有对应的分类，不显示该设置
+			if (!isset($mapIdToCategory[ $item['category_id'] ])) {
+				continue;
+			}
+			$systemConfigs[ $item['category_id'] ][] = $item;
+		}
+		unset($categories, $configs);
+
+		return [ $mapIdToCategory, $systemConfigs ];
 	}
 
 }
