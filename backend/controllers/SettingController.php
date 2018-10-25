@@ -81,4 +81,12 @@ class SettingController extends AdminLogController
 
 		return self::ajaxSuccess('添加成功');
 	}
+
+	/**
+	 * @Desc: 访问系统设置页面
+	 */
+	public function actionSetting()
+	{
+		return $this->render('setting');
+	}
 }

@@ -84,7 +84,7 @@ use yii\helpers\Html;
 	</div>
 	<!-- footer -->
 	<div class="layui-footer my-footer">
-		<p><a href="http://vip-admin.com" target="_blank">Yii-admin后台管理系统v1.0.0 by 醉丶春风丶</a>&nbsp</p>
+		<p><a href="http://xstnet.com" target="_blank">Yii-admin后台管理系统v1.0.0 by 醉丶春风丶</a>&nbsp</p>
 		<p>Copyrights © 2016-2017 醉丶春风 , All rights reserved. 皖ICP备15015582号-1</p>
 	</div>
 </div

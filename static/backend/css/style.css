@@ -14,6 +14,10 @@
 	border-color: #e6e6e6;
 }
 
+.layui-input:focus, .layui-textarea:focus {
+	border-color: #5fb878 !important;
+}
+
 .layui-tab-title .layui-this:after {
 	position: absolute;
 	left: 0;
