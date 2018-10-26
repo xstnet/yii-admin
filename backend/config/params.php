@@ -12,6 +12,9 @@ return [
 			'setting/delete-menu' => '删除菜单',
 			'setting/add-menu' => '添加菜单',
 			'setting/save-menu' => '更新菜单信息',
+			'setting/setting' => '访问系统设置页面',
+			'setting/save-setting' => '更新系统设置信息',
+			'setting/add-setting' => '添加系统设置',
 
 			'permission/roles' => '访问角色管理页面',
 			'permission/get-role-permissions' => '打开设置权限对话框',

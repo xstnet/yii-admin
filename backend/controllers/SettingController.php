@@ -93,4 +93,15 @@ class SettingController extends AdminLogController
 			'systemConfigs' => $systemConfigs,
 		]);
 	}
+
+	/**
+	 * @Desc: 保存系统设置
+	 * @return array
+	 */
+	public function actionSaveSetting()
+	{
+		$params = Yii::$app->request->post();
+		SettingService::instance()->saveSetting($params);
+		return self::ajaxSuccess('保存成功');
+	}
 }

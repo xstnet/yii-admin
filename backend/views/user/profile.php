@@ -129,17 +129,17 @@ $name = '个人信息';
 						});
 					}
 					,done: function(res){
-						//如果上传失败
-						if(res.code > 0){
+						if(res.code === AJAX_STATUS_SUCCESS){
+							//上传成功
+							$('#demoText').html('');
+							$('#headImg').attr('src', '/'+res.data.file);
+							$('#headImgInput').val(res.data.file);
+						} else { //如果上传失败
 							var msg = res.message ? res.message : '上传失败';
 							layer.msg(msg);
 							this.retry();
 							return false;
 						}
-						//上传成功
-						$('#demoText').html('');
-						$('#headImg').attr('src', '/'+res.data.file);
-						$('#headImgInput').val(res.data.file);
 					}
 					,retry: function () {
 						//演示失败状态，并实现重传

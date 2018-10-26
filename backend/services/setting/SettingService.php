@@ -212,4 +212,24 @@ class SettingService extends BaseService implements SettingServiceInterface
 		return [ $mapIdToCategory, $systemConfigs ];
 	}
 
+	/**
+	 * @Desc: 保存系统设置
+	 * @param $params
+	 */
+	public function saveSetting($params)
+	{
+		$settings = $params['setting'];
+		foreach ($settings as $id => $item) {
+			$set = Config::findOne($id);
+			if (!isset($item['code']) && !isset($item['value'])) {
+				continue;
+			}
+			if (empty($set)) {
+				continue;
+			}
+			$set->code = $item['code'];
+			$set->value = $item['value'];
+			$set->saveModel();
+		}
+	}
 }

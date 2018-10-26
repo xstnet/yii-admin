@@ -18,6 +18,10 @@
 	border-color: #5fb878 !important;
 }
 
+.layui-form-danger:focus {
+	border-color: #FF5722 !important;
+}
+
 .layui-tab-title .layui-this:after {
 	position: absolute;
 	left: 0;
