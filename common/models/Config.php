@@ -44,6 +44,7 @@ class Config extends BaseModel
             [['value'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 200],
             [['attribute'], 'string', 'max' => 255],
+			['status', 'default', 'value' => self::STATUS_ACTIVE]
         ];
     }
 

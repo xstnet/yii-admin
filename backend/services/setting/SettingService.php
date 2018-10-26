@@ -24,7 +24,7 @@ class SettingService extends BaseService implements SettingServiceInterface
 {
 	/**
 	 * @Desc: 获取菜单列表
-	 * @return array|mixed
+	 * @return array
 	 */
 	public function getMenus()
 	{
@@ -99,8 +99,6 @@ class SettingService extends BaseService implements SettingServiceInterface
 		if (empty($menus)) {
 			return [];
 		}
-
-//		print_r($menus);die;
 
 		$data = self::getMenuTreeByData($menus);
 
@@ -221,15 +219,32 @@ class SettingService extends BaseService implements SettingServiceInterface
 		$settings = $params['setting'];
 		foreach ($settings as $id => $item) {
 			$set = Config::findOne($id);
-			if (!isset($item['code']) && !isset($item['value'])) {
-				continue;
+			if (!isset($item['value'])) {
+				$item['value'] = ''; // 复选框都未选中时，会没有value传过来
 			}
 			if (empty($set)) {
 				continue;
 			}
 			$set->code = $item['code'];
-			$set->value = $item['value'];
+			// 复选框的值，为数组
+			if (is_array($item['value'])) {
+				$set->value = join(',', $item['value']);
+			} else {
+				$set->value = $item['value'];
+			}
+
 			$set->saveModel();
 		}
+	}
+
+	/**
+	 * @Desc 添加配置项
+	 * @param $params
+	 */
+	public function addSetting($params)
+	{
+		$setting = new Config();
+		$setting->load($params, '');
+		$setting->saveModel();
 	}
 }

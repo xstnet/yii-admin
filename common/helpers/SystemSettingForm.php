@@ -54,19 +54,62 @@ class SystemSettingForm
 		return $html;
 	}
 
-	public static function textarea()
+	public static function textarea($item)
 	{
+		$tips = '';
+		if (!empty($item['description'])) {
+			$tips = "<br/> <div class='layui-form-mid layui-word-aux'>{$item['description']}</div>";
+		}
+		$html = "
+			<label class='layui-form-label'>{$item['name']}</label>
+			<div class='layui-input-inline setting-item'>
+				<textarea class='layui-textarea' name=\"setting[{$item['id']}][value]\" placeholder=\"{$item['name']}\">{$item['value']}</textarea>
+				$tips
+			</div>
+		";
+		$html .= self::getCallCode($item);
 
+		return $html;
 	}
 
-	public static function checkbox()
+	public static function checkbox($item)
 	{
+		$tips = '';
+		if (!empty($item['description'])) {
+			$tips = "<br/> <div class='layui-form-mid layui-word-aux'>{$item['description']}</div>";
+		}
+		$html = "
+			<label class='layui-form-label'>{$item['name']}</label>
+			<div class='layui-input-inline setting-item'>";
+		$checked = explode(',', $item['value']);
+		$attributes = json_decode($item['attribute']);
+		foreach ($attributes as $attribute) {
+			// <input type="checkbox" name="like[write]" title="写作">
+			$html .= "<input lay-skin='primary' type='checkbox' name=\"setting[{$item['id']}][value][]\" ". (in_array($attribute->value, $checked) ? 'checked' : '') ." value='{$attribute->value}' title='{$attribute->name}'>";
+		}
+		$html .= $tips . "</div>";
+		$html .= self::getCallCode($item);
 
+		return $html;
 	}
 
-	public static function radio()
+	public static function radio($item)
 	{
+		$tips = '';
+		if (!empty($item['description'])) {
+			$tips = "<br/> <div class='layui-form-mid layui-word-aux'>{$item['description']}</div>";
+		}
+		$html = "
+			<label class='layui-form-label'>{$item['name']}</label>
+			<div class='layui-input-inline setting-item'>";
+		$attributes = json_decode($item['attribute']);
+		foreach ($attributes as $attribute) {
+			$html .= "<input type='radio' name=\"setting[{$item['id']}][value]\" ". ($item['value'] == $attribute->value ? 'checked' : '') ." value='{$attribute->value}' title='{$attribute->name}'>";
+		}
+		$html .= $tips . "</div>";
+		$html .= self::getCallCode($item);
 
+		return $html;
 	}
 
 	public static function getCallCode($item)

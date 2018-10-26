@@ -104,4 +104,11 @@ class SettingController extends AdminLogController
 		SettingService::instance()->saveSetting($params);
 		return self::ajaxSuccess('保存成功');
 	}
+
+	public function actionAddSetting()
+	{
+		$params = Yii::$app->request->post();
+		SettingService::instance()->addSetting($params);
+		return self::ajaxSuccess('添加成功');
+	}
 }
