@@ -44,7 +44,8 @@ class Config extends BaseModel
             [['value'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 200],
             [['attribute'], 'string', 'max' => 255],
-			['status', 'default', 'value' => self::STATUS_ACTIVE]
+			['status', 'default', 'value' => self::STATUS_ACTIVE],
+			[['code', 'category_id'], 'unique', 'targetAttribute' => ['code', 'category_id'], 'message' => '同一类别下code不能重复'],
         ];
     }
 
