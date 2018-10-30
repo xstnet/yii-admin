@@ -88,4 +88,34 @@ class BaseController extends Controller
 			throw new BaseException(10001, $e->getMessage());
 		}
 	}
+
+	/**
+	 * @Desc: 获取Get参数
+	 * @param string $key
+	 * @param string $defaultValue
+	 * @return array|mixed
+	 */
+	public static function getParams($key = '', $defaultValue = '')
+	{
+		if (empty($key)) {
+			return Yii::$app->request->get();
+		}
+
+		return Yii::$app->request->get($key, $defaultValue);
+	}
+
+	/**
+	 * @Desc: 获取post参数
+	 * @param string $key
+	 * @param string $defaultValue
+	 * @return array|mixed
+	 */
+	public static function postParams($key = '', $defaultValue = '')
+	{
+		if (empty($key)) {
+			return Yii::$app->request->post();
+		}
+
+		return Yii::$app->request->post($key, $defaultValue);
+	}
 }

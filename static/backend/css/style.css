@@ -1,27 +1,36 @@
+/*弹框，默认设置*/
 .dialog-wrap {
 	display: none;
 	min-height: 300px;
 	padding: 0 15px;
 }
-
+/*弹框中点击确认按钮模拟提交的 button*/
 #submitBtn {
 	display: none;
 }
-
+/*存放csrf-token的容器*/
 #csrfToken { display: none }
 
-.layui-badge-rim, .layui-colla-content, .layui-colla-item, .layui-collapse, .layui-elem-field, .layui-form-pane .layui-form-item[pane], .layui-form-pane .layui-form-label, .layui-input, .layui-layedit, .layui-layedit-tool, .layui-quote-nm, .layui-select, .layui-tab-bar, .layui-tab-card, .layui-tab-title, .layui-tab-title .layui-this:after, .layui-textarea {
-	border-color: #e6e6e6;
+/*下拉框超出了弹框的大小，悬浮显示*/
+.layui-layer-page .layui-layer-content {
+	position: relative;
+	overflow: visible !important;
 }
+/*下拉框超出最大高度显示滚动条*/
+.layui-form-select dl { max-height:300px; }
 
+/*input textarea 获取焦点时边框高亮*/
 .layui-input:focus, .layui-textarea:focus {
 	border-color: #5fb878 !important;
 }
-
+/*input textarea验证失败时边框高亮红色*/
 .layui-form-danger:focus {
 	border-color: #FF5722 !important;
 }
-
+/*tab选项卡颜色*/
+.layui-badge-rim, .layui-colla-content, .layui-colla-item, .layui-collapse, .layui-elem-field, .layui-form-pane .layui-form-item[pane], .layui-form-pane .layui-form-label, .layui-input, .layui-layedit, .layui-layedit-tool, .layui-quote-nm, .layui-select, .layui-tab-bar, .layui-tab-card, .layui-tab-title, .layui-tab-title .layui-this:after, .layui-textarea {
+	border-color: #e6e6e6;
+}
 .layui-tab-title .layui-this:after {
 	position: absolute;
 	left: 0;

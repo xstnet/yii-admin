@@ -9,11 +9,18 @@ use Yii;
  *
  * @property integer $id
  * @property string $category_name
- * @property integer $parrent_id
+ * @property integer $parent_id
  * @property string $parents
  */
 class ArticleCategory extends BaseModel
 {
+
+	/**
+	 * 状态
+	 */
+	const STATUS_ACTIVE = 0;  // 启用
+	const STATUS_DISABLED = 1; // 禁用
+
     /**
      * @inheritdoc
      */
@@ -28,9 +35,10 @@ class ArticleCategory extends BaseModel
     public function rules()
     {
         return [
-            [['parrent_id'], 'integer'],
+            [['parent_id'], 'integer'],
             [['category_name'], 'string', 'max' => 30],
-            [['parents'], 'string', 'max' => 200],
+			['category_name', 'required'],
+            ['parents', 'string', 'max' => 200],
         ];
     }
 
@@ -42,7 +50,7 @@ class ArticleCategory extends BaseModel
         return [
             'id' => 'ID',
             'category_name' => 'Category Name',
-            'parrent_id' => 'Parrent ID',
+            'parent_id' => 'Parrent ID',
             'parents' => 'Parents',
         ];
     }

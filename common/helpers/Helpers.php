@@ -42,7 +42,7 @@ class Helpers
 		foreach ($data as $item) {
 			$htmlStr .= sprintf('<option value="%s">%s%s</option>', $item['id'], $splitStr, $item['label']);
 			if (isset($item['children']) && count($item['children']) > 0) {
-				$htmlStr .= self::getTreeSelect($item['children'], $splitStr. '++++');
+				$htmlStr .= self::getTreeSelect($item['children'], $splitStr. '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 			}
 		}
 		return $htmlStr;

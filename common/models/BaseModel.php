@@ -77,4 +77,10 @@ class BaseModel extends ActiveRecord
 	{
 		return htmlspecialchars(trim($str), ENT_QUOTES, Yii::$app ? Yii::$app->charset : 'UTF-8', true);
 	}
+
+	public function formName()
+	{
+//		return parent::formName();
+		return '';
+	}
 }
