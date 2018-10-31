@@ -178,7 +178,8 @@ $name = '发布文章';
 					this.change(color)
 				}
 			});
-			
+
+			// 更新标题样式
 			$('.title-style-btn').click(function () {
 				$(this).toggleClass('layui-btn-primary');
 				if ($(this).hasClass('layui-btn-primary')) {
@@ -205,7 +206,8 @@ $name = '发布文章';
 				$('#inputTitle').removeAttr('style')
 				$('#inputTitle').css(titleStyle);
 			}
-			//普通图片上传
+			// TODO 提取公共上传文件方法
+			//标题图片上传
 			var uploadInst = upload.render({
 				elem: '#uploadImg',
 				url: '<?= Yii::$app->urlManager->createUrl("upload/image-file")?>',
@@ -247,19 +249,7 @@ $name = '发布文章';
 			form.on('submit(form-submit)', function (data) {
 				console.log(data.field);
 				var url = '<?= Yii::$app->urlManager->createUrl("user/save-user-profile")?>';
-				if (data.field.password.length < 5 && data.field.password.length > 0) {
-					layer.msg('密码长度不能小于5位');
-					return false;
-				}
 
-				if (data.field.nickname.length < 2) {
-					layer.msg('昵称长度不能小于2位');
-					return false;
-				}
-				if (data.field.nickname.length > 30) {
-					layer.msg('昵称长度不能大于30位');
-					return false;
-				}
 				$.post(
 					url,
 					data.field,
