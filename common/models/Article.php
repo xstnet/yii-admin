@@ -27,6 +27,7 @@ use Yii;
  * @property string $from_platform
  * @property integer $created_at
  * @property integer $updated_at
+ * @property ArticleContents $content
  */
 class Article extends BaseModel
 {
@@ -63,15 +64,30 @@ class Article extends BaseModel
         return [
             [['user_id', 'category_id', 'hits', 'comment_count', 'is_allow_comment', 'top', 'bad', 'is_show', 'is_delete', 'is_hot', 'sort_value', 'created_at', 'updated_at'], 'integer'],
             [['from_platform'], 'string'],
-            [['title', 'title_style'], 'string', 'max' => 50],
-            [['author', 'source'], 'string', 'max' => 20],
-            [['description'], 'string', 'max' => 200],
+            [['author', 'source'], 'string', 'max' => 30],
+            [['description', 'title_style'], 'string', 'max' => 200],
 			['is_show', 'default', 'value' => self::IS_SHOW_YES],
 			['is_allow_comment', 'default', 'value' => self::IS_ALLOW_COMMENT_YES],
         ];
     }
 
-    /**
+	public function scenarios()
+	{
+		return array_merge(
+			parent::scenarios(),
+			[
+				'update-brief' => [
+					'title',
+					'category_id',
+					'sort_value',
+					'author',
+					'source',
+				],
+			]
+		);
+	}
+
+	/**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -99,4 +115,20 @@ class Article extends BaseModel
             'updated_at' => 'Updated At',
         ];
     }
+
+	public static function getListField()
+	{
+		return [
+			'article.*',
+			'category_name',
+			'nickname',
+		];
+	}
+
+	public function getContent()
+	{
+		// ['id' => 'id']， 主 => 副
+		return $this->hasOne(ArticleContents::className(), ['id' => 'id']);
+	}
+
 }

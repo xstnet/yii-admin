@@ -78,7 +78,7 @@ $name = '菜单';
 								<div class="layui-form-item">
 									<label class="layui-form-label">排序值</label>
 									<div class="layui-input-inline">
-										<input type="text" name="sort_value" value="30"  placeholder="请输入排序值" autocomplete="off" class="layui-input">
+										<input type="text" name="sort_value" value="30" lay-verify="required|number" placeholder="请输入排序值" autocomplete="off" class="layui-input">
 										<div class="layui-form-mid layui-word-aux">按照从小到大的顺序排列</div>
 									</div>
 								</div>
@@ -189,7 +189,7 @@ $name = '菜单';
 			});
 
 
-			eleTree.on("toggleSlide(data1)", function(data) {
+			eleTree.on("toggleSlide(data1)", function (data) {
 				currentMenu = data.currentData;
 				currentMenu.name = data.currentData.label;
 				currentMenu.url = data.currentData.router;
@@ -209,7 +209,7 @@ $name = '菜单';
 					layer.msg('该菜单含有子菜单，不能删除');
 					return false;
 				}
-				layer.confirm('确定删除菜单　['+currentMenu.label+']　吗？', function(index){
+				layer.confirm('确定删除菜单　['+currentMenu.label+']　吗？', function (index) {
 					$.post(
 						"<?=Yii::$app->urlManager->createUrl('setting/delete-menu')?>",
 						{id: currentMenu.id},

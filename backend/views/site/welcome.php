@@ -209,8 +209,8 @@ use yii\helpers\Json;
 
 
 		// 打开选项卡
-		$('.my-nav-btn').on('click', function(){
-			if($(this).attr('data-href')){
+		$('.my-nav-btn').on('click', function () {
+			if ($(this).attr('data-href')) {
 				//vipTab.add('','标题','路径');
 				vipTab.add($(this),'<i class="layui-icon">'+$(this).find("button").html()+'</i>'+$(this).find('p:last-child').html(),$(this).attr('data-href'));
 			}
@@ -224,9 +224,9 @@ use yii\helpers\Json;
 			last: false,
 			prev: '<em>←</em>',
 			next: '<em>→</em>',
-			jump: function(obj, first){
+			jump: function (obj, first) {
 				//首次不执行
-				if(!first){
+				if(!first) {
 					var url = '<?=Yii::$app->urlManager->createUrl('todo/get-todos')?>';
 					$.getJSON(
 						url,
@@ -284,7 +284,7 @@ use yii\helpers\Json;
 		})
 
 		//更新 totod状态
-		form.on('checkbox(todoitem)', function(data){
+		form.on('checkbox(todoitem)', function (data) {
 			$.post(
 				'<?=Yii::$app->urlManager->createUrl('todo/change-status')?>',
 				{id: data.value},

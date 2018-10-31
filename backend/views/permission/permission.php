@@ -38,7 +38,7 @@ use yii\helpers\Json;
 <span id="csrfToken"><?=Yii::$app->request->csrfToken?></span>
 
 <!-- 表格 -->
-<div id="dateTable" lay-filter="dataList"></div>
+<div id="dataTable" lay-filter="dataList"></div>
 <!--编辑/添加角色-->
 <div id="roleInfoDlg" class="dialog-wrap" style="min-height: 200px">
 	<form style="padding-top: 30px" class="layui-form layui-form-pane" lay-filter="menusForm" action="">
@@ -86,7 +86,7 @@ use yii\helpers\Json;
 <?= Html::jsFile('@static_backend/js/index.js')?>
 <script type="text/html" id="formatStatus">
 	{{#
-	var fn = function(){
+	var fn = function () {
 		return d.status == 0 ? 'checked' : '';
 	};
 	}}
@@ -111,7 +111,7 @@ use yii\helpers\Json;
 
 		// 表格渲染
 		var tableIns = table.render({
-			elem: '#dateTable'                  //指定原始表格元素选择器（推荐id选择器）
+			elem: '#dataTable'                  //指定原始表格元素选择器（推荐id选择器）
 			, height: vipTable.getFullHeight()    //容器高度
 			, even: true
 			, text: '暂无数据'
@@ -120,12 +120,12 @@ use yii\helpers\Json;
 				, {field: 'id', title: 'ID', width: 80, align: 'center'}
 				, {field: 'name', title: '名称', width: 150, align: 'center'}
 				, {field: 'description', title: '描述', width: 200, align: 'center'}
-				, {field: 'menu_id', title: '所属菜单', width: 120, align: 'center', templet: function(d){
+				, {field: 'menu_id', title: '所属菜单', width: 120, align: 'center', templet: function (d) {
 					return (menus[ d.menu_id ] ? menus[ d.menu_id ].name : '');
 				}}
 				, {field: 'url', title: 'url', width: 300, align: 'center'}
 				, {field: 'status', title: '状态', width: 100, templet: '#formatStatus', align: 'center'}
-				, {field: 'created_at', title: '添加时间', width: 180, templet: function(d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
+				, {field: 'created_at', title: '添加时间', width: 180, templet: function (d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
 				, {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
 			]]
 			, url: '<?=Yii::$app->urlManager->createUrl("permission/get-permissions")?>'
@@ -137,7 +137,7 @@ use yii\helpers\Json;
 				layout: ['prev', 'page', 'next', 'skip', 'count', 'refresh','limit', ]
 			}
 			, loading: false
-			, parseData: function(res){ //res 即为原始返回的数据
+			, parseData: function (res) { //res 即为原始返回的数据
 				return {
 					"code": res.code, //解析接口状态
 					"msg": res.message, //解析提示文本
@@ -150,19 +150,19 @@ use yii\helpers\Json;
 //			}
 		});
 		//监听事件 表格操作按钮
-		table.on('tool(dataList)', function(obj){
+		table.on('tool(dataList)', function (obj) {
 			rowObj = obj;
 			permissionID = obj.data.id;
 			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-			if(layEvent === 'delete'){ //删除
+			if(layEvent === 'delete') { //删除
 				deleteMenus(obj);
-			} else if(layEvent === 'edit'){ //编辑
+			} else if(layEvent === 'edit') { //编辑
 				showMenusInfo('edit');
 			}
 		});
 
 		// Change Status
-		form.on('switch(filter-status)', function(data) {
+		form.on('switch(filter-status)', function (data) {
 			var elem = $(data.elem);
 			$.post(
 				'<?=Yii::$app->urlManager->createUrl("permission/change-status")?>',
@@ -203,7 +203,7 @@ use yii\helpers\Json;
 		 * @param obj
 		 */
 		function deleteMenus(obj) {
-			layer.confirm('确定删除这个权限吗', function(index){
+			layer.confirm('确定删除这个权限吗', function (index) {
 				$.post(
 					"<?=Yii::$app->urlManager->createUrl('permission/delete-permission')?>",
 					{id: permissionID},
@@ -221,7 +221,7 @@ use yii\helpers\Json;
 		}
 
 		// 提交表单
-		form.on('submit(form-submit)', function(data){
+		form.on('submit(form-submit)', function (data) {
 			var url = '<?= Yii::$app->urlManager->createUrl("permission/add-permission")?>';
 			if (data.field.id > 0) {
 				url = '<?= Yii::$app->urlManager->createUrl("permission/save-permission")?>';
@@ -229,7 +229,7 @@ use yii\helpers\Json;
 			$.post(
 				url,
 				data.field,
-				function(result) {
+				function (result) {
 					layer.msg(result.message, {time: 2000});
 					if (result.code === AJAX_STATUS_SUCCESS) {
 						if (data.field.id > 0) {

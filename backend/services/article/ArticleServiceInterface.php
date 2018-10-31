@@ -29,7 +29,14 @@ interface ArticleServiceInterface
 	 * @param $params
 	 * @return mixed
 	 */
-	public function savedArtice($params);
+	public function saveArtice($params);
+
+	/**
+	 * @Desc: 更新文章简要信息
+	 * @param $params
+	 * @return mixed
+	 */
+	public function saveArticeBrief($params);
 
 	/**
 	 * @Desc: 删除文章
@@ -40,16 +47,18 @@ interface ArticleServiceInterface
 
 	/**
 	 * @Desc: 移动某分类下的文章到某分类
+	 * @param $categoryId 被移动的分类ID
+	 * @param $toCategoryId 移动到的分类ID
 	 * @return mixed
 	 */
-	public function changeCategoryByCategory();
+	public function changeCategoryByCategory($categoryId, $toCategoryId);
 
 	/**
-	 * @Desc: 更新文章状态
+	 * @Desc: 更新文章是否展示
 	 * @param $articleId
 	 * @return mixed
 	 */
-	public function changeStatus($articleId);
+	public function changeIsShow($articleId);
 
 	/**
 	 * @Desc: 修改文章是否允许评论

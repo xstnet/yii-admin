@@ -12,6 +12,7 @@ namespace backend\services\article;
 use backend\services\BaseService;
 use common\exceptions\ParameterException;
 use common\helpers\Helpers;
+use common\models\AdminUser;
 use common\models\Article;
 use common\models\ArticleCategory;
 use function foo\func;
@@ -25,7 +26,24 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	 */
 	public function getArticeList()
 	{
-		// TODO: Implement getArticeList() method.
+		$query = Article::find()
+			->where(['is_delete' => Article::IS_DELETE_NO]);
+
+		list ($count, $page) = self::getPage($query);
+
+		$articles = $query->alias('article')
+			->select(Article::getListField())
+			->leftJoin(['user' => AdminUser::tableName()], 'user.id = article.user_id')
+			->leftJoin(['category' => ArticleCategory::tableName()], 'category.id = article.category_id')
+			->orderBy('article.sort_value asc')
+			->asArray()
+			->all();
+
+		return [
+			'total' => $count,
+			'list' => $articles,
+			'page' => $page,
+		];
 	}
 
 	/**
@@ -43,10 +61,25 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	 * @param $params
 	 * @return mixed
 	 */
-	public function savedArtice($params)
+	public function saveArtice($params)
 	{
 		// TODO: Implement savedArtice() method.
 	}
+
+	/**
+	 * @Desc: 更新文章简要信息
+	 * @param $params
+	 * @return mixed
+	 */
+	public function saveArticeBrief($params)
+	{
+		$id = $params['id'] ?? 0;
+		$article = self::findArticleModel($id);
+		$article->scenario = 'update-brief';
+		$article->load($params);
+		$article->saveModel();
+	}
+
 
 	/**
 	 * @Desc: 删除文章
@@ -55,26 +88,37 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	 */
 	public function deleteArtice($articleId)
 	{
-		// TODO: Implement deleteArtice() method.
+		$article = self::findArticleModel($articleId);
+		$article->is_delete = Article::IS_DELETE_YES;
+		$article->saveModel();
 	}
 
 	/**
 	 * @Desc: 移动某分类下的文章到某分类
+	 * @param 被移动的分类ID $categoryId
+	 * @param 移动到的分类ID $toCategoryId
+	 * @throws ParameterException
 	 * @return mixed
 	 */
-	public function changeCategoryByCategory()
+	public function changeCategoryByCategory($categoryId, $toCategoryId)
 	{
-		// TODO: Implement changeCategoryByCategory() method.
+		$category = self::findCategoryModel($categoryId);
+		$affectedRows = Article::updateAll(['category_id' => $toCategoryId], "FIND_IN_SET(category_id, '{$category->parents}')");
+		if ($affectedRows === false) {
+			throw new ParameterException(ParameterException::INVALID, '更新文章分类出错');
+		}
 	}
 
 	/**
-	 * @Desc: 更新文章状态
+	 * @Desc: 更新文章是否展示
 	 * @param $articleId
 	 * @return mixed
 	 */
-	public function changeStatus($articleId)
+	public function changeIsShow($articleId)
 	{
-		// TODO: Implement changeStatus() method.
+		$article = self::findArticleModel($articleId);
+		$article->is_show = $article->is_show == Article::IS_SHOW_YES ? Article::IS_SHOW_NO : Article::IS_SHOW_YES;
+		$article->saveModel();
 	}
 
 	/**
@@ -84,7 +128,9 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	 */
 	public function changeIsAllowComment($articleId)
 	{
-		// TODO: Implement changeIsAllowComment() method.
+		$article = self::findArticleModel($articleId);
+		$article->is_allow_comment = $article->is_allow_comment == Article::IS_ALLOW_COMMENT_YES ? Article::IS_ALLOW_COMMENT_NO : Article::IS_ALLOW_COMMENT_YES;
+		$article->saveModel();
 	}
 
 	/**
@@ -186,7 +232,8 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 				if (empty($moveToCategoryId)) {
 					throw new ParameterException(ParameterException::INVALID);
 				}
-				Article::updateAll(['category_id' => $moveToCategoryId], "FIND_IN_SET(category_id, '{$category->parents}')");
+				// 移动分类下的文章到某分类
+				$this->changeCategoryByCategory($categoryId, $moveToCategoryId);
 			} elseif ($deleteArticle == 1) { // 删除该分类下的的文章
 				Article::updateAll(['is_delete' => Article::IS_DELETE_YES], "FIND_IN_SET(category_id, '{$category->parents}')");
 			} else {
@@ -201,6 +248,28 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		}
 	}
 
+	/**
+	 * @Desc: 获取文章Model
+	 * @param $id
+	 * @return Article
+	 * @throws ParameterException
+	 */
+	protected static function findArticleModel($id)
+	{
+		$article = Article::findOne($id);
+		if (empty($article)) {
+			throw new ParameterException(ParameterException::INVALID, '文章不存在');
+		}
+
+		return $article;
+	}
+
+	/**
+	 * @Desc: 获取分类Model
+	 * @param $id
+	 * @return ArticleCategory
+	 * @throws ParameterException
+	 */
 	protected static function findCategoryModel($id)
 	{
 		$category = ArticleCategory::findOne($id);

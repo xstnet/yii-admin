@@ -122,14 +122,14 @@ $name = '个人信息';
 					elem: '#uploadHeadImg'
 					,url: '<?= Yii::$app->urlManager->createUrl("upload/image-file")?>'
 					,data: {_csrf_token_backend_xstnet: $('#csrfToken').text()}
-					,before: function(obj){
+					,before: function (obj) {
 						//预读本地文件示例，不支持ie8
-						obj.preview(function(index, file, result){
+						obj.preview(function (index, file, result) {
 							$('#headImg').attr('src', result); //图片链接（base64）
 						});
 					}
-					,done: function(res){
-						if(res.code === AJAX_STATUS_SUCCESS){
+					,done: function (res) {
+						if(res.code === AJAX_STATUS_SUCCESS) {
 							//上传成功
 							$('#demoText').html('');
 							$('#headImg').attr('src', '/'+res.data.file);
@@ -145,18 +145,18 @@ $name = '个人信息';
 						//演示失败状态，并实现重传
 						var demoText = $('#demoText');
 						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-						demoText.find('.demo-reload').on('click', function(){
+						demoText.find('.demo-reload').on('click', function () {
 							uploadInst.upload();
 						});
 					}
-					,error: function(){
+					,error: function () {
 						this.retry();
 					}
 
 				});
 
 			// 提交表单
-			form.on('submit(form-submit)', function(data){
+			form.on('submit(form-submit)', function (data) {
 				console.log(data.field);
 				var url = '<?= Yii::$app->urlManager->createUrl("user/save-user-profile")?>';
 				if (data.field.password.length < 5 && data.field.password.length > 0) {

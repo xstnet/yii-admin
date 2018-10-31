@@ -42,7 +42,7 @@ $name = '操作日志';
 	<span id="csrfToken"><?=Yii::$app->request->csrfToken?></span>
 
 	<!-- 表格 -->
-	<div id="dateTable" lay-filter="dataList"></div>
+	<div id="dataTable" lay-filter="dataList"></div>
 
 
 	<?= $this->render('../public/footer_js.php')?>
@@ -61,7 +61,7 @@ $name = '操作日志';
 
 			// 表格渲染
 			var tableIns = table.render({
-				elem: '#dateTable'                  //指定原始表格元素选择器（推荐id选择器）
+				elem: '#dataTable'                  //指定原始表格元素选择器（推荐id选择器）
 				, height: vipTable.getFullHeight()    //容器高度
 				, even: true
 				, text: '暂无数据'
@@ -74,7 +74,7 @@ $name = '操作日志';
 					, {field: 'route', title: '路由', width: 200, align: 'center'}
 					, {field: 'url', title: 'Url', width: 300, align: 'center'}
 					, {field: 'params', title: '参数', align: 'center'}
-					, {field: 'created_at', title: '操作时间', width: 180, templet: function(d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
+					, {field: 'created_at', title: '操作时间', width: 180, templet: function (d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
 				]]
 				, url: '<?=Yii::$app->urlManager->createUrl("system-log/get-logs")?>'
 				, method: 'get'
@@ -85,7 +85,7 @@ $name = '操作日志';
 				, page: {
 					layout: ['prev', 'page', 'next', 'skip', 'count', 'refresh','limit', ]
 				}
-				, parseData: function(res){ //res 即为原始返回的数据
+				, parseData: function (res) { //res 即为原始返回的数据
 					return {
 						"code": res.code, //解析接口状态
 						"msg": res.message, //解析提示文本

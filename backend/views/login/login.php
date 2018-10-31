@@ -56,11 +56,11 @@ use yii\helpers\Html;
 		var form = layui.form;
 		var $ = layui.jquery;
 
-		form.on('submit(login)', function(data) {
+		form.on('submit(login)', function (data) {
 			$.post(
 				'<?= Yii::$app->urlManager->createUrl(['login/login'])?>',
 				data.field,
-				function(result) {
+				function (result) {
 					layer.msg(result.message, {time: 1500});
 					if (result.code == AJAX_STATUS_SUCCESS) {
 						setTimeout(function () {

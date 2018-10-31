@@ -86,7 +86,7 @@ $name = '分类';
 								<div class="layui-form-item">
 									<label class="layui-form-label">排序值</label>
 									<div class="layui-input-inline">
-										<input type="text" name="sort_value" value="30"  placeholder="请输入排序值" autocomplete="off" class="layui-input">
+										<input type="text" name="sort_value" value="30"  lay-verify="required|number" placeholder="请输入排序值" autocomplete="off" class="layui-input">
 										<div class="layui-form-mid layui-word-aux">按照从小到大的顺序排列</div>
 									</div>
 								</div>
@@ -201,7 +201,7 @@ $name = '分类';
 			});
 
 
-			eleTree.on("toggleSlide(data1)", function(data) {
+			eleTree.on("toggleSlide(data1)", function (data) {
 				currentCategory = data.currentData;
 				currentCategory.category_name = data.currentData.label;
 				console.log(currentCategory);
@@ -220,13 +220,13 @@ $name = '分类';
 					layer.msg('该分类含有子分类，不能删除');
 					return false;
 				}
-				layer.confirm('确定删除分类　['+currentCategory.label+']　吗？', function(index){
+				layer.confirm('确定删除分类　['+currentCategory.label+']　吗？', function (index) {
 					layer.confirm('该分类下的文章，您想？', {
 						title: '删除分类',
 						skin: 'layui-3-btn',
 						btn: ['全部删除','移动到...', '取消'], //按钮
 						yes: function () {
-							layer.confirm('确定删除分类　['+currentCategory.label+'] 和该分类下的所有文章吗？', function(index){
+							layer.confirm('确定删除分类　['+currentCategory.label+'] 和该分类下的所有文章吗？', function (index) {
 								actionDetele('delete', 0);
 							});
 						},

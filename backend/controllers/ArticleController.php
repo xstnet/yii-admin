@@ -27,11 +27,14 @@ class ArticleController extends AdminLogController
 						'index' => ['get'],
 						'category' => ['get'],
 						'add-article' => ['post'],
+						'get-articles' => ['get'],
 						'save-article' => ['post'],
+						'save-article-brief' => ['post'],
 						'delete-article' => ['post'],
 						'add-categoy' => ['post'],
 						'save-categoy' => ['post'],
 						'save-categoy' => ['post'],
+						'get-categories' => ['get'],
 					],
 				],
 			]
@@ -43,13 +46,67 @@ class ArticleController extends AdminLogController
 	 */
 	public function actionIndex()
 	{
-		return $this->render('index');
+		$categories  = ArticleService::instance()->getCategoryList();
+		$treeSelect = Helpers::getTreeSelect($categories);
+		return $this->render('index', [
+			'treeSelect' => $treeSelect,
+		]);
 	}
 
+	/**
+	 * @Desc: 获取文章列表
+	 * @return array
+	 */
 	public function actionGetArticles()
 	{
-
+		$result = ArticleService::instance()->getArticeList();
+		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $result);
 	}
+
+	/**
+	 * @Desc: 更新文章是否展示
+	 * @return array
+	 */
+	public function actionChangeIsShow()
+	{
+		$id = self::postParams('id', 0);
+		ArticleService::instance()->changeIsShow($id);
+		return self::ajaxSuccess('更新成功');
+	}
+
+	/**
+	 * @Desc: 更新文章是否允许评论
+	 * @return array
+	 */
+	public function actionChangeIsAllowComment()
+	{
+		$id = self::postParams('id', 0);
+		ArticleService::instance()->changeIsAllowComment($id);
+		return self::ajaxSuccess('更新成功');
+	}
+
+	/**
+	 * @Desc: 删除文章
+	 * @return array
+	 */
+	public function actionDeleteArticle()
+	{
+		$articleId = self::postParams('id', 0);
+		ArticleService::instance()->deleteArtice($articleId);
+		return self::ajaxSuccess('删除成功');
+	}
+
+	public function actionSaveArticleBrief()
+	{
+		$params = self::postParams();
+		ArticleService::instance()->saveArticeBrief($params);
+		return self::ajaxSuccess('更新成功');
+	}
+
+
+
+
+
 
 	/**
 	 * @Desc: 获取分类列表 tree

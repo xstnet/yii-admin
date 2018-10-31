@@ -40,7 +40,7 @@ use yii\helpers\Html;
 </div>
 
 <!-- 表格 -->
-<div id="dateTable"></div>
+<div id="dataTable"></div>
 
 <?= $this->render('../public/footer_js.php')?>
 <?= Html::jsFile('@static_backend/js/index.js')?>
@@ -61,7 +61,7 @@ use yii\helpers\Html;
 
 		// 表格渲染
 		var tableIns = table.render({
-			elem: '#dateTable'                  //指定原始表格元素选择器（推荐id选择器）
+			elem: '#dataTable'                  //指定原始表格元素选择器（推荐id选择器）
 			, height: vipTable.getFullHeight()    //容器高度
 			,even: true
 			, cols: [[                  //标题栏
