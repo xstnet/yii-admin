@@ -167,7 +167,7 @@ $name = '文章';
 					actionDelete(obj);
 				} else if(layEvent === 'edit') { //编辑
 					var url = '<?=Yii::$app->urlManager->createUrl("article/edit", ['id' => ""])?>' + rowId;
-					vipTab.add('', '<i class="layui-icon layui-icon-edit">编辑文章', url);
+					vipTab.add('', '<i class="layui-icon layui-icon-edit"></i><span>编辑文章</span>', url);
 				} else if (layEvent === 'brief-edit') { // 快速编辑
 					actionShow();
 				}
@@ -207,7 +207,7 @@ $name = '文章';
 
 			// 添加按钮 点击事件
 			$('#btn-add').click(function () {
-				vipTab.add('', '<i class="layui-icon layui-icon-add-1">发布文章', '<?=Yii::$app->urlManager->createUrl('article/add')?>');
+				vipTab.add('', '<i class="layui-icon layui-icon-add-1"></i><span>发布文章</span>', '<?=Yii::$app->urlManager->createUrl('article/add')?>');
 				$('#rowId').val(0);
 			});
 

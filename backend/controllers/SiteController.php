@@ -23,11 +23,11 @@ class SiteController extends AdminLogController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', ],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'welcome'],
+                        'actions' => ['logout', 'index', 'welcome', 'no-permission'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -101,4 +101,13 @@ class SiteController extends AdminLogController
 
         return $this->goHome();
     }
+
+	/**
+	 * 无权限展示页面
+	 * @return string
+	 */
+    public function actionNoPermission()
+	{
+		return $this->render('no-permission');
+	}
 }

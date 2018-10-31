@@ -26,6 +26,8 @@ class ArticleController extends AdminLogController
 					'actions' => [
 						'index' => ['get'],
 						'category' => ['get'],
+						'add' => ['get'],
+						'edit' => ['get'],
 						'add-article' => ['post'],
 						'get-articles' => ['get'],
 						'save-article' => ['post'],
@@ -49,6 +51,19 @@ class ArticleController extends AdminLogController
 		$categories  = ArticleService::instance()->getCategoryList();
 		$treeSelect = Helpers::getTreeSelect($categories);
 		return $this->render('index', [
+			'treeSelect' => $treeSelect,
+		]);
+	}
+
+	/**
+	 * 发布文章 页面
+	 * @return string
+	 */
+	public function actionAdd()
+	{
+		$categories  = ArticleService::instance()->getCategoryList();
+		$treeSelect = Helpers::getTreeSelect($categories);
+		return $this->render('add', [
 			'treeSelect' => $treeSelect,
 		]);
 	}

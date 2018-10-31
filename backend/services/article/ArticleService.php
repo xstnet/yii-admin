@@ -53,6 +53,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	 */
 	public function addArtice($params)
 	{
+//		$titleStyle = strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
 		// TODO: Implement addArtice() method.
 	}
 

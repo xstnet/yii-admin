@@ -71,6 +71,12 @@ class BaseController extends Controller
 		return self::ajaxReturn($msg, $code, $data);
 	}
 
+	public static function formatHtml()
+	{
+		Yii::$app->response->format = Response::FORMAT_HTML;
+		Yii::$app->response->statusCode = 200;
+	}
+
 	/**
 	 * @Desc:
 	 * @param string $id
