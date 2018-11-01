@@ -20,7 +20,6 @@ interface ArticleServiceInterface
 	/**
 	 * @Desc: 添加文章
 	 * @param $params
-	 * @return mixed
 	 */
 	public function addArtice($params);
 

@@ -49,12 +49,30 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	/**
 	 * @Desc: 添加文章
 	 * @param $params
-	 * @return mixed
+	 * @throws \Exception
 	 */
 	public function addArtice($params)
 	{
 //		$titleStyle = strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
-		// TODO: Implement addArtice() method.
+		$transaction = Yii::$app->db->beginTransaction();
+		try {
+			$article = new Article();
+			$article->load($params);
+			if (empty($article->description)) {
+
+				$article->description = mb_substr(preg_replace("/<[^>]+>/is", "", $params['content']), 0, 200, 'utf-8');
+			} else {
+//				$article->description = strip_tags($ar)
+			}
+			print_r($article->getAttributes());
+			die;
+
+			$transaction->commit();
+		} catch (\Exception $e) {
+			$transaction->rollBack();
+			throw $e;
+		}
+
 	}
 
 	/**

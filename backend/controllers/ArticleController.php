@@ -100,6 +100,13 @@ class ArticleController extends AdminLogController
 		return self::ajaxSuccess('更新成功');
 	}
 
+	public function actionAddArticle()
+	{
+		$params = self::postParams();
+		ArticleService::instance()->addArtice($params);
+		return self::ajaxSuccess('发布成功');
+	}
+
 	/**
 	 * @Desc: 删除文章
 	 * @return array

@@ -6,7 +6,7 @@
  * Time: 20:48
  */
 
-namespace backend\services\setting;
+namespace backend\services\goods;
 
 
 use backend\services\BaseService;

@@ -20,6 +20,9 @@ $name = '发布文章';
 	<head>
 		<title><?= $name?></title>
 		<?= $this->render('../public/header.php')?>
+		<?= Html::jsFile('@static_backend/plugins/ueditor/ueditor.config.js')?>
+		<?= Html::jsFile('@static_backend/plugins/ueditor/ueditor.all.min.js')?>
+		<?= Html::jsFile('@static_backend/plugins/ueditor/lang/zh-cn/zh-cn.js')?>
 		<?php $this->head() ?>
 		<style>
 			.layui-upload-img {
@@ -36,6 +39,7 @@ $name = '发布文章';
 				border: 1px solid #e6e6e6;
 				padding: 0px 14px !important;
 			}
+			#content { min-height: 500px};
 		</style>
 	</head>
 	<?php $this->beginBody() ?>
@@ -134,10 +138,16 @@ $name = '发布文章';
 									<textarea name="description" placeholder="请输入内容,最大长度为200字，默认截取文章正文前200字" class="layui-textarea"></textarea>
 								</div>
 							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">文章内容</label>
+								<div class="layui-input-block">
+									<script id="content" name="content" type="text/plain"></script>
+								</div>
+							</div>
 
 							<div class="layui-form-item">
 								<div class="layui-input-block" style="padding: 20px 0">
-									<button class="layui-btn" lay-submit="" lay-filter="form-submit">保存修改</button>
+									<button style="font-size: 16px" class="layui-btn" lay-submit="" lay-filter="form-submit"><i class="layui-icon layui-icon-release"></i> 发布</button>
 								</div>
 							</div>
 						</form>
@@ -153,6 +163,7 @@ $name = '发布文章';
 	<?= Html::jsFile('@static_backend/js/index.js')?>
 
 	<script type="text/javascript">
+		var ue = UE.getEditor('content');
 		// layui方法
 		layui.use(['form', 'layer', 'upload', 'colorpicker'], function () {
 			// 操作对象
@@ -245,14 +256,15 @@ $name = '发布文章';
 
 			});
 
-			// 提交表单
+			// 提交表单 发布
 			form.on('submit(form-submit)', function (data) {
-				console.log(data.field);
-				var url = '<?= Yii::$app->urlManager->createUrl("user/save-user-profile")?>';
-
+				var formData = data.field;
+				formData.title_style = titleStyle;
+				console.log(formData);
+				var url = '<?= Yii::$app->urlManager->createUrl("article/add-article")?>';
 				$.post(
 					url,
-					data.field,
+					formData,
 					function (result) {
 						layer.msg(result.message);
 					},

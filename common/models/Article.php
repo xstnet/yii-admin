@@ -24,6 +24,7 @@ use Yii;
  * @property integer $is_hot
  * @property integer $sort_value
  * @property string $source
+ * @property string $keyword
  * @property string $from_platform
  * @property integer $created_at
  * @property integer $updated_at
@@ -63,11 +64,21 @@ class Article extends BaseModel
     {
         return [
             [['user_id', 'category_id', 'hits', 'comment_count', 'is_allow_comment', 'top', 'bad', 'is_show', 'is_delete', 'is_hot', 'sort_value', 'created_at', 'updated_at'], 'integer'],
-            [['from_platform'], 'string'],
+            [['from_platform', 'keyword'], 'string'],
             [['author', 'source'], 'string', 'max' => 30],
-            [['description', 'title_style'], 'string', 'max' => 200],
+            [['description',], 'string', 'max' => 200],
 			['is_show', 'default', 'value' => self::IS_SHOW_YES],
 			['is_allow_comment', 'default', 'value' => self::IS_ALLOW_COMMENT_YES],
+			[['is_show', 'is_allow_comment'], 'in', 'range' => [self::IS_SHOW_YES, self::IS_SHOW_NO]],
+			[['keyword', 'title', 'description', 'title_style'], 'filter', 'filter' => 'trim'],
+			['title_style', 'filter', 'filter' => function ($value) {
+				return self::filterTitleStyle($value);
+			}],
+			['keyword', 'filter', 'filter' => function ($value) {
+        		$value = str_replace('，', ',', $value);
+        		$value = str_replace(' ', ',', $value);
+				return $value;
+			}],
         ];
     }
 
@@ -129,6 +140,23 @@ class Article extends BaseModel
 	{
 		// ['id' => 'id']， 主 => 副
 		return $this->hasOne(ArticleContents::className(), ['id' => 'id']);
+	}
+
+	/**
+	 * @Desc: 转化 title_style
+	 * @param $value
+	 * @return string
+	 */
+	public static function filterTitleStyle($value)
+	{
+		if (empty($value)) {
+			return '';
+		}
+		$titleStyle = '';
+		foreach ($value as $k => $v) {
+			$titleStyle .= sprintf('%s:%s;', $k, $v);
+		}
+		return  strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $titleStyle));
 	}
 
 }
