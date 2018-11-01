@@ -56,6 +56,9 @@ class MemberService extends BaseService implements MemberServiceInterface
 
 	public function changeStatus(int $id)
 	{
+		if ($id == Yii::$app->user->id) {
+			throw new ParameterException(ParameterException::INVALID, '不能修改自己的角色');
+		}
 		$user = self::findModel($id);
 		$user->scenario = 'change_status';
 		$user->status = (int) $user->status === AdminUser::STATUS_DISABLED ? AdminUser::STATUS_ACTIVE : AdminUser::STATUS_DISABLED;

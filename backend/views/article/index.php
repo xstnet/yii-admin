@@ -23,7 +23,8 @@ $name = '文章';
 		<?php $this->head() ?>
 		<style>
 			.title-image { cursor: pointer }
-			.dialog-wrap { min-height: 100px }
+			.dialog-wrap { min-height: 200px; text-align: center }
+			#showTitleImage img { max-width: 460px; max-height: 700px; }
 			/*.layui-layer-page {width: auto !important;}*/
 		</style>
 	</head>
@@ -128,7 +129,7 @@ $name = '文章';
 				, cols: [[
 					{type:'checkbox'}
 					, {field: 'id', title: 'ID', width: 80, align: 'center'}
-					, {field: 'title', title: '标题', width: 150, align: 'center', templet: function (d) {
+					, {field: 'title', title: '标题', width: 280, align: 'center', templet: function (d) {
 						var img = '';
 						if (d.title_image) {
 							img += '<img onclick="showTitleImage(\''+d.title_image+'\')" class="title-image" data-src="'+ d.title_image +'" src="<?=Yii::getAlias("@static_backend")?>/images/img-icon-16.png"> ';
@@ -283,12 +284,9 @@ $name = '文章';
 		 * 查看标题图片
 		 */
 		function showTitleImage(src) {
-
-			console.log(src);
 			$('#showTitleImage img').attr('src', src);
 			showDialog('查看图片', {
 				content: $('#showTitleImage'),
-				area: 'auto',
 				btn: [],
 //				offset: 'auto',
 			});

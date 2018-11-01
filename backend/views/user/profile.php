@@ -82,11 +82,11 @@ $name = '个人信息';
 								<div class="layui-input-inline">
 									<div class="layui-upload">
 										<div class="layui-upload-list">
-											<img class="layui-upload-img" src="<?=Yii::$app->user->identity->avatar ? : '/'. Yii::$app->params['defaultAvatar']?>" id="headImg">
-											<p id="demoText"></p>
+											<img class="upload-img" src="<?=Yii::$app->user->identity->avatar ? : '/'. Yii::$app->params['defaultAvatar']?>" id="headImg">
+											<p class="upload-message"></p>
+											<input type="hidden" id="headImgInput" name="avatar" value="<?=Yii::$app->user->identity->avatar ? : Yii::$app->params['defaultAvatar']?>">
 										</div>
 										<button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="uploadHeadImg">选择图片</button>
-										<input type="hidden" id="headImgInput" name="avatar" value="<?=Yii::$app->user->identity->avatar ? : Yii::$app->params['defaultAvatar']?>">
 									</div>
 								</div>
 							</div>
@@ -117,43 +117,11 @@ $name = '个人信息';
 				, $ = layui.jquery
 				, upload = layui.upload;
 
-				//普通图片上传
-				var uploadInst = upload.render({
-					elem: '#uploadHeadImg'
-					,url: '<?= Yii::$app->urlManager->createUrl("upload/image-file")?>'
-					,data: {_csrf_token_backend_xstnet: $('#csrfToken').text()}
-					,before: function (obj) {
-						//预读本地文件示例，不支持ie8
-						obj.preview(function (index, file, result) {
-							$('#headImg').attr('src', result); //图片链接（base64）
-						});
-					}
-					,done: function (res) {
-						if(res.code === AJAX_STATUS_SUCCESS) {
-							//上传成功
-							$('#demoText').html('');
-							$('#headImg').attr('src', '/'+res.data.file);
-							$('#headImgInput').val(res.data.file);
-						} else { //如果上传失败
-							var msg = res.message ? res.message : '上传失败';
-							layer.msg(msg);
-							this.retry();
-							return false;
-						}
-					}
-					,retry: function () {
-						//演示失败状态，并实现重传
-						var demoText = $('#demoText');
-						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-						demoText.find('.demo-reload').on('click', function () {
-							uploadInst.upload();
-						});
-					}
-					,error: function () {
-						this.retry();
-					}
-
-				});
+			//头像上传
+			var uploadInst = uploadImage({
+				elem: '#uploadHeadImg',
+				url: '<?= Yii::$app->urlManager->createUrl("upload/image-file")?>',
+			});
 
 			// 提交表单
 			form.on('submit(form-submit)', function (data) {

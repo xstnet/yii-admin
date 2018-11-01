@@ -25,7 +25,7 @@ $name = '发布文章';
 		<?= Html::jsFile('@static_backend/plugins/ueditor/lang/zh-cn/zh-cn.js')?>
 		<?php $this->head() ?>
 		<style>
-			.layui-upload-img {
+			.upload-img {
 				max-width: 700px;
 				min-width: 120px;
 				height: 120px;
@@ -83,11 +83,11 @@ $name = '发布文章';
 								<div class="layui-input-inline">
 									<div class="layui-upload">
 										<div class="layui-upload-list">
-											<img class="layui-upload-img" src="">
-											<p id="upload-message"></p>
+											<img class="upload-img" src="">
+											<p class="upload-message"></p>
+											<input type="hidden" id="titleImage" name="title_image" value="">
 										</div>
 										<button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="uploadImg">选择图片</button>
-										<input type="hidden" id="titleImage" name="title_image" value="">
 									</div>
 								</div>
 							</div>
@@ -223,43 +223,11 @@ $name = '发布文章';
 				$('#inputTitle').removeAttr('style')
 				$('#inputTitle').css(titleStyle);
 			}
-			// TODO 提取公共上传文件方法
+			
 			//标题图片上传
-			var uploadInst = upload.render({
+			var uploadInst = uploadImage({
 				elem: '#uploadImg',
 				url: '<?= Yii::$app->urlManager->createUrl("upload/image-file")?>',
-				data: { _csrf_token_backend_xstnet: $('#csrfToken').text() },
-				before: function (obj) {
-					//预读本地文件示例，不支持ie8
-					obj.preview(function (index, file, result) {
-						$('#headImg').attr('src', result); //图片链接（base64）
-					});
-				},
-				done: function (res) {
-					if(res.code === AJAX_STATUS_SUCCESS) {
-						//上传成功
-						$('#upload-message').html('');
-						$('.layui-upload-img').attr('src', '/'+res.data.file);
-						$('#titleImage').val(res.data.file);
-					} else { //如果上传失败
-						var msg = res.message ? res.message : '上传失败';
-						layer.msg(msg);
-						this.retry();
-						return false;
-					}
-				},
-				retry: function () {
-					//演示失败状态，并实现重传
-					var uploadMessage = $('#upload-message');
-					uploadMessage.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs upload-reload">重试</a>');
-					uploadMessage.find('.upload-reload').on('click', function () {
-						uploadInst.upload();
-					});
-				},
-				error: function () {
-					this.retry();
-				}
-
 			});
 
 			// 提交表单 发布

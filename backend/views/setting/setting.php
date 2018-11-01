@@ -24,7 +24,7 @@ $name = '系统设置';
 			body {
 				background-color: #F2F2F2;
 			}
-			.setting-img {
+			.upload-img {
 				max-width: 700px;
 				min-width: 120px;
 				height: 120px;
@@ -156,7 +156,7 @@ $name = '系统设置';
 	<script type="text/javascript">
 		var layerIndex;
 		// layui方法
-		layui.use(['form', 'element', 'upload', 'layer'], function () {
+		layui.use(['form', 'element', 'layer'], function () {
 			var $ = layui.jquery,
 				layer = layui.layer,
 				element = layui.element, //Tab的切换功能，切换事件监听等，需要依赖element模块
@@ -164,43 +164,9 @@ $name = '系统设置';
 				form = layui.form;
 
 			// 上传图片
-			var uploadInst = upload.render({
+			var uploadInst = uploadImage({
 				elem: '.select-image-file',
 				url: '<?= Yii::$app->urlManager->createUrl("upload/image-file")?>',
-				data: {_csrf_token_backend_xstnet: $('#csrfToken').text()},
-				before: function (obj) {
-					//预读本地文件示例，不支持ie8
-					obj.preview(function (index, file, result) {
-						$('#headImg').attr('src', result); //图片链接（base64）
-					});
-				},
-				done: function (res) {
-					var item = this.item;
-					if(res.code === AJAX_STATUS_SUCCESS) {
-						//上传成功
-						item.prev().find('.setting-img').attr('src', '/'+res.data.file);
-						item.prev().find('.upload-message').html('');
-						item.prev().find('input').val(res.data.file);
-					} else {//如果上传失败
-						var msg = res.message ? res.message : '上传失败';
-						layer.msg(msg);
-						this.retry();
-						return false;
-					}
-				},
-				retry: function () {
-					var item = this.item;
-					//演示失败状态，并实现重传
-					var uploadMessage = item.prev().find('.upload-message');
-					uploadMessage.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-					uploadMessage.find('.demo-reload').on('click', function () {
-						uploadInst.upload();
-					});
-				},
-				error: function () {
-					this.retry();
-				}
-
 			});
 
 			// 提交表单 保存设置

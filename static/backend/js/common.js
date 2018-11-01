@@ -15,7 +15,7 @@ layui.config({
 	base: "./static/backend/frame/static/js/" //你存放新模块的目录，注意，不是layui的模块目录
 });
 
-layui.use(['jquery', 'layer'], function(){
+layui.use(['jquery', 'layer'], function() {
 	$ = layui.$,
 		layer = layui.layer;
 	layer.config({
@@ -95,5 +95,58 @@ function showDialog(title, params) {
 	}, params);
 
 	layer.open(attribute);
+}
+
+/**
+ * 公共上传图片方法 传入 elem, url,即可
+ * @param params
+ */
+function uploadImage(params) {
+	layui.use(['upload', 'layer'], function() {
+		var upload = layui.upload;
+		var config = $.extend({}, {
+			elem: '.select-image-file',
+			url: '/admin.php?r=upload/image-file',
+			data: { _csrf_token_backend_xstnet: $('#csrfToken').text() },
+			before: function (obj) {
+				var item = this.item;
+				//预读本地文件示例，不支持ie8
+				obj.preview(function (index, file, result) {
+					item.prev().find('.upload-img').attr('src', result); //图片链接（base64）
+				});
+			},
+			done: function (res) {
+				var item = this.item;
+				if(res.code === AJAX_STATUS_SUCCESS) {
+					//上传成功
+					item.prev().find('.upload-img').attr('src', '/'+res.data.file);
+					item.prev().find('.upload-message').html('');
+					item.prev().find('input').val(res.data.file);
+				} else {//如果上传失败
+					var msg = res.message ? res.message : '上传失败';
+					layer.msg(msg);
+					this.retry();
+					return false;
+				}
+			},
+			retry: function () {
+				var item = this.item;
+				//演示失败状态，并实现重传
+				var uploadMessage = item.prev().find('.upload-message');
+				uploadMessage.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs reload-item">重试</a>');
+				uploadMessage.find('.reload-item').on('click', function () {
+					uploadInst.upload();
+				});
+			},
+			error: function () {
+				this.retry();
+			}
+
+		}, params);
+		var uploadInst = upload.render(config);
+
+		return uploadInst;
+	});
+
 }
 

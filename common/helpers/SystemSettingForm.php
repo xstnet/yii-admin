@@ -40,7 +40,7 @@ class SystemSettingForm
 			<div class='layui-input-inline setting-item'>
 				<div class='layui-upload'>
 					<div class='layui-upload-list'>
-						<img class='layui-upload-img setting-img' title=\"{$item['name']}\" alt=\"{$item['name']}\" src=\"/{$item['value']}\">
+						<img class='layui-upload-img upload-img' title=\"{$item['name']}\" alt=\"{$item['name']}\" src=\"/{$item['value']}\">
 						<p class='upload-message'></p>
 						<input type='hidden' name=\"setting[{$item['id']}][value]\"  value=\"{$item['value']}\">
 					</div>
