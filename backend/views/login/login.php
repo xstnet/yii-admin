@@ -23,12 +23,10 @@ use yii\helpers\Html;
 	<form class="layui-form">
 		<input type="hidden" name="_csrf_token_backend_xstnet" value="<?=Yii::$app->request->csrfToken?>" />
 		<div class="layui-input-inline">
-			<input type="text" name="username" required lay-verify="required" placeholder="账号" autocomplete="off"
-				   class="layui-input">
+			<input type="text" name="username" required lay-verify="required" placeholder="账号" class="layui-input">
 		</div>
 		<div class="layui-input-inline">
-			<input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off"
-				   class="layui-input">
+			<input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
 		</div>
 		<div class="layui-input-inline login-btn" >
 			<button lay-submit="" lay-filter="login" class="layui-btn">登录</button>
