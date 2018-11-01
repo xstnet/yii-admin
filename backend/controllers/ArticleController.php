@@ -153,6 +153,10 @@ class ArticleController extends AdminLogController
 		return self::ajaxSuccess('删除成功');
 	}
 
+	/**
+	 * @Desc: 快速编辑 保存
+	 * @return array
+	 */
 	public function actionSaveArticleBrief()
 	{
 		$params = self::postParams();
