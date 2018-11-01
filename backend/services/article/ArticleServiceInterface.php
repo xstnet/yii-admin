@@ -26,7 +26,6 @@ interface ArticleServiceInterface
 	/**
 	 * @Desc: 更新文章
 	 * @param $params
-	 * @return mixed
 	 */
 	public function saveArtice($params);
 

@@ -40,8 +40,8 @@ class UploadForm extends \yii\base\Model
 				'extensions' => ['jpg', 'png', 'jpeg', 'gif'],
 				'wrongExtension' => '请上传JPG、PNG文件、GIF格式图片',
 				// 上限8M
-				'maxSize' => 12 * 1024 * 1024,
-				'tooBig' => '文件大小上限12M',
+				'maxSize' => 20 * 1024 * 1024,
+				'tooBig' => '文件大小上限20M',
 				'on' => self::SCENARIO_IMAGE_FILE,
 			],
 			[

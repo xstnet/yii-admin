@@ -12,6 +12,7 @@ use Yii;
  * @property integer $category_id
  * @property string $title
  * @property string $title_style
+ * @property string $title_image
  * @property string $author
  * @property string $description
  * @property integer $hits
@@ -66,19 +67,24 @@ class Article extends BaseModel
             [['user_id', 'category_id', 'hits', 'comment_count', 'is_allow_comment', 'top', 'bad', 'is_show', 'is_delete', 'is_hot', 'sort_value', 'created_at', 'updated_at'], 'integer'],
             [['from_platform', 'keyword'], 'string'],
             [['author', 'source'], 'string', 'max' => 30],
-            [['description',], 'string', 'max' => 200],
+            [['description', 'title_image'], 'string', 'max' => 200],
 			['is_show', 'default', 'value' => self::IS_SHOW_YES],
+			['is_delete', 'default', 'value' => self::IS_DELETE_NO],
+			['is_hot', 'default', 'value' => 0],
 			['is_allow_comment', 'default', 'value' => self::IS_ALLOW_COMMENT_YES],
 			[['is_show', 'is_allow_comment'], 'in', 'range' => [self::IS_SHOW_YES, self::IS_SHOW_NO]],
-			[['keyword', 'title', 'description', 'title_style'], 'filter', 'filter' => 'trim'],
 			['title_style', 'filter', 'filter' => function ($value) {
 				return self::filterTitleStyle($value);
 			}],
+			[['comment_count', 'top', 'hits', 'bad'], 'default', 'value' => 0],
 			['keyword', 'filter', 'filter' => function ($value) {
+        		$value = str_replace('， ', ',', $value);
+        		$value = str_replace(', ', ',', $value);
         		$value = str_replace('，', ',', $value);
         		$value = str_replace(' ', ',', $value);
 				return $value;
 			}],
+			[['keyword', 'title', 'description', 'title_style'], 'filter', 'filter' => 'trim'],
         ];
     }
 
@@ -93,6 +99,15 @@ class Article extends BaseModel
 					'sort_value',
 					'author',
 					'source',
+				],
+				'change-is_show' => [
+					'is_show',
+				],
+				'change-is_allow_comment' => [
+					'is_allow_comment',
+				],
+				'delete' => [
+					'is_delete',
 				],
 			]
 		);
@@ -152,11 +167,14 @@ class Article extends BaseModel
 		if (empty($value)) {
 			return '';
 		}
+		if (!is_array($value)) {
+			return $value;
+		}
 		$titleStyle = '';
 		foreach ($value as $k => $v) {
 			$titleStyle .= sprintf('%s:%s;', $k, $v);
 		}
-		return  strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $titleStyle));
+		return  strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '-$1', $titleStyle));
 	}
 
 }

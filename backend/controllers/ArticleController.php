@@ -12,6 +12,7 @@ namespace backend\controllers;
 
 use backend\services\article\ArticleService;
 use common\helpers\Helpers;
+use common\models\Article;
 use yii\filters\VerbFilter;
 
 class ArticleController extends AdminLogController
@@ -69,6 +70,25 @@ class ArticleController extends AdminLogController
 	}
 
 	/**
+	 * @Desc: 编辑文章 页面
+	 * @param $id
+	 * @return string
+	 */
+	public function actionEdit($id)
+	{
+		$model = Article::findOne($id);
+		if (empty($model)) {
+			self::ajaxReturn('文章不存在');
+		}
+		$categories  = ArticleService::instance()->getCategoryList();
+		$treeSelect = Helpers::getTreeSelect($categories);
+		return $this->render('edit', [
+			'treeSelect' => $treeSelect,
+			'model' => $model,
+		]);
+	}
+
+	/**
 	 * @Desc: 获取文章列表
 	 * @return array
 	 */
@@ -100,11 +120,26 @@ class ArticleController extends AdminLogController
 		return self::ajaxSuccess('更新成功');
 	}
 
+	/**
+	 * @Desc: 发布文章
+	 * @return array
+	 */
 	public function actionAddArticle()
 	{
 		$params = self::postParams();
 		ArticleService::instance()->addArtice($params);
 		return self::ajaxSuccess('发布成功');
+	}
+
+	/**
+	 * @Desc: 编辑文章
+	 * @return array
+	 */
+	public function actionSaveArticle()
+	{
+		$params = self::postParams();
+		ArticleService::instance()->saveArtice($params);
+		return self::ajaxSuccess('更新成功');
 	}
 
 	/**

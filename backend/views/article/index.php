@@ -21,6 +21,11 @@ $name = '文章';
 		<title><?= $name?>管理</title>
 		<?= $this->render('../public/header.php')?>
 		<?php $this->head() ?>
+		<style>
+			.title-image { cursor: pointer }
+			.dialog-wrap { min-height: 100px }
+			/*.layui-layer-page {width: auto !important;}*/
+		</style>
 	</head>
 	<?php $this->beginBody() ?>
 	<body class="body">
@@ -44,7 +49,7 @@ $name = '文章';
 	<!-- 表格 -->
 	<div id="dataTable" lay-filter="dataList"></div>
 	<!--编辑/添加角色-->
-	<div id="roleInfoDlg" class="dialog-wrap" style="min-height: 200px">
+	<div id="addDlg" class="dialog-wrap" style="min-height: 200px">
 		<form style="padding-top: 30px" class="layui-form" lay-filter="actionForm" action="">
 			<div class="layui-form-item">
 				<label class="layui-form-label">标题</label>
@@ -82,6 +87,9 @@ $name = '文章';
 			<input type="hidden" id="rowId" name="id" value="0">
 			<button id="submitBtn" lay-submit="" lay-filter="form-submit"></button>
 		</form>
+	</div>
+	<div id="showTitleImage" class="dialog-wrap">
+		<img src="" alt="">
 	</div>
 
 	<?= $this->render('../public/footer_js.php')?>
@@ -121,7 +129,11 @@ $name = '文章';
 					{type:'checkbox'}
 					, {field: 'id', title: 'ID', width: 80, align: 'center'}
 					, {field: 'title', title: '标题', width: 150, align: 'center', templet: function (d) {
-						return '<span style=\''+ d.title_style +'\'>'+ d.title +'</span>';
+						var img = '';
+						if (d.title_image) {
+							img += '<img onclick="showTitleImage(\''+d.title_image+'\')" class="title-image" data-src="'+ d.title_image +'" src="<?=Yii::getAlias("@static_backend")?>/images/img-icon-16.png"> ';
+						}
+						return img + '<span style=\''+ d.title_style +'\'>'+ d.title +'</span>';
 					}}
 					, {field: 'category_name', title: '分类', width: 150, align: 'center'}
 					, {field: 'nickname', title: '发布人', width: 150, align: 'center'}
@@ -166,7 +178,7 @@ $name = '文章';
 				if(layEvent === 'delete') { //删除
 					actionDelete(obj);
 				} else if(layEvent === 'edit') { //编辑
-					var url = '<?=Yii::$app->urlManager->createUrl("article/edit", ['id' => ""])?>' + rowId;
+					var url = '<?=Yii::$app->urlManager->createUrl(["article/edit", 'id' => ""])?>' + rowId;
 					vipTab.add('', '<i class="layui-icon layui-icon-edit"></i><span>编辑文章</span>', url);
 				} else if (layEvent === 'brief-edit') { // 快速编辑
 					actionShow();
@@ -218,7 +230,7 @@ $name = '文章';
 				form.render('checkbox');
 
 				showDialog(title, {
-					content: $('#roleInfoDlg'), yes: function (index, layero) {
+					content: $('#addDlg'), yes: function (index, layero) {
 						layerIndex = index;
 						$('#submitBtn').click();
 					}
@@ -263,7 +275,25 @@ $name = '文章';
 				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 			});
 
+
+
 		});
+
+		/**
+		 * 查看标题图片
+		 */
+		function showTitleImage(src) {
+
+			console.log(src);
+			$('#showTitleImage img').attr('src', src);
+			showDialog('查看图片', {
+				content: $('#showTitleImage'),
+				area: 'auto',
+				btn: [],
+//				offset: 'auto',
+			});
+			return false;
+		}
 
 
 	</script>

@@ -15,6 +15,7 @@ use common\helpers\Helpers;
 use common\models\AdminUser;
 use common\models\Article;
 use common\models\ArticleCategory;
+use common\models\ArticleContents;
 use function foo\func;
 use Yii;
 
@@ -53,19 +54,22 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	 */
 	public function addArtice($params)
 	{
-//		$titleStyle = strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
 		$transaction = Yii::$app->db->beginTransaction();
 		try {
 			$article = new Article();
 			$article->load($params);
+			$article->user_id = Yii::$app->user->id;
 			if (empty($article->description)) {
-
-				$article->description = mb_substr(preg_replace("/<[^>]+>/is", "", $params['content']), 0, 200, 'utf-8');
+				$article->description = mb_substr(strip_tags($params['content']), 0, 200, 'utf-8');
 			} else {
-//				$article->description = strip_tags($ar)
+				$article->description = strip_tags($article->description);
 			}
-			print_r($article->getAttributes());
-			die;
+			$article->saveModel($transaction);
+			// 保存文章内容
+			$content = new ArticleContents();
+			$content->id = $article->id;
+			$content->content = $params['content'];
+			$content->saveModel($transaction);
 
 			$transaction->commit();
 		} catch (\Exception $e) {
@@ -78,11 +82,31 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	/**
 	 * @Desc: 更新文章
 	 * @param $params
-	 * @return mixed
+	 * @throws \Exception
 	 */
 	public function saveArtice($params)
 	{
-		// TODO: Implement savedArtice() method.
+		$id = $params['id'] ?? 0;
+		$transaction = Yii::$app->db->beginTransaction();
+		try {
+			// 更新文章内容
+			$article = self::findArticleModel($id);
+			$article->load($params);
+			if (empty($article->description)) {
+				$article->description = mb_substr(strip_tags($params['content']), 0, 200, 'utf-8');
+			} else {
+				$article->description = strip_tags($article->description);
+			}
+			$article->saveModel($transaction);
+			// 保存文章内容
+			$article->content->content = $params['content'];
+			$article->content->saveModel($transaction);
+
+			$transaction->commit();
+		} catch (\Exception $e) {
+			$transaction->rollBack();
+			throw $e;
+		}
 	}
 
 	/**
@@ -108,6 +132,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	public function deleteArtice($articleId)
 	{
 		$article = self::findArticleModel($articleId);
+		$article->scenario = 'delete';
 		$article->is_delete = Article::IS_DELETE_YES;
 		$article->saveModel();
 	}
@@ -136,6 +161,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	public function changeIsShow($articleId)
 	{
 		$article = self::findArticleModel($articleId);
+		$article->scenario = 'change-is_show';
 		$article->is_show = $article->is_show == Article::IS_SHOW_YES ? Article::IS_SHOW_NO : Article::IS_SHOW_YES;
 		$article->saveModel();
 	}
@@ -148,6 +174,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	public function changeIsAllowComment($articleId)
 	{
 		$article = self::findArticleModel($articleId);
+		$article->scenario = 'change-is_allow_comment';
 		$article->is_allow_comment = $article->is_allow_comment == Article::IS_ALLOW_COMMENT_YES ? Article::IS_ALLOW_COMMENT_NO : Article::IS_ALLOW_COMMENT_YES;
 		$article->saveModel();
 	}
