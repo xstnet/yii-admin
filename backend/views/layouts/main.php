@@ -20,7 +20,7 @@ use yii\helpers\Html;
 <div class="layui-layout layui-layout-admin"> <!-- 添加skin-1类可手动修改主题为纯白，添加skin-2类可手动修改主题为蓝白 -->
 	<!-- header -->
 	<div class="layui-header my-header">
-		<a href="index.html">
+		<a href="javascript:;">
 			<!--<img class="my-header-logo" src="" alt="logo">-->
 			<div class="my-header-logo">后台管理系统</div>
 		</a>
@@ -30,14 +30,14 @@ use yii\helpers\Html;
 
 		<!-- 顶部左侧添加选项卡监听 -->
 		<ul class="layui-nav" lay-filter="side-top-left">
-			<!--<li class="layui-nav-item"><a href="javascript:;" href-url="demo/btn.html"><i class="layui-icon">&#xe621;</i>按钮</a></li>
-			<li class="layui-nav-item">
-				<a href="javascript:;"><i class="layui-icon">&#xe621;</i>基础</a>
-				<dl class="layui-nav-child">
-					<dd><a href="javascript:;" href-url="demo/btn.html"><i class="layui-icon">&#xe621;</i>按钮</a></dd>
-					<dd><a href="javascript:;" href-url="demo/form.html"><i class="layui-icon">&#xe621;</i>表单</a></dd>
-				</dl>
-			</li>-->
+			<li class="layui-nav-item"><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/add')?>"><i class="layui-icon layui-icon-add-1"></i>发布文章</a></li>
+<!--			<li class="layui-nav-item">-->
+<!--				<a href="javascript:;"><i class="layui-icon">&#xe621;</i>基础</a>-->
+<!--				<dl class="layui-nav-child">-->
+<!--					<dd><a href="javascript:;" href-url="demo/btn.html"><i class="layui-icon">&#xe621;</i>按钮</a></dd>-->
+<!--					<dd><a href="javascript:;" href-url="demo/form.html"><i class="layui-icon">&#xe621;</i>表单</a></dd>-->
+<!--				</dl>-->
+<!--			</li>-->
 		</ul>
 
 		<!-- 顶部右侧添加选项卡监听 -->
@@ -118,7 +118,7 @@ use yii\helpers\Html;
 			,$          = layui.jquery;
 
 		// 顶部左侧菜单生成 [请求地址,过滤ID,是否展开,携带参数]
-		vipNav.top_left('<?=Yii::getAlias("@static_backend")?>/json/nav_top_left.json','side-top-left',false);
+//		vipNav.top_left('<?//=Yii::getAlias("@static_backend")?>///json/nav_top_left.json','side-top-left',false);
 		// 主体菜单生成 [请求地址,过滤ID,是否展开,携带参数]
 		vipNav.main('<?=Yii::$app->urlManager->createUrl('setting/get-active-menus')?>','side-main',true);
 
