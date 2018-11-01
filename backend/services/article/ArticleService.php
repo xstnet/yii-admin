@@ -16,7 +16,6 @@ use common\models\AdminUser;
 use common\models\Article;
 use common\models\ArticleCategory;
 use common\models\ArticleContents;
-use function foo\func;
 use Yii;
 
 class ArticleService extends BaseService implements ArticleServiceInterface
