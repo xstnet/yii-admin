@@ -17,6 +17,8 @@ use Yii;
 
 class AdminLogController extends BaseController
 {
+	public static $logTitle = '';
+
 	public function init()
 	{
 		if (Yii::$app->user->isGuest) {
@@ -46,6 +48,10 @@ class AdminLogController extends BaseController
 		return true;
 	}
 
+	/**
+	 * @Desc: 检查操作权限
+	 * @return bool
+	 */
 	public static function checkPermission()
 	{
 		$currentRoute = Yii::$app->request->get('r');
@@ -60,6 +66,8 @@ class AdminLogController extends BaseController
 		if (empty($permisson)) {
 			return true;
 		}
+		// 操作记录的title
+		self::$logTitle = $permisson['description'];
 		//验证当前用户是否有此权限
 		$hasPermission = UsersRoles::find()
 			->select(['user_role.id'])
@@ -89,10 +97,15 @@ class AdminLogController extends BaseController
 
 		$moduleId = Yii::$app->controller->module->id;
 		$route = strtolower(sprintf('%s/%s', Yii::$app->controller->id, Yii::$app->controller->action->id));
-		$title = Yii::$app->params['actionTitle'][ $moduleId ][ $route ] ?? '';
-		if (empty($title)) {
-			return true;
+		if (empty(self::$logTitle)) {
+			$title = Yii::$app->params['actionTitle'][ $moduleId ][ $route ] ?? '';
+			if (empty($title)) {
+				return true;
+			}
+		} else {
+			$title = self::$logTitle;
 		}
+
 		$params = [
 			'GET' => $request->get(),
 			'POST' => $request->post(),
