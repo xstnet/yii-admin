@@ -95,14 +95,6 @@ $name = '文章';
 
 	<?= $this->render('../public/footer_js.php')?>
 	<?= Html::jsFile('@static_backend/js/index.js')?>
-	<script type="text/html" id="formatStatus">
-		{{#
-		var fn = function () {
-		return d.status == 10 ? 'checked' : '';
-		};
-		}}
-		<input type="checkbox" lay-filter="filter-status" value="1"  name="status" data-row_id="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" {{ fn() }}>
-	</script>
 	<script type="text/javascript">
 		// 权限树
 		var pageName = '<?= $name?>',
