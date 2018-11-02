@@ -33,7 +33,7 @@ $name = '文章';
 	<!-- 工具集 -->
 	<div class="my-btn-box">
 		<span class="fl">
-	<!--        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-all">批量删除</a>-->
+	        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-more">批量删除</a>
 			<a class="layui-btn btn-add btn-default" id="btn-add">发布<?= $name?></a>
 		</span>
 			<span class="fr">
@@ -266,6 +266,40 @@ $name = '文章';
 					'json'
 				);
 				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+
+			/**
+			 * 批量删除
+			 */
+			$('#btn-delete-more').click(function () {
+				var checkData = table.checkStatus('dataTable');
+				if (checkData.data.length <= 0) {
+					layer.msg('请先选择要删除的数据');
+					return false;
+				}
+				layer.confirm('确定删除选中的文章吗？', function (index) {
+					var idArray = [];
+					for (var i=0; i<checkData.data.length; i++) {
+						idArray.push(checkData.data[ i ].id);
+					}
+//					var ids = idArray.join(',');
+					$.post(
+						'<?=Yii::$app->urlManager->createUrl("article/delete-articles")?>',
+						{ids: idArray},
+						function (result) {
+							layer.msg(result.message, {time: 2000});
+							if (result.code === AJAX_STATUS_SUCCESS) {
+								tableIns.reload();
+							}
+						},
+						'json'
+					);
+				});
+
+
+//				console.log(checkData.data) //获取选中行的数据
+//				console.log(checkData.data.length) //获取选中行数量，可作为是否有选中行的条件
+//				console.log(checkData.isAll ) //表格是否全选
 			});
 
 

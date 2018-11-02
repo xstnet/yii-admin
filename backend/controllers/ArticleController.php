@@ -34,6 +34,7 @@ class ArticleController extends AdminLogController
 						'save-article' => ['post'],
 						'save-article-brief' => ['post'],
 						'delete-article' => ['post'],
+						'delete-articles' => ['post'],
 						'add-categoy' => ['post'],
 						'save-categoy' => ['post'],
 						'save-categoy' => ['post'],
@@ -150,6 +151,17 @@ class ArticleController extends AdminLogController
 	{
 		$articleId = self::postParams('id', 0);
 		ArticleService::instance()->deleteArtice($articleId);
+		return self::ajaxSuccess('删除成功');
+	}
+
+	/**
+	 * @Desc: 删除文章 批量
+	 * @return array
+	 */
+	public function actionDeleteArticles()
+	{
+		$articleIds = self::postParams('ids', 0);
+		ArticleService::instance()->deleteArtices($articleIds);
 		return self::ajaxSuccess('删除成功');
 	}
 

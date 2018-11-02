@@ -137,6 +137,20 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	}
 
 	/**
+	 * @Desc: 删除文章 批量
+	 * @param $articleIds
+	 * @throws ParameterException
+	 * @return mixed
+	 */
+	public function deleteArtices($articleIds)
+	{
+		$affectedRows = Article::updateAll(['is_delete' => Article::IS_DELETE_YES], ['id' => $articleIds]);
+		if ($affectedRows === false) {
+			throw new ParameterException(ParameterException::INVALID, '批量删除失败');
+		}
+	}
+
+	/**
 	 * @Desc: 移动某分类下的文章到某分类
 	 * @param 被移动的分类ID $categoryId
 	 * @param 移动到的分类ID $toCategoryId

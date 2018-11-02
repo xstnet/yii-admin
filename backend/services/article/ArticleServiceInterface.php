@@ -44,6 +44,13 @@ interface ArticleServiceInterface
 	public function deleteArtice($articleId);
 
 	/**
+	 * @Desc: 删除文章 批量
+	 * @param $articleIds
+	 * @return mixed
+	 */
+	public function deleteArtices($articleIds);
+
+	/**
 	 * @Desc: 移动某分类下的文章到某分类
 	 * @param $categoryId 被移动的分类ID
 	 * @param $toCategoryId 移动到的分类ID
