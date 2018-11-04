@@ -62,14 +62,14 @@ class SettingService extends BaseService implements SettingServiceInterface
 	public function getActiveMenus()
 	{
 		$result = [
-//			[
-//				'href' => Yii::$app->urlManager->createUrl('site/welcome'),
-//				'icon' => 'layui-icon-home',
-//				'label' => '控制台',
-//				'parent_id' => '0',
-//				'sort_value' => '1',
-//				'url' => Yii::$app->urlManager->createUrl('site/welcome'),
-//			]
+			//			[
+			//				'href' => Yii::$app->urlManager->createUrl('site/welcome'),
+			//				'icon' => 'layui-icon-home',
+			//				'label' => '控制台',
+			//				'parent_id' => '0',
+			//				'sort_value' => '1',
+			//				'url' => Yii::$app->urlManager->createUrl('site/welcome'),
+			//			]
 		];
 		$menusPermission = UsersRoles::find()
 			->select(['role_permission.permission_id'])
@@ -235,6 +235,7 @@ class SettingService extends BaseService implements SettingServiceInterface
 
 			$set->saveModel();
 		}
+		Yii::$app->userCache->refresh('setting');
 	}
 
 	/**
@@ -246,5 +247,42 @@ class SettingService extends BaseService implements SettingServiceInterface
 		$setting = new Config();
 		$setting->load($params, '');
 		$setting->saveModel();
+		Yii::$app->userCache->refresh('setting');
+	}
+
+	/**
+	 * 获取系统设置数据 存储缓存
+	 * @return array
+	 */
+	public function getSettingDataToCache()
+	{
+		$categories = ConfigCategory::find()
+			->where(['status' => ConfigCategory::STATUS_ACTIVE])
+			->orderBy(['sort_value' => SORT_ASC])
+			->asArray()
+			->all();
+
+		$configs = Config::find()
+			->orderBy(['sort_value' => SORT_ASC])
+			->asArray()
+			->all();
+
+		$mapIdToCategory = []; $systemConfigs = [];
+		foreach ($categories as $category) {
+			$mapIdToCategory[ $category['id'] ] = $category;
+		}
+
+
+		foreach ($configs as $item) {
+			// 没有对应的分类，不显示该设置
+			if (!isset($mapIdToCategory[ $item['category_id'] ])) {
+				continue;
+			}
+			$systemConfigs[ $mapIdToCategory[ $item['category_id'] ]['code'] ][ $item['code'] ] = $item;
+		}
+
+		unset($categories, $configs);
+
+		return $systemConfigs;
 	}
 }
