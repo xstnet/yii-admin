@@ -1,7 +1,6 @@
 <?php
 return [
     'adminEmail' => 'admin@example.com',
-	'defaultAvatar' => 'static/backend/images/default-head.jpg',
 	'actionTitle' => [
 		// 默认模块
 		'app-backend' => [
