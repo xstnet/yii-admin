@@ -35,7 +35,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			->select(Article::getListField())
 			->leftJoin(['user' => AdminUser::tableName()], 'user.id = article.user_id')
 			->leftJoin(['category' => ArticleCategory::tableName()], 'category.id = article.category_id')
-			->orderBy('article.sort_value asc')
+			->orderBy('article.created_at desc')
 			->asArray()
 			->all();
 
@@ -68,6 +68,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$content = new ArticleContents();
 			$content->id = $article->id;
 			$content->content = $params['content'];
+			$content->markdown_content = $params['markdown_content'] ?? '';
 			$content->saveModel($transaction);
 
 			$transaction->commit();
@@ -99,6 +100,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$article->saveModel($transaction);
 			// 保存文章内容
 			$article->content->content = $params['content'];
+			$article->content->markdown_content = $params['markdown_content'] ?? '';
 			$article->content->saveModel($transaction);
 
 			$transaction->commit();

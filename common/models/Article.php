@@ -64,7 +64,7 @@ class Article extends BaseModel
     public function rules()
     {
         return [
-            [['user_id', 'category_id', 'hits', 'comment_count', 'is_allow_comment', 'top', 'bad', 'is_show', 'is_delete', 'is_hot', 'sort_value', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'user_id', 'category_id', 'hits', 'comment_count', 'is_allow_comment', 'top', 'bad', 'is_show', 'is_delete', 'is_hot', 'sort_value', 'created_at', 'updated_at'], 'integer'],
             [['from_platform', 'keyword'], 'string'],
             [['author', 'source'], 'string', 'max' => 30],
             [['description', 'title_image'], 'string', 'max' => 200],

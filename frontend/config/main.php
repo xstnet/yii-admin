@@ -45,14 +45,20 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
-    ],
+		'urlManager'=>[
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'suffix'=>'.html',
+			'rules' => [
+				"/" => "/site/index",
+				"/gii" => "/index.php?r=gii",
+				'article-<id:\d+>' => '/article/index',
+				'category-<categoryId:\d+>' => '/site/category',
+				'/search' => '/site/search',
+				'/tag/<tag:.*+>' => '/site/tag',
+			],
+		],
+
+	],
     'params' => $params,
 ];

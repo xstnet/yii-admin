@@ -1,41 +1,40 @@
 <?php
-//
-///* @var $this yii\web\View */
-//use yii\helpers\Html;
 
+/* @var $this yii\web\View */
+use yii\helpers\Html;
+
+$this->title =  '首页';
+$userCache = Yii::$app->userCache;
 //?>
-<!---->
-<!--<!DOCTYPE html>-->
-<!--<html lang="zh-CN">-->
-<!--	<head>-->
-<!--		<meta charset="utf-8">-->
-<!--<!--		<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">-->-->
-<!--		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">-->
-<!--		<title>首页</title>-->
-<!--		--><?//= Html::cssFile('@static_frontend/css/common.css')?>
-<!--		--><?//= Html::cssFile('@static_frontend/css/main.css')?>
-<!--		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>-->
-<!--		<script type="text/javascript">-->
-<!--			$(function() {-->
-<!--				var r = document.body.offsetWidth / window.screen.availWidth;-->
-<!--				$(document.body).css("-webkit-transform","scale(" + r + ")");-->
-<!--			});-->
-<!--			$(window).resize(function() {-->
-<!--				var r = document.body.offsetWidth / window.screen.availWidth;-->
-<!--				$(document.body).css("-webkit-transform","scale(" + r + ")");-->
-<!--			});-->
-<!--		</script>-->
-<!--	</head>-->
-<!--	<body>-->
-<!--	<div class="wrap">-->
-<!--		<div class="main">-->
-<!--			<div class="side-left fl"></div>-->
-<!--			<div class="side-right fl">-->
-<!--				<div class="logo"></div>-->
-<!--				<div class="video"></div>-->
-<!--			</div>-->
-<!--			<div class="columns"></div>-->
-<!--		</div>-->
-<!--	</div>-->
-<!--	</body>-->
-<!--</html>-->
+<div class="col-md-9 content-left">
+	<?php if (isset($breadcrumb)) {
+		echo \common\helpers\Helpers::renderBreadcrumb($breadcrumb);
+	}?>
+	<?php if (!empty($articleList)) :?>
+		<?php foreach($articleList as $item) :?>
+			<div class="list-item">
+				<h4><a href="article-<?= $item['id']?>.html"><?= $item['title']?></a></h4>
+				<div class="list-item-description"><?= $item['description']?></div>
+				<div class="list-item-footer icon-wrap margin-t-5">
+					<span><i class="glyphicon glyphicon-th-list" aria-hidden="true"></i><a href="/category-<?=$item['category_id']?>.html"><?= $userCache->getArticleCategoryNameById($item['category_id'])?></a></span>
+					<span><i class="glyphicon glyphicon-time" aria-hidden="true"></i><?= date('Y-m-d', $item['created_at'])?></span>
+					<span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>阅读(<?= $item['hits']?>)</span>
+					<span><i class="glyphicon glyphicon-comment" aria-hidden="true"></i>评论(<?= $item['comment_count']?>)</span>
+				</div>
+				<div class="list-item-separator"></div>
+			</div>
+		<?php endforeach;?>
+	<?php else :?>
+		<div>
+			<p class="bg-danger padding-15">没有找到数据哦 !</p>
+		</div>
+	<?php endif;?>
+	<nav aria-label="Page navigation">
+		<?= yii\widgets\LinkPager::widget([
+			'pagination' => $pages,
+			'maxButtonCount' => 5,
+			'nextPageLabel' => '下一页', // 修改上下页按钮
+			'prevPageLabel' => '上一页',
+		]) ?>
+	</nav>
+</div>

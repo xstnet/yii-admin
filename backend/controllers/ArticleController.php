@@ -83,7 +83,11 @@ class ArticleController extends AdminLogController
 		}
 		$categories  = ArticleService::instance()->getCategoryList();
 		$treeSelect = Helpers::getTreeSelect($categories);
-		return $this->render('edit', [
+		$view = 'edit_html';
+		if (!empty($model->content->markdown_content)) {
+			$view = 'edit_markdown';
+		}
+		return $this->render($view, [
 			'treeSelect' => $treeSelect,
 			'model' => $model,
 		]);

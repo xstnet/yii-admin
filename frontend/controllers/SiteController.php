@@ -1,22 +1,15 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Article;
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -72,33 +65,102 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-    	$this->layout = false;
-        return $this->render('index');
-    }
-
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
-
+    	$data = $this->getArticleList();
+    	
+		return $this->render('index', $data);
+	}
+	
+	/**
+	 * 分类文章列表
+	 * @param int $categoryId
+	 * @return string
+	 */
+	public function actionCategory(int $categoryId)
+	{
+		$data = $this->getArticleList(['category_id' => $categoryId]);
+		
+		$breadcrumb = [
+			[
+				'name' => '首页',
+				'href' => '/',
+			],
+			[
+				'name' => Yii::$app->userCache->getArticleCategoryNameById($categoryId),
+				'href' => "/category-$categoryId.html",
+			],
+		];
+		
+		$data['breadcrumb'] = $breadcrumb;
+		
+		return $this->render('index', $data);
+	}
+	
+	/**
+	 * 搜索
+	 * @return string
+	 */
+	public function actionSearch()
+	{
+		$keyword = trim(Yii::$app->request->get('s', ''));
+		if (empty($keyword)) {
+			$keyword = trim(Yii::$app->request->get('keyword', ''));
+		}
+		$where = [];
+		if (!empty($keyword)) {
+			$where = ['like', 'title', $keyword];
+		}
+		
+		$data = $this->getArticleList($where);
+		
+		$breadcrumb = [
+			[
+				'name' => '首页',
+				'href' => '/',
+			],
+			[
+				'name' => "搜索： $keyword ",
+				'href' => false,
+			],
+			[
+				'name' => "共搜索到 <strong>{$data['count']}</strong> 条数据",
+				'href' => false,
+			]
+		];
+		
+		$data['breadcrumb'] = $breadcrumb;
+		
+		foreach ($data['articleList'] as $key => $item) {
+			$data['articleList'][$key]['title'] = str_replace($keyword, "<span style='color: #d62929'>$keyword</span>", $item['title']);
+		}
+		
+		return $this->render('index', $data);
+	}
+	
+	public function actionTag($tag)
+	{
+		$where = "find_in_set('$tag', keyword)";
+		$data = $this->getArticleList($where);
+		
+		$breadcrumb = [
+			[
+				'name' => '首页',
+				'href' => '/',
+			],
+			[
+				'name' => $tag,
+				'href' => "/tag/$tag.html",
+			],
+			[
+				'name' => "共查找到 <strong>{$data['count']}</strong> 条数据",
+				'href' => false,
+			]
+		];
+		
+		$data['breadcrumb'] = $breadcrumb;
+		
+		return $this->render('index', $data);
+	}
+  
     /**
      * Logs out the current user.
      *
@@ -110,29 +172,7 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
+    
 
     /**
      * Displays about page.
@@ -143,74 +183,26 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     */
-    public function actionSignup()
-    {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Requests password reset.
-     *
-     * @return mixed
-     */
-    public function actionRequestPasswordReset()
-    {
-        $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
-            } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
-            }
-        }
-
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     * @return mixed
-     * @throws BadRequestHttpException
-     */
-    public function actionResetPassword($token)
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
-    }
+	
+	/**
+	 * 获取文章列表
+	 * @param $where
+	 * @return array
+	 */
+    private function getArticleList($where = []) : array
+	{
+		$query = Article::find()
+			->where(['is_show' => Article::IS_SHOW_YES])
+			->andWhere($where);
+		list ($count, $pages) = $this->getPage($query);
+		$articleList = $query->orderBy(['created_at' => SORT_DESC])
+			->asArray()
+			->all();
+		
+		return [
+			'articleList' => $articleList,
+			'pages' => $pages,
+			'count' => $count,
+		];
+	}
 }

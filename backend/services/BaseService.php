@@ -36,7 +36,7 @@ class BaseService
 
 	/**
 	 * @Desc: 获取分页
-	 * @param $query \common\models\BaseModel
+	 * @param $query \yii\db\ActiveQuery
 	 * @return array
 	 */
 	public static function getPage($query)

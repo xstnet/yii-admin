@@ -11,6 +11,10 @@ use Yii;
  * @property string $category_name
  * @property integer $parent_id
  * @property string $parents
+ * @property integer $status
+ * @property integer $sort_value
+ * @property integer $created_at
+ * @property integer $updated_at
  */
 class ArticleCategory extends BaseModel
 {
@@ -35,7 +39,7 @@ class ArticleCategory extends BaseModel
     public function rules()
     {
         return [
-            [['parent_id'], 'integer'],
+            [['parent_id', 'status', 'sort_value', 'created_at', 'updated_at'], 'integer'],
             [['category_name'], 'string', 'max' => 30],
 			['category_name', 'required'],
             ['parents', 'string', 'max' => 200],

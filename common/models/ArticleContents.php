@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $content
+ * @property string $markdown_content
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -30,7 +31,7 @@ class ArticleContents extends BaseModel
         return [
             [['id'], 'required'],
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['content'], 'string'],
+            [['content', 'markdown_content'], 'string'],
         ];
     }
 
@@ -42,6 +43,7 @@ class ArticleContents extends BaseModel
         return [
             'id' => 'ID',
             'content' => 'Content',
+            'markdown_content' => 'Markdown content',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

@@ -20,9 +20,9 @@ $name = '发布文章';
 	<head>
 		<title><?= $name?></title>
 		<?= $this->render('../public/header.php')?>
-		<?= Html::jsFile('@static_backend/plugins/ueditor/ueditor.config.js')?>
-		<?= Html::jsFile('@static_backend/plugins/ueditor/ueditor.all.min.js')?>
-		<?= Html::jsFile('@static_backend/plugins/ueditor/lang/zh-cn/zh-cn.js')?>
+		<link rel="stylesheet" href="/static/backend/plugins/mditor/dist/css/mditor.min.css" />
+		<script src="/static/backend/plugins/mditor/dist/js/mditor.min.js"></script>
+		
 		<?php $this->head() ?>
 		<style>
 			.upload-img {
@@ -100,7 +100,7 @@ $name = '发布文章';
 							<div class="layui-form-item">
 								<label class="layui-form-label">来源</label>
 								<div class="layui-input-inline">
-									<input type="text" name="source" lay-verify="required" value="本站" autocomplete="on" placeholder="请输入来源" class="layui-input">
+									<input type="text" name="source" lay-verify="required" value="原创" autocomplete="on" placeholder="请输入来源" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-form-item">
@@ -147,7 +147,8 @@ $name = '发布文章';
 							<div class="layui-form-item layui-form-text">
 								<label class="layui-form-label">文章内容</label>
 								<div class="layui-input-block">
-									<script id="content" name="content" type="text/plain"></script>
+									<textarea name="editor" id="editor"></textarea>
+<!--									<div id="content" name="content" type="text/plain"></div>-->
 								</div>
 							</div>
 
@@ -167,18 +168,31 @@ $name = '发布文章';
 
 	<?= $this->render('../public/footer_js.php')?>
 	<?= Html::jsFile('@static_backend/js/index.js')?>
-
+	
 	<script type="text/javascript">
-		var ue = UE.getEditor('content');
+
+		var mditor =  Mditor.fromTextarea(document.getElementById('editor'));
+
+
+		//获取或设置编辑器的值
+		mditor.on('ready',function(){
+			// mditor.on('changed', function(){
+			//
+			// });
+
+		});
+		
 		// layui方法
 		layui.use(['form', 'layer', 'upload', 'colorpicker'], function () {
 			// 操作对象
 			var form = layui.form
 				, layer = layui.layer
-				, $ = layui.jquery
+				// , $ = layui.jquery
 				, colorpicker = layui.colorpicker
 				, upload = layui.upload,
 				titleStyle = {};
+
+			
 
 			colorpicker.render({
 				elem: '#titleStyle',
@@ -234,6 +248,8 @@ $name = '发布文章';
 			form.on('submit(form-submit)', function (data) {
 				var formData = data.field;
 				formData.title_style = titleStyle;
+				formData.content = mditor.viewer.html;
+				formData.markdown_content = mditor.value;
 				console.log(formData);
 				var url = '<?= Yii::$app->urlManager->createUrl("article/add-article")?>';
 				$.post(
