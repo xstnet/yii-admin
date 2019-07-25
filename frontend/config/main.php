@@ -53,6 +53,7 @@ return [
 				"/" => "/site/index",
 				"/gii" => "/index.php?r=gii",
 				'article-<id:\d+>' => '/article/index',
+				'article/search' => '/site/search',
 				'category-<categoryId:\d+>' => '/site/category',
 				'/search' => '/site/search',
 				'/tag/<tag:.*+>' => '/site/tag',
