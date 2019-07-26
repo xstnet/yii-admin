@@ -47,7 +47,7 @@ $userCache = Yii::$app->userCache;
 						</a>
 					</div>
 					<div class="media-body">
-						<h4 class="media-heading text-primary"><?=$item['nickname'] . (!empty($item['email']) ? "({$item['email']})" : '')?></h4>
+						<h4 class="media-heading text-primary"><?=Html::encode($item['nickname']) . (!empty($item['email']) ? "(" .Html::encode($item['email']).")" : '')?></h4>
 						<div class="message-content" style="margin-bottom: 5px"><?=Html::encode($item['content'])?></div>
 						<p class="text-muted margin-0">发布于: <?=date('Y-m-d H:i', $item['created_at'])?></p>
 					</div>

@@ -32,7 +32,8 @@ class Messages extends BaseModel
     {
         return [
             [['created_at', 'updated_at'], 'integer'],
-            [['nickname'], 'string', 'min' => 1, 'max' => 20, 'tooLong' => '名称不能超过20个字符', 'tooShort' => '名称不能小于1个字符'],
+			['nickname', 'required', 'message' => '名称不能为空!'],
+            [['nickname'], 'string', 'min' => 1, 'max' => 30, 'tooLong' => '名称不能超过30个字符', 'tooShort' => '名称不能小于1个字符'],
             [['email', 'avatar'], 'string', 'max' => 100, 'tooLong' => '邮箱不能超过100个字符'],
             [['content'], 'string', 'min' => 2, 'max' => 255, 'tooLong' => '内容不能超过255个字符', 'tooShort' => '内容不能小于2个字符'],
         ];
