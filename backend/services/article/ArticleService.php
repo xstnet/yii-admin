@@ -59,6 +59,9 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		try {
 			$article = new Article();
 			$article->load($params);
+			if (!empty($params['release_time'])) {
+				$article->created_at = $article->updated_at = strtotime($params['release_time']);
+			}
 			$article->user_id = Yii::$app->user->id;
 			if (empty($article->description)) {
 				$article->description = mb_substr(strip_tags($params['content']), 0, 200, 'utf-8');
