@@ -15,7 +15,7 @@ $userCache = Yii::$app->userCache;
 if (!isset($this->params['active_menu'])) {
 	$this->params['active_menu'] = 'index';
 }
-$assetVersion = '1.0001';
+$assetVersion = '1.0002';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

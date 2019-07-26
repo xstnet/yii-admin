@@ -130,6 +130,12 @@ body {
 	background-color: inherit !important;
 }
 
+@media screen and (max-width: 390px) {
+	.nav li a {
+		padding: 10px;
+	}
+}
+
 footer {
 	padding: 20px;
 }
