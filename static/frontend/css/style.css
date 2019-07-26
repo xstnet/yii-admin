@@ -57,24 +57,7 @@ body {
 .my-motto {
 	color: #a09999;
 }
-.navbar {
-	border: 0;
-	background-color: inherit;
-	margin-top: 10px;
-}
-.navbar-nav li a:hover {
-	color: #337ab7 !important;
-}
-.navbar-nav li a {
-	color: #333 !important;
-}
-.navbar-nav li:first-child a {
-	padding-left: 0;
-}
-.navbar-nav .active a {
-	color: #337ab7 !important;
-	background-color: inherit !important;
-}
+
 .list-item {
 	width: 95%;
 }
@@ -118,6 +101,33 @@ body {
 
 .article-content img {
 	max-width: 100%;
+}
+
+.nav {
+	margin: 20px 0 10px 0;
+}
+.nav ul {
+	overflow: hidden;
+	padding-left: 0px;
+}
+.nav li {
+	list-style: none;
+	float: left;
+}
+.nav li a {
+	padding: 15px;
+	color: #333 !important;
+}
+.nav ul li:first-child a {
+	padding-left: 0;
+}
+.nav li a:hover {
+	color: #337ab7 !important;
+}
+
+.nav .active a {
+	color: #337ab7 !important;
+	background-color: inherit !important;
 }
 
 footer {

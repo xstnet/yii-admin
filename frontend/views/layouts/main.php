@@ -77,22 +77,19 @@ if (!isset($this->params['active_menu'])) {
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-9">
-						<nav class="navbar navbar-default">
-							<!-- Collect the nav links, forms, and other content for toggling -->
-							<div class="collapse navbar-collapse padding-0">
-								<ul class="nav navbar-nav">
-									<li<?=$this->params['active_menu'] == 'index' ? ' class="active"' : ''?>><a href="/">首页</a></li>
-									<li<?=$this->params['active_menu'] == 'message' ? ' class="active"' : ''?>><a href="/message.html">留言</a></li>
-									<li<?=$this->params['active_menu'] == 'note' ? ' class="active"' : ''?>><a href="/note.html">随笔</a></li>
-									<li<?=$this->params['active_menu'] == 'archive' ? ' class="active"' : ''?>><a href="/archive.html">归档</a></li>
-									<li<?=$this->params['active_menu'] == 'about' ? ' class="active"' : ''?>><a href="/about.html">关于我</a></li>
-									<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.html">订阅</a></li>
-								</ul>
-							</div><!-- /.navbar-collapse -->
-						</nav>
+					<div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+						<div class="nav">
+							<ul>
+								<li<?=$this->params['active_menu'] == 'index' ? ' class="active"' : ''?>><a href="/">首页</a></li>
+								<li<?=$this->params['active_menu'] == 'message' ? ' class="active"' : ''?>><a href="/message.html">留言</a></li>
+								<li<?=$this->params['active_menu'] == 'note' ? ' class="active"' : ''?>><a href="/note.html">随笔</a></li>
+								<li<?=$this->params['active_menu'] == 'archive' ? ' class="active"' : ''?>><a href="/archive.html">归档</a></li>
+								<li<?=$this->params['active_menu'] == 'about' ? ' class="active"' : ''?>><a href="/about.html">关于我</a></li>
+								<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.html">订阅</a></li>
+							</ul>
+						</div>
 					</div>
-					<div class="col-md-3"></div>
+<!--					<div class="col-lg-3"></div>-->
 				</div>
 			</div>
 		</div>
