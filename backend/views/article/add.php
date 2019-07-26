@@ -50,6 +50,11 @@ $name = '发布文章';
 	<div style="padding: 0 20px;">
 		<div class="layui-row layui-col-space15">
 			<div class="layui-col-md12">
+				<div class="layui-bg-green" style="padding: 5px 15px;">
+					正在使用Markdown编辑器
+					<button id="useHtmlEdit" type="button" class="layui-btn layui-btn-primary">使用富文本编辑器</button>
+				</div>
+				
 				<div class="layui-card">
 					<div class="layui-card-header">
 						<fieldset class="layui-elem-field layui-field-title">
@@ -183,10 +188,11 @@ $name = '发布文章';
 		});
 		
 		// layui方法
-		layui.use(['form', 'layer', 'upload', 'colorpicker'], function () {
+		layui.use(['form', 'layer', 'upload', 'vip_tab', 'colorpicker'], function () {
 			// 操作对象
 			var form = layui.form
 				, layer = layui.layer
+				, vipTab = layui.vip_tab
 				// , $ = layui.jquery
 				, colorpicker = layui.colorpicker
 				, upload = layui.upload,
@@ -263,6 +269,12 @@ $name = '发布文章';
 
 				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 			});
+			
+			$('#useHtmlEdit').click(function () {
+				var tabId = vipTab.getThisTabId();
+				vipTab.add('', '发布文章Html', '<?=Yii::$app->urlManager->createUrl(["article/add", "type"=>"html"])?>');
+				vipTab.del(tabId);
+			})
 
 		});
 

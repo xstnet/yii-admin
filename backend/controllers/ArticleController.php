@@ -14,6 +14,7 @@ use backend\services\article\ArticleService;
 use common\helpers\Helpers;
 use common\models\Article;
 use yii\filters\VerbFilter;
+use Yii;
 
 class ArticleController extends AdminLogController
 {
@@ -70,7 +71,12 @@ class ArticleController extends AdminLogController
 	{
 		$categories  = ArticleService::instance()->getCategoryList();
 		$treeSelect = Helpers::getTreeSelect($categories);
-		return $this->render('add', [
+		$type = Yii::$app->request->get('type', 'markdown');
+		$view = 'add';
+		if ($type === 'html') {
+			$view = 'add_uedit';
+		}
+		return $this->render($view, [
 			'treeSelect' => $treeSelect,
 		]);
 	}
