@@ -192,7 +192,7 @@ class SiteController extends BaseController
     private function getArticleList($where = []) : array
 	{
 		$query = Article::find()
-			->where(['is_show' => Article::IS_SHOW_YES])
+			->where(['is_show' => Article::IS_SHOW_YES, 'is_delete' => Article::IS_DELETE_NO])
 			->andWhere($where);
 		list ($count, $pages) = $this->getPage($query);
 		$articleList = $query->orderBy(['created_at' => SORT_DESC])

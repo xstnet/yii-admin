@@ -40,6 +40,11 @@ class Cache
 		Yii::$app->cache->delete($name);
 	}
 	
+	public function flush()
+	{
+		Yii::$app->cache->flush();
+	}
+	
 	/**
 	 * 获取系统设置
 	 * @return array
@@ -112,6 +117,7 @@ class Cache
 	{
 		$articleList = Article::find()
 			->select(['id', 'title'])
+			->where(['is_show' => Article::IS_SHOW_YES, 'is_delete' => Article::IS_DELETE_NO])
 			->orderBy(['created_at' => SORT_DESC])
 			->limit($num)
 			->asArray()
