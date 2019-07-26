@@ -111,6 +111,11 @@ body {
 	margin-right: 2px;
 }
 
+.tag-list a {
+	display: inline-block;
+	margin-top: 5px;
+}
+
 footer {
 	padding: 20px;
 }
