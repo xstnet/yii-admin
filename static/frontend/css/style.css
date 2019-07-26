@@ -116,6 +116,10 @@ body {
 	margin-top: 5px;
 }
 
+.article-content img {
+	max-width: 100%;
+}
+
 footer {
 	padding: 20px;
 }
