@@ -5,6 +5,9 @@
 use yii\helpers\Html;
 
 $this->title =  $article->title;
+$this->params['keyword'] = $article->keyword;
+$this->params['description'] = $article->description;
+$this->params['active_menu'] = '';
 
 $isMarkdown = !empty($article->content->markdown_content) ? 1 : 0;
 $contentClass = $isMarkdown ? 'markdown-content' : 'html-content';

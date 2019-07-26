@@ -91,6 +91,7 @@ class SiteController extends BaseController
 		];
 		
 		$data['breadcrumb'] = $breadcrumb;
+		$data['active_menu'] = '';
 		
 		return $this->render('index', $data);
 	}
@@ -128,6 +129,7 @@ class SiteController extends BaseController
 		];
 		
 		$data['breadcrumb'] = $breadcrumb;
+		$data['active_menu'] = '';
 		
 		foreach ($data['articleList'] as $key => $item) {
 			$data['articleList'][$key]['title'] = str_replace($keyword, "<span style='color: #d62929'>$keyword</span>", $item['title']);
@@ -157,6 +159,7 @@ class SiteController extends BaseController
 		];
 		
 		$data['breadcrumb'] = $breadcrumb;
+		$data['active_menu'] = '';
 		
 		return $this->render('index', $data);
 	}
@@ -184,25 +187,5 @@ class SiteController extends BaseController
         return $this->render('about');
     }
 	
-	/**
-	 * 获取文章列表
-	 * @param $where
-	 * @return array
-	 */
-    private function getArticleList($where = []) : array
-	{
-		$query = Article::find()
-			->where(['is_show' => Article::IS_SHOW_YES, 'is_delete' => Article::IS_DELETE_NO])
-			->andWhere($where);
-		list ($count, $pages) = $this->getPage($query);
-		$articleList = $query->orderBy(['created_at' => SORT_DESC])
-			->asArray()
-			->all();
-		
-		return [
-			'articleList' => $articleList,
-			'pages' => $pages,
-			'count' => $count,
-		];
-	}
+	
 }

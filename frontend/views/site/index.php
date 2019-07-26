@@ -5,6 +5,9 @@ use yii\helpers\Html;
 
 $this->title =  '首页';
 $userCache = Yii::$app->userCache;
+if (isset($active_menu)) {
+	$this->params['active_menu'] = $active_menu;
+}
 //?>
 <div class="col-md-9 content-left">
 	<?php if (isset($breadcrumb)) {

@@ -123,6 +123,11 @@ body {
 footer {
 	padding: 20px;
 }
+.archive ul {
+	font-size: 18px;
+	line-height: 2.0;
+}
+
 
 /* markdown->html 美化 */
 /* 引用 */
@@ -134,6 +139,10 @@ footer {
 	line-height: 1.8;
 }
 .markdown-content blockquote p {
+	line-height: 1.8;
+}
+
+.markdown-content li {
 	line-height: 1.8;
 }
 

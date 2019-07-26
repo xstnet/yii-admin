@@ -52,11 +52,14 @@ return [
 			'rules' => [
 				"/" => "/site/index",
 				"/gii" => "/index.php?r=gii",
-				'article-<id:\d+>' => '/article/index',
-				'article/search' => '/site/search',
-				'category-<categoryId:\d+>' => '/site/category',
-				'/search' => '/site/search',
-				'/tag/<tag:.*+>' => '/site/tag',
+				'article-<id:\d+>' => '/article/index', // 文章详情
+				'article/search' => '/site/search',  // 搜索， 兼容老版本
+				'category-<categoryId:\d+>' => '/site/category', // 分类
+				'/archive/<year:20\d\d>/<month:(0|1)\d>' => '/archive/list', // 归档文档列表
+				'/archive' => '/archive/index', // 归档
+				'/search' => '/site/search', // 搜索
+				'/tag/<tag:.*+>' => '/site/tag', // 标签
+				
 			],
 		],
 

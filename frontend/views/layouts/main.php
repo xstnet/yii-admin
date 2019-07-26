@@ -11,6 +11,10 @@ if (!empty($searchKeyword)) {
 	$searchKeyword = Html::encode($searchKeyword);
 }
 $userCache = Yii::$app->userCache;
+// 导航高亮
+if (!isset($this->params['active_menu'])) {
+	$this->params['active_menu'] = 'index';
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -21,7 +25,8 @@ $userCache = Yii::$app->userCache;
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 	<title><?= Html::encode($this->title) ?> - <?=Yii::$app->userCache->get('setting')['site']['name']['value']?></title>
-	
+	<meta name="Keywords" content="<?=$this->params['keyword'] ?? 'php技术博客'?>"/>
+	<meta name="Description" content="<?=$this->params['description'] ?? 'php技术博客'?>"/>
 	<!-- Bootstrap -->
 	<link href="/static/frontend/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/static/frontend/css/style.css" rel="stylesheet">
@@ -77,12 +82,12 @@ $userCache = Yii::$app->userCache;
 							<!-- Collect the nav links, forms, and other content for toggling -->
 							<div class="collapse navbar-collapse padding-0">
 								<ul class="nav navbar-nav">
-									<li class="active"><a href="/">首页</a></li>
-									<li><a href="/message">留言</a></li>
-									<li><a href="#">闲言碎语</a></li>
-									<li><a href="/archive">归档</a></li>
-									<li><a href="/about">关于我</a></li>
-									<li><a href="/rss">订阅</a></li>
+									<li<?=$this->params['active_menu'] == 'index' ? ' class="active"' : ''?>><a href="/">首页</a></li>
+									<li<?=$this->params['active_menu'] == 'message' ? ' class="active"' : ''?>><a href="/message.html">留言</a></li>
+									<li<?=$this->params['active_menu'] == 'note' ? ' class="active"' : ''?>><a href="/note.html">随笔</a></li>
+									<li<?=$this->params['active_menu'] == 'archive' ? ' class="active"' : ''?>><a href="/archive.html">归档</a></li>
+									<li<?=$this->params['active_menu'] == 'about' ? ' class="active"' : ''?>><a href="/about.html">关于我</a></li>
+									<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.html">订阅</a></li>
 								</ul>
 							</div><!-- /.navbar-collapse -->
 						</nav>
