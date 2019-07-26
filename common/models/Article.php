@@ -78,6 +78,7 @@ class Article extends BaseModel
 			}],
 			[['comment_count', 'top', 'hits', 'bad'], 'default', 'value' => 0],
 			['keyword', 'filter', 'filter' => function ($value) {
+        		$value = trim($value);
         		$value = str_replace('， ', ',', $value);
         		$value = str_replace(', ', ',', $value);
         		$value = str_replace('，', ',', $value);

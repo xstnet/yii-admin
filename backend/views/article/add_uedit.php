@@ -104,7 +104,7 @@ $name = '发布文章';
 							<div class="layui-form-item">
 								<label class="layui-form-label">来源</label>
 								<div class="layui-input-inline">
-									<input type="text" name="source" lay-verify="required" value="本站" autocomplete="on" placeholder="请输入来源" class="layui-input">
+									<input type="text" name="source" lay-verify="required" value="原创" autocomplete="on" placeholder="请输入来源" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-form-item">

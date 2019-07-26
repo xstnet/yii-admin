@@ -137,6 +137,7 @@ class Cache
 		$list = ArticleTag::find()
 			->select(['id', 'article_count', 'name'])
 			->where(['is_show' => ArticleTag::IS_SHOW_YES])
+			->andWhere(['>', 'article_count', 0])
 			->orderBy('created_at desc')
 			->asArray()
 			->all();

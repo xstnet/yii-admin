@@ -72,6 +72,20 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$content->content = $params['content'];
 			$content->markdown_content = $params['markdown_content'] ?? '';
 			$content->saveModel($transaction);
+			// 添加标签
+			if (!empty($article->keyword)) {
+				foreach (explode(',', $article->keyword) as $tag) {
+					Yii::$app->db->createCommand()->upsert(ArticleTag::tableName(), [
+						'name' => $tag,
+						'article_count' => 1,
+						'is_show' => ArticleTag::IS_SHOW_YES,
+						'created_at' => $item['created_at'],
+						'updated_at' => $item['updated_at'],
+					], [
+						'article_count' => new \yii\db\Expression('article_count + 1'),
+					])->execute();
+				}
+			}
 
 			$transaction->commit();
 		} catch (\Exception $e) {
@@ -93,6 +107,8 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		try {
 			// 更新文章内容
 			$article = self::findArticleModel($id);
+			$oldKeyword = $article->keyword;
+			
 			$article->load($params);
 			if (empty($article->description)) {
 				$article->description = mb_substr(strip_tags($params['content']), 0, 200, 'utf-8');
@@ -104,6 +120,26 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$article->content->content = $params['content'];
 			$article->content->markdown_content = $params['markdown_content'] ?? '';
 			$article->content->saveModel($transaction);
+			
+			// 更新标签
+			if (!empty($article->keyword)) {
+				foreach (explode(',', $article->keyword) as $tag) {
+					Yii::$app->db->createCommand()->upsert(ArticleTag::tableName(), [
+						'name' => $tag,
+						'article_count' => 1,
+						'is_show' => ArticleTag::IS_SHOW_YES,
+						'created_at' => $article->created_at,
+						'updated_at' => $article->created_at,
+					], [
+						'article_count' => new \yii\db\Expression('article_count + 1'),
+					])->execute();
+				}
+			}
+			if (!empty($oldKeyword)) {
+				foreach (explode(',', $oldKeyword) as $tag) {
+					ArticleTag::updateAll(['article_count' => new \yii\db\Expression('article_count - 1')], "article_count > 0 and name = '$tag'");
+				}
+			}
 
 			$transaction->commit();
 		} catch (\Exception $e) {
