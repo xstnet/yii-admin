@@ -61,8 +61,8 @@ class RssController extends BaseController
 				'guid' => Yii::$app->request->hostInfo . "/article-{$item['id']}.html",
 			]);
 		}
-		
+		$xmlString = $rss->renderRss();
 		Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
-		Yii::$app->response->content = $rss->renderRss();
+		Yii::$app->response->content = $xmlString;
 	}
 }

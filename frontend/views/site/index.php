@@ -16,7 +16,7 @@ if (isset($active_menu)) {
 	<?php if (!empty($articleList)) :?>
 		<?php foreach($articleList as $item) :?>
 			<div class="list-item">
-				<h4><a href="article-<?= $item['id']?>.html"><?= $item['title']?></a></h4>
+				<h4><a href="/article-<?= $item['id']?>.html"><?= $item['title']?></a></h4>
 				<div class="list-item-description"><?= $item['description']?></div>
 				<div class="list-item-footer icon-wrap margin-t-5">
 					<span><i class="glyphicon glyphicon-th-list" aria-hidden="true"></i><a href="/category-<?=$item['category_id']?>.html"><?= $userCache->getArticleCategoryNameById($item['category_id'])?></a></span>
