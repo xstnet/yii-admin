@@ -79,10 +79,11 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 						'name' => $tag,
 						'article_count' => 1,
 						'is_show' => ArticleTag::IS_SHOW_YES,
-						'created_at' => $item['created_at'],
-						'updated_at' => $item['updated_at'],
+						'created_at' => $article->created_at,
+						'updated_at' => $article->created_at,
 					], [
 						'article_count' => new \yii\db\Expression('article_count + 1'),
+						'updated_at' => time(),
 					])->execute();
 				}
 			}
@@ -132,6 +133,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 						'updated_at' => $article->created_at,
 					], [
 						'article_count' => new \yii\db\Expression('article_count + 1'),
+						'updated_at' => time(),
 					])->execute();
 				}
 			}
