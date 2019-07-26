@@ -15,6 +15,7 @@ $userCache = Yii::$app->userCache;
 if (!isset($this->params['active_menu'])) {
 	$this->params['active_menu'] = 'index';
 }
+$assetVersion = '1.0001';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -29,7 +30,7 @@ if (!isset($this->params['active_menu'])) {
 	<meta name="Description" content="<?=$this->params['description'] ?? 'php技术博客'?>"/>
 	<!-- Bootstrap -->
 	<link href="/static/frontend/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/static/frontend/css/style.css" rel="stylesheet">
+	<link href="/static/frontend/css/style.css?v=<?=$assetVersion?>" rel="stylesheet">
 	<script>
 		var _hmt = _hmt || [];
 		(function() {
