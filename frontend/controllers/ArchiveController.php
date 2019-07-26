@@ -17,7 +17,7 @@ use yii\web\NotFoundHttpException;
 class ArchiveController extends BaseController
 {
 	/**
-	 * Displays Article Content.
+	 * Displays Archive Content.
 	 * @return string
 	 */
 	public function actionIndex()

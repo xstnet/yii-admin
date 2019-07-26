@@ -1,3 +1,6 @@
+* {
+	word-break:break-all;
+}
 .margin-t-10 {
 	margin-top: 10px;
 }
@@ -101,6 +104,10 @@ body {
 
 .article-content img {
 	max-width: 100%;
+}
+
+.media .media-left img {
+	border-radius: 5px;
 }
 
 .nav {

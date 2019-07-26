@@ -59,6 +59,7 @@ return [
 				'/archive' => '/archive/index', // 归档
 				'/search' => '/site/search', // 搜索
 				'/tag/<tag:.*+>' => '/site/tag', // 标签
+				'/message/release' => '/message/release', // 标签
 				
 			],
 		],
