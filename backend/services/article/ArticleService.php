@@ -61,6 +61,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$article->load($params);
 			if (!empty($params['release_time'])) {
 				$article->created_at = $article->updated_at = strtotime($params['release_time']);
+				$article->detachBehavior('TimestampBehavior');
 			}
 			$article->user_id = Yii::$app->user->id;
 			if (empty($article->description)) {
