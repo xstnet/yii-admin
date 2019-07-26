@@ -107,9 +107,12 @@ $userCache = Yii::$app->userCache;
 							<h4>标签</h4>
 							<hr class="hr margin-0">
 							<div class="tag-list margin-t-5">
-								<a href=""><span class="label label-default">Default</span></a>
-								<a href=""><span class="label label-success">Default</span></a>
-								<a href=""><span class="label label-info">Default</span></a>
+								<?php
+								$tagMap = ['default', 'success', 'info', 'warning', 'danger'];
+								foreach ($userCache->get('tagList') as $k => $tag) {
+									echo "<a href=\"/tag/{$tag['name']}.html\"><span class=\"label label-{$tagMap[$k%5]}\">{$tag['name']}</span></a> ";
+								}
+								?>
 							</div>
 							<div class="margin-t-20"></div>
 							<h4>最新文章</h4>

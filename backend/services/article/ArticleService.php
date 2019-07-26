@@ -10,12 +10,14 @@ namespace backend\services\article;
 
 
 use backend\services\BaseService;
+use common\exceptions\DatabaseException;
 use common\exceptions\ParameterException;
 use common\helpers\Helpers;
 use common\models\AdminUser;
 use common\models\Article;
 use common\models\ArticleCategory;
 use common\models\ArticleContents;
+use common\models\ArticleTag;
 use Yii;
 
 class ArticleService extends BaseService implements ArticleServiceInterface
@@ -308,7 +310,78 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			throw $e;
 		}
 	}
+	
+	/**
+	 * 获取标签列表
+	 * @return array
+	 */
+	public function getTagList()
+	{
+		$query = ArticleTag::find();
+		
+		list ($count, $page) = self::getPage($query);
+		
+		$list = $query->orderBy('created_at desc')
+			->asArray()
+			->all();
+		
+		return [
+			'total' => $count,
+			'list' => $list,
+			'page' => $page,
+		];
+	}
+	
+	
+	/**
+	 * Update Tag Is show
+	 * @param $tagId
+	 * @return mixed|void
+	 * @throws ParameterException
+	 * @throws \common\exceptions\DatabaseException
+	 */
+	public function changeTagIsShow($tagId)
+	{
+		$model = self::findArticleTagModel($tagId);
+		$model->scenario = 'change-is_show';
+		$model->is_show = $model->is_show == ArticleTag::IS_SHOW_YES ? ArticleTag::IS_SHOW_NO : ArticleTag::IS_SHOW_YES;
+		$model->saveModel();
+		Yii::$app->userCache->refresh('tagList');
+	}
 
+	//deleteTags
+	/**
+	 * @Desc: 删除标签
+	 * @param $tagIds
+	 * @throws ParameterException
+	 * @return mixed
+	 */
+	public function deleteTags($tagIds)
+	{
+		$affectedRows = ArticleTag::deleteAll(['id' => $tagIds]);
+		if ($affectedRows === false) {
+			throw new ParameterException(ParameterException::INVALID, '删除失败');
+		}
+		Yii::$app->userCache->refresh('tagList');
+	}
+	
+	/**
+	 * Add Tag
+	 * @param array $params
+	 * @throws DatabaseException
+	 */
+	public function addTag(array $params)
+	{
+		$tag = new ArticleTag();
+		$tag->name = trim($params['name']);
+		$tag->article_count = 0;
+		$result = $tag->save();
+		if ($result == false) {
+			throw new DatabaseException(DatabaseException::INSERT_ERROR, '添加失败');
+		}
+		Yii::$app->userCache->refresh('tagList');
+	}
+	
 	/**
 	 * @Desc: 获取文章Model
 	 * @param $id
@@ -323,6 +396,22 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		}
 
 		return $article;
+	}
+	
+	/**
+	 * @Desc: 获取标签Model
+	 * @param $id
+	 * @return ArticleTag
+	 * @throws ParameterException
+	 */
+	protected static function findArticleTagModel($id)
+	{
+		$model = ArticleTag::findOne($id);
+		if (empty($model)) {
+			throw new ParameterException(ParameterException::INVALID, '标签不存在');
+		}
+		
+		return $model;
 	}
 
 	/**

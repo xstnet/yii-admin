@@ -39,6 +39,11 @@ class ArticleController extends AdminLogController
 						'save-categoy' => ['post'],
 						'save-categoy' => ['post'],
 						'get-categories' => ['get'],
+						'tags' => ['get'],
+						'get-tags' => ['get'],
+						'change-tag-status' => ['post'],
+						'delete-tags' => ['post'],
+						'add-tags' => ['post'],
 					],
 				],
 			]
@@ -180,10 +185,7 @@ class ArticleController extends AdminLogController
 		return self::ajaxSuccess('更新成功');
 	}
 
-
-
-
-
+	
 
 	/**
 	 * @Desc: 获取分类列表 tree
@@ -244,5 +246,67 @@ class ArticleController extends AdminLogController
 		}
 		ArticleService::instance()->deleteCategory($categoryId, $moveArticle, $deleteArticle, $moveToCategoryId);
 		return self::ajaxSuccess('删除成功');
+	}
+	
+	/********************************************标签管理****************/
+	
+	/**
+	 * Display tags view
+	 * @return string
+	 */
+	public function actionTags()
+	{
+		return $this->render('tags');
+	}
+	
+	/**
+	 * Ajax Get Tag List
+	 * @return array
+	 * @throws \yii\base\InvalidConfigException
+	 */
+	public function actionGetTags()
+	{
+		$result = ArticleService::instance()->getTagList();
+		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $result);
+	}
+	
+	/**
+	 * Ajax Change Tag is show
+	 * @return array
+	 * @throws \common\exceptions\DatabaseException
+	 * @throws \common\exceptions\ParameterException
+	 * @throws \yii\base\InvalidConfigException
+	 */
+	public function actionChangeTagStatus()
+	{
+		$tagId = self::postParams('id', 0);
+		$result = ArticleService::instance()->changeTagIsShow($tagId);
+		return self::ajaxSuccess('更新成功');
+	}
+	
+	/**
+	 * Ajax Delete Tags
+	 * @return array
+	 * @throws \common\exceptions\ParameterException
+	 * @throws \yii\base\InvalidConfigException
+	 */
+	public function actionDeleteTags()
+	{
+		$tagIds = self::postParams('ids', 0);
+		ArticleService::instance()->deleteTags($tagIds);
+		return self::ajaxSuccess('删除成功');
+	}
+	
+	/**
+	 * Add Tag
+	 * @return array
+	 * @throws \common\exceptions\DatabaseException
+	 * @throws \yii\base\InvalidConfigException
+	 */
+	public function actionAddTag()
+	{
+		$params = self::postParams();
+		ArticleService::instance()->addTag($params);
+		return self::ajaxSuccess('添加成功');
 	}
 }

@@ -11,6 +11,7 @@ namespace common\helpers;
 use backend\services\setting\SettingService;
 use common\models\Article;
 use common\models\ArticleCategory;
+use common\models\ArticleTag;
 use Yii;
 
 
@@ -119,6 +120,24 @@ class Cache
 		$this->set('latestArticle', $articleList);
 		
 		return $articleList;
+	}
+	
+	/**
+	 * 获取Tag列表
+	 * @return array
+	 */
+	public function getTagList() : array
+	{
+		$list = ArticleTag::find()
+			->select(['id', 'article_count', 'name'])
+			->where(['is_show' => ArticleTag::IS_SHOW_YES])
+			->orderBy('created_at desc')
+			->asArray()
+			->all();
+		
+		$this->set('tagList', $list);
+		
+		return $list;
 	}
 
 }

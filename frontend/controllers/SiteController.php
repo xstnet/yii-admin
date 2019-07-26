@@ -138,7 +138,7 @@ class SiteController extends BaseController
 	
 	public function actionTag($tag)
 	{
-		$where = "find_in_set('$tag', keyword)";
+		$where = new \yii\db\Expression('FIND_IN_SET(:field, keyword)',[':field' => $tag]);
 		$data = $this->getArticleList($where);
 		
 		$breadcrumb = [
