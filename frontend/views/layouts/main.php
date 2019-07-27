@@ -86,7 +86,7 @@ $assetVersion = '1.0003';
 								<li<?=$this->params['active_menu'] == 'note' ? ' class="active"' : ''?>><a href="/note.html">随笔</a></li>
 								<li<?=$this->params['active_menu'] == 'archive' ? ' class="active"' : ''?>><a href="/archive.html">归档</a></li>
 								<li<?=$this->params['active_menu'] == 'about' ? ' class="active"' : ''?>><a href="/about.html">关于我</a></li>
-								<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.html">订阅</a></li>
+								<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.xml">订阅</a></li>
 							</ul>
 						</div>
 					</div>
