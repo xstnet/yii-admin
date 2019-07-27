@@ -50,7 +50,7 @@ class SiteMapController extends BaseController
 		$xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xmlString .= '<urlset>';
 		foreach ($list as $item) {
-			$loc = "<log>https://www.xstnet.com/article-" . $item['id'] . ".html</log>";
+			$loc = "<loc>https://www.xstnet.com/article-" . $item['id'] . ".html</loc>";
 			$lastmod = "<lastmod>" . date('Y-m-d', $item['created_at']) . "</lastmod>";
 			$xmlString .= sprintf("<url>%s%s</url>", $loc, $lastmod);
 		}
