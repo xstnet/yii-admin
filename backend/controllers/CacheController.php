@@ -76,6 +76,10 @@ class CacheController extends AdminLogController
 	{
 		Yii::$app->userCache->flush();
 		
+		if (is_dir('./backend/runtime/cache')) {
+			$this->removeDir('./backend/runtime/cache');
+		}
+		
 		$this->renderIndex();
 		
 		return self::ajaxSuccess('清理成功');
@@ -94,4 +98,25 @@ class CacheController extends AdminLogController
 		$indexHtml = file_get_contents($url, false, stream_context_create($arrContextOptions));
 		file_put_contents('./index.html', $indexHtml);
 	}
+	
+	public function removeDir($dirName)
+	{
+		if(!is_dir($dirName))
+		{
+			return false;
+		}
+		$handle = @opendir($dirName);
+		while(($file = @readdir($handle)) !== false)
+		{
+			//判断是不是文件 .表示当前文件夹 ..表示上级文件夹 =2
+			if($file != '.' && $file != '..')
+			{
+				$dir = $dirName . '/' . $file;
+				is_dir($dir) ? $this->removeDir($dir) : @unlink($dir);
+			}
+		}
+		closedir($handle);
+		@rmdir($dirName);
+	}
+
 }

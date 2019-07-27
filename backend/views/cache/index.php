@@ -41,7 +41,7 @@ use yii\helpers\Html;
 		
 		<div class="layui-btn-container">
 			<button type="button" data-href="<?=Yii::$app->urlManager->createUrl('cache/clear-index')?>" class="layui-btn clear-cache">清除首页缓存</button>
-			<button type="button" data-href="<?=Yii::$app->urlManager->createUrl('cache/clear-index')?>" class="layui-btn clear-cache">清除全部</button>
+			<button type="button" data-href="<?=Yii::$app->urlManager->createUrl('cache/clear-all')?>" class="layui-btn clear-cache">清除全部</button>
 		</div>
 	
 	</div>
