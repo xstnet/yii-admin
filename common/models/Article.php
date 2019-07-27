@@ -110,6 +110,9 @@ class Article extends BaseModel
 				'delete' => [
 					'is_delete',
 				],
+				'update-comment_count' => [
+					'comment_count',
+				],
 			]
 		);
 	}

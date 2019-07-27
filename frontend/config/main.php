@@ -53,6 +53,7 @@ return [
 				"/" => "/site/index",
 				"/gii" => "/index.php?r=gii",
 				'article-<id:\d+>' => '/article/index', // 文章详情
+				'article/get-comments' => '/article/index', // 获取文章评论
 				'article/search' => '/site/search',  // 搜索， 兼容老版本
 				'category-<categoryId:\d+>' => '/site/category', // 分类
 				'/archive/<year:20\d\d>/<month:(0|1)\d>' => '/archive/list', // 归档文档列表

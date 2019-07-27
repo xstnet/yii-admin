@@ -5,9 +5,10 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%messages}}".
+ * This is the model class for table "{{%article_comment}}".
  *
  * @property integer $id
+ * @property integer $article_id
  * @property string $nickname
  * @property string $email
  * @property string $avatar
@@ -16,14 +17,14 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Messages extends BaseModel
+class ArticleComment extends BaseModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%messages}}';
+        return '{{%article_comment}}';
     }
 
     /**
@@ -32,7 +33,7 @@ class Messages extends BaseModel
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at', 'article_id'], 'integer'],
 			['nickname', 'required', 'message' => '名称不能为空!'],
 			['ip', 'string'],
             [['nickname'], 'string', 'min' => 1, 'max' => 30, 'tooLong' => '名称不能超过30个字符', 'tooShort' => '名称不能小于1个字符'],

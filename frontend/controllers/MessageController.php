@@ -43,8 +43,7 @@ class MessageController extends BaseController
 		
 		list ($count, $pages) = $this->getPage($query, 20);
 		
-		$messageList = $query->orderBy(['id' => SORT_DESC])
-			->asArray()
+		$messageList = $query->asArray()
 			->all();
 		
 		return $this->render('index', [
@@ -59,12 +58,22 @@ class MessageController extends BaseController
 	 */
 	public function actionRelease()
 	{
+		// 验证留言间隔, 1分钟内只能发一次
+		$session = Yii::$app->session;
+		$session->open();
+		$lastPubAt = $session->get('message_last_pub_at', 0);
+		
+		if ($lastPubAt > 0 && ($lastPubAt + 60) > time()) {
+			exit("<script>alert('1分钟内只能发布一次哦!');history.go(-1)</script>");
+		}
 		$params = Yii::$app->request->post();
 		$message = new Messages();
 		$message->avatar = sprintf('/uploads/avatar/%d.jpg', rand(1, 5));
 		$message->nickname = HtmlPurifier::process(trim($params['nickname']));
 		$message->email = HtmlPurifier::process(trim($params['email']));
 		$message->content = trim($params['content']);
+		$message->ip = Yii::$app->request->userIP;
+		
 		$error = '';
 		if (!$message->save()) {
 			$error = current($message->getFirstErrors());
@@ -75,6 +84,8 @@ class MessageController extends BaseController
 				<script>alert('$error');history.go(-1)</script>
 			");
 		}
+		
+		$session->set('message_last_pub_at', time());
 		
 		exit("
 				<script>alert('发布成功');location.href='/message.html'</script>

@@ -27,7 +27,7 @@ class BaseController extends Controller
 		
 		$query->offset($offset)->limit($pageSize);
 		
-		$pages = new Pagination(['totalCount' => $count]);
+		$pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize, 'defaultPageSize' => $pageSize]);
 		
 		return [$count, $pages];
 	}
@@ -37,10 +37,8 @@ class BaseController extends Controller
 	 * @param string $content
 	 * @return string
 	 */
-	public function renderContent($content)
+	public function renderContentFilter($content)
 	{
-		return $content = parent::renderContent($content);
-		
 		return ltrim(rtrim(preg_replace(array("/> *([^ ]*) *</","//","'/\*[^*]*\*/'","/\r\n/","/\n/","/\t/",'/>[ ]+</'),array(">\\1<",'','','','','','><'), $content)));
 	}
 	

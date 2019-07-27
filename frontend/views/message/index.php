@@ -18,11 +18,11 @@ $userCache = Yii::$app->userCache;
 			<input type="hidden" name="_csrf-avwd" value="<?=Yii::$app->request->csrfToken?>" />
 			<div class="form-group">
 				<label for="exampleInputEmail1">尊姓大名</label>
-				<input type="text" required class="form-control" name="nickname" placeholder="尊姓大名">
+				<input type="text" required class="form-control" name="nickname" placeholder="您的尊姓大名">
 			</div>
 			<div class="form-group">
 				<label for="exampleInputEmail1">Email</label>
-				<input type="email" class="form-control" name="email" placeholder="Email">
+				<input type="email" class="form-control" name="email" placeholder="Email(可填)">
 			</div>
 			<div class="form-group">
 				<label for="exampleInputEmail1">内容(不超过255个字符)</label>

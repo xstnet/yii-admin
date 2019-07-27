@@ -187,5 +187,10 @@ class SiteController extends BaseController
         return $this->render('about');
     }
 	
+    public function afterAction($action, $result)
+	{
+		$result = $this->renderContentFilter($result);
+		return parent::afterAction($action, $result);
+	}
 	
 }
