@@ -30,6 +30,17 @@ class MessageController extends BaseController
 					'index' => ['get'],
 				],
 			],
+			'PageCache' => [
+				'class' => 'yii\filters\PageCache',
+				'only' => ['index'],
+				'duration' => 0,
+				'enabled' => true,
+				'variations' => Yii::$app->request->get(),
+				'dependency' => [
+					'class' => 'yii\caching\DbDependency',
+					'sql' => "SELECT COUNT(*) FROM x_messages",
+				],
+			],
 		];
 	}
 	

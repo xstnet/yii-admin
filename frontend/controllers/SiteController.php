@@ -39,6 +39,16 @@ class SiteController extends BaseController
                     'logout' => ['post'],
                 ],
             ],
+			'PageCache' => [
+				'class' => 'yii\filters\PageCache',
+				'only' => ['index', 'category', 'search', 'tag'],
+				'duration' => 0,
+				'variations' => Yii::$app->request->get(),
+				'dependency' => [
+					'class' => 'yii\caching\DbDependency',
+					'sql' => 'SELECT MAX(`updated_at`) FROM x_article',
+				],
+			],
         ];
     }
 

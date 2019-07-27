@@ -20,6 +20,30 @@ use yii\web\NotFoundHttpException;
 class ArticleController extends BaseController
 {
 	/**
+	 * {@inheritdoc}
+	 */
+	public function behaviors()
+	{
+		return [
+			'PageCache' => [
+				'class' => 'yii\filters\PageCache',
+				'only' => ['index'],
+				'duration' => 0,
+				'enabled' => true,
+				'variations' => array_merge(Yii::$app->request->get(), [
+					Yii::$app->request->isAjax,
+				]),
+				'dependency' => [
+					'class' => 'yii\caching\DbDependency',
+					'sql' => "SELECT `updated_at` FROM x_article where id = :id",
+					'params' => [
+						':id' => ((int) Yii::$app->request->get('id', 0)),
+					]
+				],
+			],
+		];
+	}
+	/**
 	 * Displays Article Content.
 	 * @param int $id
 	 * @return string
