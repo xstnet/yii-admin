@@ -18,9 +18,9 @@ class ArticlePageCache extends PageCache
 	public function afterRestoreResponse($data)
 	{
 		// 更新文章阅读数量
-		parent::afterRestoreResponse($data);
-		$id = (int) Yii::$app->request->get('id' , 0);
-		
-		Yii::$app->db->createCommand()->update(Article::tableName(), ['hits' => new \yii\db\Expression('hits + 1')], 'id='. $id)->execute();
+		if (!Yii::$app->request->isAjax) {
+			$id = (int) Yii::$app->request->get('id' , 0);
+			Yii::$app->db->createCommand()->update(Article::tableName(), ['hits' => new \yii\db\Expression('hits + 1')], 'id='. $id)->execute();
+		}
 	}
 }
