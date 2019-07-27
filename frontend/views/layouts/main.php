@@ -129,7 +129,7 @@ $assetVersion = '1.0003';
 							<h4>关于</h4>
 							<hr class="hr margin-0">
 							<div class="margin-t-5">
-								<p>已运行:  <strong><?=ceil((time()-strtotime('2015-09-01'))/86400)?></strong>天</p>
+								<p>已运行:  <strong><?=ceil((time()-strtotime('2015-12-01'))/86400)?></strong>天</p>
 								<p>访问量: 102343</p>
 								<p>在线人数: 1</p>
 								<p>QQ: 792539542</p>
