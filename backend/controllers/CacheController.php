@@ -63,6 +63,9 @@ class CacheController extends AdminLogController
 		Yii::$app->userCache->refresh('latestArticle');
 		Yii::$app->userCache->refresh('tagList');
 		
+		$indexHtml = file_get_contents('http://www.xstnet.com');
+		file_put_contents('./index.html', $indexHtml);
+		
 		return self::ajaxSuccess('清理成功');
 	}
 	
@@ -73,6 +76,9 @@ class CacheController extends AdminLogController
 	public function actionClearAll()
 	{
 		Yii::$app->userCache->flush();
+		
+		$indexHtml = file_get_contents('http://www.xstnet.com');
+		file_put_contents('./index.html', $indexHtml);
 		
 		return self::ajaxSuccess('清理成功');
 	}

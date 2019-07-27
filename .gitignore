@@ -36,3 +36,5 @@ phpunit.phar
 
 # Upload files
 /uploads/images
+
+index.html
