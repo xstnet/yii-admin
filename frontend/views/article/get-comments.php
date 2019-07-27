@@ -6,6 +6,7 @@ use yii\helpers\Html;
 
 //?>
 <ul class="media-list">
+	<?php if (!empty($commentList)) :?>
 	<?php foreach ($commentList as $item) :?>
 		<li class="media">
 			<div class="media-left">
@@ -21,6 +22,9 @@ use yii\helpers\Html;
 			<hr class="hr">
 		</li>
 	<?php endforeach;?>
+	<?php else:?>
+	<p>暂无评论, 快来抢沙发吧</p>
+	<?php endif;?>
 </ul>
 <nav aria-label="Page navigation">
 	<?= yii\widgets\LinkPager::widget([
