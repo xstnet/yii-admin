@@ -83,7 +83,7 @@ class CacheController extends AdminLogController
 
 	private function renderIndex()
 	{
-		$url= 'https://www.xstnet.com';
+		$url= 'https://www.xstnet.com/index.php';
 		$arrContextOptions = [
 			"ssl"=> [
 				"verify_peer" => false,
