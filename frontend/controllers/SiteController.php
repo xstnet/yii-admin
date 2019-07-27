@@ -39,9 +39,9 @@ class SiteController extends BaseController
                     'logout' => ['post'],
                 ],
             ],
-			'PageCache' => [
+			'pageCache' => [
 				'class' => 'yii\filters\PageCache',
-				'only' => ['index', 'category', 'search', 'tag'],
+				'only' => ['index', 'category', 'tag'],
 				'duration' => 3600,
 				'variations' => Yii::$app->request->get(),
 				'dependency' => [
@@ -112,7 +112,8 @@ class SiteController extends BaseController
 	 */
 	public function actionSearch()
 	{
-		$keyword = trim(Yii::$app->request->get('s', ''));
+		$keyword = \yii\helpers\Html::encode(trim(Yii::$app->request->get('s', '')));
+
 		if (empty($keyword)) {
 			$keyword = trim(Yii::$app->request->get('keyword', ''));
 		}
@@ -150,6 +151,7 @@ class SiteController extends BaseController
 	
 	public function actionTag($tag)
 	{
+		$tag = \yii\helpers\Html::encode($tag);
 		$where = new \yii\db\Expression('FIND_IN_SET(:field, keyword)',[':field' => $tag]);
 		$data = $this->getArticleList($where);
 		
