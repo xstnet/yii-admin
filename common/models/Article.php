@@ -113,6 +113,9 @@ class Article extends BaseModel
 				'update-comment_count' => [
 					'comment_count',
 				],
+				'update-hits' => [
+					'hits',
+				],
 			]
 		);
 	}

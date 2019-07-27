@@ -26,9 +26,9 @@ class ArticleController extends BaseController
 	{
 		return [
 			'PageCache' => [
-				'class' => 'yii\filters\PageCache',
+				'class' => '\common\helpers\ArticlePageCache',
 				'only' => ['index'],
-				'duration' => 0,
+				'duration' => 3600,
 				'enabled' => true,
 				'variations' => array_merge(Yii::$app->request->get(), [
 					Yii::$app->request->isAjax,
@@ -103,7 +103,6 @@ class ArticleController extends BaseController
 			'breadcrumb' => $breadcrumb,
 			'prevArticle' => $prevArticle,
 			'nextArticle' => $nextArticle,
-			'messageList' => [],
 		]);
 		
 	}

@@ -42,7 +42,7 @@ class SiteController extends BaseController
 			'PageCache' => [
 				'class' => 'yii\filters\PageCache',
 				'only' => ['index', 'category', 'search', 'tag'],
-				'duration' => 0,
+				'duration' => 3600,
 				'variations' => Yii::$app->request->get(),
 				'dependency' => [
 					'class' => 'yii\caching\DbDependency',

@@ -17,6 +17,26 @@ use yii\web\NotFoundHttpException;
 class ArchiveController extends BaseController
 {
 	/**
+	 * {@inheritdoc}
+	 */
+	public function behaviors()
+	{
+		return [
+			'pageCache' => [
+				'class' => 'yii\filters\PageCache',
+				'only' => ['index', 'list'],
+				'duration' => 0,
+				'enabled' => true,
+				'variations' => Yii::$app->request->get(),
+				'dependency' => [
+					'class' => 'yii\caching\DbDependency',
+					'sql' => "SELECT COUNT(*) FROM x_article",
+				],
+			],
+		];
+	}
+	
+	/**
 	 * Displays Archive Content.
 	 * @return string
 	 */
@@ -49,6 +69,7 @@ class ArchiveController extends BaseController
 	 * 归档文章列表
 	 * @param int $year
 	 * @param int $month
+	 * @return string
 	 * @throws NotFoundHttpException
 	 */
 	public function actionList(int $year, int $month)
