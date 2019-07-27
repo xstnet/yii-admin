@@ -165,6 +165,10 @@ footer {
 	line-height: 1.8;
 }
 
+.markdown-content > p {
+	line-height: 1.7;
+}
+
 .markdown-content li {
 	line-height: 1.8;
 }
