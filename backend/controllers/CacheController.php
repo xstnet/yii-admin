@@ -63,8 +63,7 @@ class CacheController extends AdminLogController
 		Yii::$app->userCache->refresh('latestArticle');
 		Yii::$app->userCache->refresh('tagList');
 		
-		$indexHtml = file_get_contents('https://www.xstnet.com');
-		file_put_contents('./index.html', $indexHtml);
+		$this->renderIndex();
 		
 		return self::ajaxSuccess('清理成功');
 	}
@@ -77,10 +76,22 @@ class CacheController extends AdminLogController
 	{
 		Yii::$app->userCache->flush();
 		
-		$indexHtml = file_get_contents('https://www.xstnet.com');
-		file_put_contents('./index.html', $indexHtml);
+		$this->renderIndex();
 		
 		return self::ajaxSuccess('清理成功');
 	}
 
+	private function renderIndex()
+	{
+		$url= 'https://www.xstnet.com';
+		$arrContextOptions = [
+			"ssl"=> [
+				"verify_peer" => false,
+				"verify_peer_name" => false,
+			],
+		];
+		
+		$indexHtml = file_get_contents($url, false, stream_context_create($arrContextOptions));
+		file_put_contents('./index.html', $indexHtml);
+	}
 }
