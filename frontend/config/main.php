@@ -29,11 +29,12 @@ return [
             'name' => 'frontend-avwd',
         ],
 		'log' => [
+			// 假如 YII_DEBUG 开启则是3，否则是0。 这意味着，假如 YII_DEBUG 开启，每个日志消息在日志消息被记录的时候， 将被追加最多3个调用堆栈层级；假如 YII_DEBUG 关闭， 那么将没有调用堆栈信息被包含。
 			'traceLevel' => YII_DEBUG ? 3 : 0,
 			'targets' => [
 				[
 					'class' => 'yii\log\FileTarget',
-					'levels' => ['error', 'warning', ],
+					'levels' => ['error', 'warning',],
 					'logVars' => ['_GET', '_POST', ],
 					'enableRotation' => true, //开启日志文件分段写入，默认每个文件大小为10M
 					'maxFileSize' => 10240, // KB

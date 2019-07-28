@@ -12,6 +12,7 @@ namespace frontend\controllers;
 
 use common\models\Article;
 use common\models\Messages;
+use common\models\TaskMail;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
@@ -75,7 +76,7 @@ class MessageController extends BaseController
 		$lastPubAt = $session->get('message_last_pub_at', 0);
 		
 		if ($lastPubAt > 0 && ($lastPubAt + 60) > time()) {
-			exit("<script>alert('1分钟内只能发布一次哦!');history.go(-1)</script>");
+//			return "<script>alert('1分钟内只能发布一次哦!');history.go(-1)</script>";
 		}
 		$params = Yii::$app->request->post();
 		$message = new Messages();
@@ -91,16 +92,24 @@ class MessageController extends BaseController
 		}
 		
 		if ($error != '') {
-			exit("
-				<script>alert('$error');history.go(-1)</script>
-			");
+			return "<script>alert('$error');history.go(-1)</script>";
 		}
 		
 		$session->set('message_last_pub_at', time());
 		
-		exit("
-				<script>alert('发布成功');location.href='/message.html'</script>
-			");
+		$content = '<p>留言人: ' . $message->nickname . '</p>';
+		$content .= '<p> 邮箱: ' . $message->email . '</p>';
+		$content .= '<div>内容: ' . \yii\helpers\Html::encode($message->content) . '</div>';
+		
+		// 创建邮件任务
+		$mailTask = new TaskMail();
+		$mailTask->addOne([
+			'to_mail' => 'shantongxu@qq.com',
+			'subject' => '博客有新的留言, 请即时查看',
+			'content' => $content,
+		]);
+		
+		return "<script>alert('发布成功');location.href='/message.html'</script>";
 		
 	}
 }

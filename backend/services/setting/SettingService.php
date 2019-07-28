@@ -195,6 +195,7 @@ class SettingService extends BaseService implements SettingServiceInterface
 		}
 
 		$configs = Config::find()
+			->where(['status' => Config::STATUS_ACTIVE])
 			->orderBy(['sort_value' => SORT_ASC])
 			->asArray()
 			->all();

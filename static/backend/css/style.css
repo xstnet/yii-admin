@@ -1,7 +1,8 @@
 /*弹框，默认设置*/
 .dialog-wrap {
 	display: none;
-	min-height: 300px;
+	max-height: 350px;
+	overflow-y: scroll;
 	padding: 0 15px;
 }
 /*弹框中点击确认按钮模拟提交的 button*/

@@ -13,5 +13,17 @@ use Yii;
 
 class BaseController extends Controller
 {
-
+	
+	public function printf($message, $writeLog = true)
+	{
+		if ($writeLog) {
+			Yii::warning($message);
+		}
+		
+		if (is_array($message)) {
+			$message = json_encode($message, JSON_UNESCAPED_UNICODE);
+		}
+		
+		echo $message . PHP_EOL;
+	}
 }

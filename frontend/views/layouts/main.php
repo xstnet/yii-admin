@@ -134,6 +134,7 @@ $assetVersion = '1.0003';
 								<p>在线人数: 1</p>
 								<p>QQ: 792539542</p>
 								<p>邮箱: shantongxu@qq.com</p>
+								<p><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=MUJZUF9FXl9WSURxQEAfUl5c" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_01.png"/></a></p>
 							</div>
 						</div>
 					</div>
