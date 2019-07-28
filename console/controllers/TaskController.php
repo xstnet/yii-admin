@@ -22,7 +22,7 @@ class TaskController extends BaseController
 	 * 自动执行
 	 * ```
 	 * 每天9点-23点, 每隔半小时执行一次
-	 * 0,30 9-23 * * * cd project && /user/bin/php ./yii task/send-mails
+	 * 0,30 9-23 * * * cd project && /usr/bin/php ./yii task/send-mails
 	 * ```
 	 * @return bool
 	 * @throws \yii\base\InvalidConfigException
