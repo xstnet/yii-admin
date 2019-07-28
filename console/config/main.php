@@ -27,6 +27,7 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning',],
+					'logVars' => [],
 					'enableRotation' => true, //开启日志文件分段写入，默认每个文件大小为10M
 					'maxFileSize' => 10240, // KB
 					'maxLogFiles' => 10, // 最多允许分段10个文件 如： frontend-2018-10.1.log, frontend-2018-10.2.log
