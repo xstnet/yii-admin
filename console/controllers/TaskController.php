@@ -95,7 +95,7 @@ class TaskController extends BaseController
 				// 不判断, 失败了就等下次计划任务
 				$item->save();
 			} catch (\Exception $e) {
-				$this->printf(sprintf('任务ID: %d 发送失败, 原因', $item->id, $e->getMessage()));
+				$this->printf(sprintf('任务ID: %d 发送失败, 原因%s', $item->id, $e->getMessage()));
 				Yii::error($e->getTraceAsString());
 			}
 		}
