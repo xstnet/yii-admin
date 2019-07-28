@@ -357,7 +357,6 @@ $name = '发布文章';
 		
 		//调用图片上传接口,将file文件以formData形式上传
 		function uploadImgFromPaste (file, type, isChrome) {
-			console.log('uplpad', 1);
 			var formData = new FormData();
 			formData.append('file', file);
 			formData.append('submission-type', type);
@@ -366,13 +365,13 @@ $name = '发布文章';
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', '/admin.php?r=upload/image-file');
 			xhr.onload = function () {
-				console.log(xhr.readyState);
+				// console.log(xhr.readyState);
 				if ( xhr.readyState === 4 ) {
 					if ( xhr.status === 200 ) {
 						var data = JSON.parse(xhr.responseText);
 						var imageMd = "![alt]("+ (data && data.data.file) +")";
 						mditor.editor.insertBeforeText(imageMd);
-						mditor.editor.wrapSelectText('before', 'after');
+						// mditor.editor.wrapSelectText('before', 'after');
 					} else {
 						console.log( xhr.statusText );
 					}
