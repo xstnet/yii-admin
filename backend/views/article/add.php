@@ -192,6 +192,7 @@ $name = '发布文章';
 			});
 			// auto complete Special symbols
 			mditor.editor.on('input',function(event){
+				return false;
 				var specialSymbols = {
 					"'": "'",
 					'"': '"',
