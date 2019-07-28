@@ -8,6 +8,9 @@
  */
 namespace common\models\form;
 
+use common\exceptions\ParameterException;
+use common\models\UploadFiles;
+
 class UploadForm extends \yii\base\Model
 {
 	/**
@@ -52,20 +55,48 @@ class UploadForm extends \yii\base\Model
 			],
 		];
 	}
-
+	
+	/**
+	 * 上传图片
+	 * @return bool|string
+	 */
 	public function uploadImageFile()
 	{
 		if ($this->validate()) {
-			$filename = md5(time() . rand(1, 9999) . rand(1, 999));
-			$baseDir = 'uploads/images/' . date('Y-m') . '/';
-			if (!is_dir($baseDir)) {
-				mkdir($baseDir, 0777, true);
+			try {
+				$fileMd5 = md5_file($this->imageFile->tempName);
+				// 查询文件是否存在
+				$result = UploadFiles::findOne(['md5' => $fileMd5]);
+				if (!empty($result)) {
+					return $result->path;
+				}
+				
+				// 上传文件
+				$baseDir = 'uploads/images/' . date('Y-m') . '/';
+				if (!is_dir($baseDir)) {
+					mkdir($baseDir, 0777, true);
+				}
+				$filepath = $baseDir . $fileMd5 . '.' . $this->imageFile->extension;
+				// 添加文件记录
+				if ($this->imageFile->saveAs($filepath)) {
+					$fileModel = new UploadFiles();
+					$fileModel->name = $fileMd5;
+					$fileModel->md5 = $fileMd5;
+					$fileModel->path = $filepath;
+					$fileModel->size = $this->imageFile->size;
+					$mimeType = \yii\helpers\FileHelper::getMimeType($filepath);
+					$fileModel->mime_type = $mimeType ? : $this->imageFile->type;
+					$fileModel->extend = $this->imageFile->extension;
+					$fileModel->saveModel();
+					
+					return $filepath;
+				}
+				
+				throw new ParameterException(ParameterException::INVALID, '上传失败');
+			} catch (\Exception $e) {
+				$this->addError('imageFile', $e->getMessage());
+				return false;
 			}
-			$filepath = $baseDir . $filename . '.' . $this->imageFile->extension;
-			if ($this->imageFile->saveAs($filepath)) {
-				return $filepath;
-			}
-			$this->addError('imageFile', '上传失败');
 		}
 		return false;
 	}
@@ -76,22 +107,45 @@ class UploadForm extends \yii\base\Model
 	public function uploadImageData()
 	{
 		if ($this->validate()) {
-			$imageData = str_replace(' ', '+', $this->imageData);
-			$fileContent = base64_decode($imageData);
-			$filename = md5(time() . rand(1, 9999) . rand(1, 999));
-			$fileExt = 'jpg';
-			$baseDir = 'uploads/images/' . date('Y-m') . '/';
-			if (!is_dir($baseDir)) {
-				mkdir($baseDir, 0777, true);
+			try {
+				$imageData = str_replace(' ', '+', $this->imageData);
+				
+				$fileContent = base64_decode($imageData);
+				$fileMd5 = md5($fileContent);
+				
+				// 查询文件是否存在
+				$result = UploadFiles::findOne(['md5' => $fileMd5]);
+				if (!empty($result)) {
+					return $result->path;
+				}
+				
+				$fileExt = 'jpg';
+				
+				$baseDir = 'uploads/images/' . date('Y-m') . '/';
+				if (!is_dir($baseDir)) {
+					mkdir($baseDir, 0777, true);
+				}
+				$filepath = $baseDir . $fileMd5 . '.' . $fileExt;
+				
+				$ret = file_put_contents($filepath, $fileContent);
+				if ($ret) {
+					$fileModel = new UploadFiles();
+					$fileModel->name = $fileMd5;
+					$fileModel->md5 = $fileMd5;
+					$fileModel->path = $filepath;
+					$fileModel->size = $this->imageFile->size;
+					$mimeType = \yii\helpers\FileHelper::getMimeType($filepath);
+					$fileModel->mime_type = $mimeType ? : 'image/jpeg';
+					$fileModel->extend = $fileExt;
+					$fileModel->saveModel();
+					
+					return $filepath;
+				}
+				throw new ParameterException(ParameterException::INVALID, '上传失败');
+			} catch (\Exception $e) {
+				$this->addError('imageData', $e->getMessage());
+				return false;
 			}
-			$filepath = $baseDir . $filename . '.' . $fileExt;
-
-			$ret = file_put_contents($filepath, $fileContent);
-			if ($ret) {
-				return $filepath;
-			}
-			$this->addError('imageData', '上传失败');
 		}
-		return false;
 	}
 }

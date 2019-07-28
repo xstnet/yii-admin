@@ -36,7 +36,7 @@ class SiteMapController extends BaseController
 	}
 	
 	/**
-	 * Displays Archive Content.
+	 * Displays Site Map Xml.
 	 * @return string
 	 */
 	public function actionIndex()

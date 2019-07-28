@@ -48,6 +48,7 @@ use yii\helpers\Html;
 
 
 
+
 	<?= $this->render('../public/footer_js.php')?>
 	<?= Html::jsFile('@static_backend/js/index.js')?>
 
@@ -73,9 +74,6 @@ use yii\helpers\Html;
 			})
 
 		});
-
-
-
 	</script>
 	<?php $this->endBody() ?>
 	</body>
