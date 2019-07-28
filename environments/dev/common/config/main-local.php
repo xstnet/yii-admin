@@ -21,11 +21,11 @@ return [
 				'class' => 'Swift_SmtpTransport',
 				'host' => 'smtp.qq.com',
 				// qq邮箱
-				'username' => 'notifications@xstnet.com	',
+				'username' => 'shantongxu@qq.com',
 				//授权码, 什么是授权码， http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
-				'password' => 'zemomkyrwadhbfbf',
-				'port' => '465',
-				'encryption' => 'ssl',
+				'password' => '',
+				'port' => '25',
+				'encryption' => 'tls',
 			],
 			'messageConfig'=>[
 				'charset'=>'UTF-8',
