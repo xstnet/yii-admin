@@ -74,10 +74,11 @@ class CacheController extends AdminLogController
 	 */
 	public function actionClearAll()
 	{
-		Yii::$app->userCache->flush();
+//		Yii::$app->userCache->flush();
 		
-		if (is_dir('./backend/runtime/cache')) {
-			$this->removeDir('./backend/runtime/cache');
+		$dir = Yii::getAlias('@backend/runtime/cache');
+		if (is_dir($dir)) {
+			$this->removeDir($dir);
 		}
 		
 		$this->renderIndex();
@@ -87,7 +88,11 @@ class CacheController extends AdminLogController
 
 	private function renderIndex()
 	{
-		$url= 'https://www.xstnet.com/index.php';
+		$url = 'https://www.xstnet.com/index.php';
+		if (YII_ENV == 'dev') {
+			$url = 'http://yii-admin.com/index.php';
+		}
+		
 		$arrContextOptions = [
 			"ssl"=> [
 				"verify_peer" => false,
@@ -96,7 +101,8 @@ class CacheController extends AdminLogController
 		];
 		
 		$indexHtml = file_get_contents($url, false, stream_context_create($arrContextOptions));
-		file_put_contents('./index.html', $indexHtml);
+		$filepath = Yii::getAlias('@frontend/web/index.html');
+		file_put_contents($filepath, $indexHtml);
 	}
 	
 	public function removeDir($dirName)

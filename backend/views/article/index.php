@@ -143,7 +143,7 @@ $name = '文章';
 						return '<input type="checkbox" lay-filter="filter-is-allow-comment" value="1" data-row_id="'+ d.id +'" lay-skin="switch" lay-text="允许|不允许" '+ checked +' >';
 						}, align: 'center'}
 					, {field: 'created_at', title: '发布时间', width: 180, templet: function (d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
-					, {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+					, {fixed: 'right', title: '操作', width: 240, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
 				]]
 				, url: '<?=Yii::$app->urlManager->createUrl("article/get-articles")?>'
 				, method: 'get'
@@ -327,6 +327,7 @@ $name = '文章';
 			<button class="layui-btn layui-btn-sm layui-btn-radius" lay-event="brief-edit">快速编辑</button>
 			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="edit">编辑</button>
 			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger" lay-event="delete">删除</button>
+				<a class="layui-btn layui-btn-sm layui-btn-radius" lay-even="view" target="_blank" href="<?=Yii::$app->userCache->get('setting')['site']['host']['value']?>/article-{{d.id}}.html">查看</a>
 		</div>
 	</script>
 	<?php $this->endBody() ?>

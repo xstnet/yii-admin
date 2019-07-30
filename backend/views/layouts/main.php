@@ -5,6 +5,8 @@
 
 use yii\helpers\Html;
 
+$userCache = Yii::$app->userCache;
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -30,19 +32,21 @@ use yii\helpers\Html;
 
 		<!-- 顶部左侧添加选项卡监听 -->
 		<ul class="layui-nav" lay-filter="side-top-left">
+			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="layui-icon">&#xe621;</i>文章管理</a>
+				<dl class="layui-nav-child">
+					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/index')?>">文章管理</a></dd>
+					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/category')?>">分类管理</a></dd>
+					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/tags')?>">标签管理</a></dd>
+				</dl>
+			</li>
 			<li class="layui-nav-item"><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/add')?>"><i class="layui-icon layui-icon-add-1"></i>发布文章</a></li>
-<!--			<li class="layui-nav-item">-->
-<!--				<a href="javascript:;"><i class="layui-icon">&#xe621;</i>基础</a>-->
-<!--				<dl class="layui-nav-child">-->
-<!--					<dd><a href="javascript:;" href-url="demo/btn.html"><i class="layui-icon">&#xe621;</i>按钮</a></dd>-->
-<!--					<dd><a href="javascript:;" href-url="demo/form.html"><i class="layui-icon">&#xe621;</i>表单</a></dd>-->
-<!--				</dl>-->
-<!--			</li>-->
+			<li class="layui-nav-item"><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('cache/index')?>">清除缓存</a></li>
 		</ul>
 
 		<!-- 顶部右侧添加选项卡监听 -->
 		<ul class="layui-nav my-header-user-nav" lay-filter="side-top-right">
-			<li class="layui-nav-item"><a target="_blank" href="/" href-url="">网站首页</a></li>
+			<li class="layui-nav-item"><a target="_blank" href="<?=Yii::$app->userCache->get('setting')['site']['host']['value']?>" href-url="">网站首页</a></li>
 			<li class="layui-nav-item">
 				<a class="name" href="javascript:;"><i class="layui-icon layui-icon-theme"></i>主题</a>
 				<dl class="layui-nav-child">
