@@ -13,8 +13,8 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
 		'assetManager' => [
-			'basePath' => '@webroot/frontend/web/assets',
-			'baseUrl' => '@web/frontend/web/assets',
+			'basePath' => '@webroot/assets',
+			'baseUrl' => '@web/frontend/assets',
 		],
         'request' => [
             'csrfParam' => '_csrf-avwd',

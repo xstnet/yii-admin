@@ -21,8 +21,8 @@ $name = '编辑文章';
 	<head>
 		<title><?= $name?></title>
 		<?= $this->render('../public/header.php')?>
-		<link rel="stylesheet" href="/static/backend/plugins/mditor/dist/css/mditor.min.css" />
-		<script src="/static/backend/plugins/mditor/dist/js/mditor.min.js"></script>
+		<link rel="stylesheet" href="/static/plugins/mditor/dist/css/mditor.min.css" />
+		<script src="/static/plugins/mditor/dist/js/mditor.min.js"></script>
 		<?php $this->head() ?>
 		<style>
 			.upload-img {

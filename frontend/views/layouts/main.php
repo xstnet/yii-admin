@@ -29,8 +29,8 @@ $assetVersion = '1.0003';
 	<meta name="Keywords" content="<?=$this->params['keyword'] ?? 'php技术博客'?>"/>
 	<meta name="Description" content="<?=$this->params['description'] ?? 'php技术博客'?>"/>
 	<!-- Bootstrap -->
-	<link href="/static/frontend/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/static/frontend/css/style.css?v=<?=$assetVersion?>" rel="stylesheet">
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/static/css/style.css?v=<?=$assetVersion?>" rel="stylesheet">
 	<script>
 		var _hmt = _hmt || [];
 		(function() {
@@ -154,7 +154,7 @@ $assetVersion = '1.0003';
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>-->
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<!--<script src="/static/frontend/js/bootstrap.min.js"></script>-->
+<!--<script src="/static/js/bootstrap.min.js"></script>-->
 
 
 <?php $this->endBody() ?>

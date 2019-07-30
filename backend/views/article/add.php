@@ -20,8 +20,8 @@ $name = '发布文章';
 	<head>
 		<title><?= $name?></title>
 		<?= $this->render('../public/header.php')?>
-		<link rel="stylesheet" href="/static/backend/plugins/mditor/dist/css/mditor.min.css" />
-		<script src="/static/backend/plugins/mditor/dist/js/mditor.min.js"></script>
+		<link rel="stylesheet" href="/static/plugins/mditor/dist/css/mditor.min.css" />
+		<script src="/static/plugins/mditor/dist/js/mditor.min.js"></script>
 		
 		<?php $this->head() ?>
 		<style>
@@ -363,7 +363,7 @@ $name = '发布文章';
 			formData.append('_csrf_token_backend_xstnet', '<?=Yii::$app->request->csrfToken?>');
 
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/admin.php?r=upload/image-file');
+			xhr.open('POST', '/index.php?r=upload/image-file');
 			xhr.onload = function () {
 				// console.log(xhr.readyState);
 				if ( xhr.readyState === 4 ) {

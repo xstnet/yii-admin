@@ -15,8 +15,8 @@ return [
     'modules' => [],
     'components' => [
 		'assetManager' => [
-			'basePath' => '@webroot/backend/web/assets',
-			'baseUrl' => '@web/backend/web/assets',
+			'basePath' => '@webroot/assets',
+			'baseUrl' => '@web/assets',
 		],
         'request' => [
             'csrfParam' => '_csrf_token_backend_xstnet',

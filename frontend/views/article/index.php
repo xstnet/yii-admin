@@ -80,13 +80,13 @@ $userCache = Yii::$app->userCache;
 	</div>
 </div>
 <?php if ($isMarkdown) :?>
-<link rel="stylesheet" href="/static/backend/plugins/mditor/dist/css/mditor.min.css" />
-<script src="/static/frontend/js/simjq.min.js"></script>
+<link rel="stylesheet" href="/static/css/mditor.min.css" />
+<script src="/static/js/simjq.min.js"></script>
 <?php else : ?>
-	<link rel="stylesheet" href="/static/frontend/css/google-code-lights.css" />
+	<link rel="stylesheet" href="/static/css/google-code-lights.css" />
 	<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-	<script src="/static/frontend/js/prettify.js"></script><!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<script src="/static/frontend/js/ie10-viewport-bug-workaround.js"></script>
+	<script src="/static/js/prettify.js"></script><!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="/static/js/ie10-viewport-bug-workaround.js"></script>
 	<!--渲染谷歌代码高亮-->
 	<script language='javascript'>
 		$('pre').addClass('prettyprint linenums');

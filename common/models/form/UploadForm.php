@@ -72,19 +72,27 @@ class UploadForm extends \yii\base\Model
 				}
 				
 				// 上传文件
-				$baseDir = 'uploads/images/' . date('Y-m') . '/';
-				if (!is_dir($baseDir)) {
-					mkdir($baseDir, 0777, true);
+				$baseDir = '/uploads/images/' . date('Y-m') . '/';
+				
+				$saveDir = \Yii::getAlias('@uploads') . '/images/' . date('Y-m') . '/';
+				
+				if (!is_dir($saveDir)) {
+					mkdir($saveDir, 0777, true);
 				}
+				
 				$filepath = $baseDir . $fileMd5 . '.' . $this->imageFile->extension;
+				
+				$savePath = $saveDir . $fileMd5 . '.' . $this->imageFile->extension;
+				
+
 				// 添加文件记录
-				if ($this->imageFile->saveAs($filepath)) {
+				if ($this->imageFile->saveAs($savePath)) {
 					$fileModel = new UploadFiles();
 					$fileModel->name = $fileMd5;
 					$fileModel->md5 = $fileMd5;
 					$fileModel->path = $filepath;
 					$fileModel->size = $this->imageFile->size;
-					$mimeType = \yii\helpers\FileHelper::getMimeType($filepath);
+					$mimeType = \yii\helpers\FileHelper::getMimeType($savePath);
 					$fileModel->mime_type = $mimeType ? : $this->imageFile->type;
 					$fileModel->extend = $this->imageFile->extension;
 					$fileModel->saveModel();
