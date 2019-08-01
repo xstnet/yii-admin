@@ -112,7 +112,7 @@ use yii\helpers\Json;
 		// 表格渲染
 		var tableIns = table.render({
 			elem: '#dataTable'                  //指定原始表格元素选择器（推荐id选择器）
-			, height: vipTable.getFullHeight()    //容器高度
+			//, height: vipTable.getFullHeight()    //容器高度
 			, even: true
 			, text: '暂无数据'
 			, cols: [[

@@ -26,29 +26,46 @@ $name = '文章';
 			.dialog-wrap { min-height: 200px; text-align: center }
 			#showTitleImage img { max-width: 460px; max-height: 700px; }
 			/*.layui-layer-page {width: auto !important;}*/
+			
+			.search-fields-wrap {
+				overflow: hidden;
+			}
+			.search-fields-wrap .layui-input-block {
+				margin-left: 0px;
+				min-height: 30px;
+				margin-top: 5px;
+			}
+			.search-fields-wrap input, .search-fields-wrap select {
+				height: 31px;
+				font-size: 14px;
+			}
+			.search-fields-wrap .layui-form-label {
+				width: auto;
+				padding: 5px 11px;
+			}
 		</style>
 	</head>
 	<?php $this->beginBody() ?>
 	<body class="body">
+	
+	<?= $this->render('../public/searchFields.php', ['searchFields' => $searchFields, 'select_category_id' => $treeSelect])?>
+	
+	<hr class="layui-bg-green">
 	<!-- 工具集 -->
 	<div class="my-btn-box">
 		<span class="fl">
-	        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-more">批量删除</a>
-			<a class="layui-btn btn-add btn-default" id="btn-add">发布<?= $name?></a>
+	        <a class="layui-btn layui-btn-danger radius btn-delect layui-btn-sm" id="btn-delete-more">批量删除</a>
+			<a class="layui-btn btn-add btn-default layui-btn-sm" id="btn-add">发布<?= $name?></a>
 		</span>
-			<span class="fr">
-			<span class="layui-form-label">搜索条件：</span>
-			<div class="layui-input-inline">
-				<input type="text" autocomplete="off" placeholder="请输入搜索条件" class="layui-input">
-			</div>
-			<button class="layui-btn mgl-20">查询</button>
-				<a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon layui-icon-refresh"></i></a>
+		<span class="fr">
+				<a class="layui-btn btn-add btn-default layui-btn-sm" id="btn-refresh"><i class="layui-icon layui-icon-refresh"></i></a>
 		</span>
 	</div>
+	
 	<span id="csrfToken"><?=Yii::$app->request->csrfToken?></span>
 
 	<!-- 表格 -->
-	<div id="dataTable" lay-filter="dataList"></div>
+	<div id="dataTable" lay-filter="dataList" lay-size="sm"></div>
 	<!--编辑/添加角色-->
 	<div id="addDlg" class="dialog-wrap" style="min-height: 200px">
 		<form style="padding-top: 30px" class="layui-form" lay-filter="actionForm" action="">
@@ -115,25 +132,25 @@ $name = '文章';
 			// 表格渲染
 			var tableIns = table.render({
 				elem: '#dataTable'                  //指定原始表格元素选择器（推荐id选择器）
-				, height: vipTable.getFullHeight()    //容器高度
+				// , height: vipTable.getFullHeight()    //容器高度
 				, even: true
 				, text: '暂无数据'
 				, cols: [[
 					{type:'checkbox'}
-					, {field: 'id', title: 'ID', width: 80, align: 'center'}
-					, {field: 'title', title: '标题', width: 280, align: 'center', templet: function (d) {
+					, {field: 'id', title: 'ID', width: 40, align: 'center'}
+					, {field: 'title', title: '标题', width: 310, align: 'center', templet: function (d) {
 						var img = '';
 						if (d.title_image) {
 							img += '<img onclick="showTitleImage(\''+d.title_image+'\')" class="title-image" data-src="'+ d.title_image +'" src="<?=Yii::getAlias("@static_backend")?>/images/img-icon-16.png"> ';
 						}
 						return img + '<span style=\''+ d.title_style +'\'>'+ d.title +'</span>';
 					}}
-					, {field: 'category_name', title: '分类', width: 150, align: 'center'}
-					, {field: 'nickname', title: '发布人', width: 150, align: 'center'}
-					, {field: 'author', title: '作者', width: 150, align: 'center'}
-					, {field: 'hits', title: '查看次数', width: 100, align: 'center'}
-					, {field: 'sort_value', title: '排序', width: 60, align: 'center'}
-					, {field: 'source', title: '来源', width: 120, align: 'center'}
+					, {field: 'category_name', title: '分类', width: 100, align: 'center'}
+					, {field: 'nickname', title: '发布人', width: 80, align: 'center'}
+					, {field: 'author', title: '作者', width: 80, align: 'center'}
+					, {field: 'hits', title: '查看次数', width: 80, align: 'center'}
+					// , {field: 'sort_value', title: '排序', width: 60, align: 'center'}
+					, {field: 'source', title: '来源', width: 60, align: 'center'}
 					, {field: 'is_show', title: '是否展示', width: 100, templet: function (d) {
 						var checked = d.is_show == 1 ? 'checked' : '';
 						return '<input type="checkbox" lay-filter="filter-is-show" value="1" data-row_id="'+ d.id +'" lay-skin="switch" lay-text="显示|不显示" '+ checked +' >';
@@ -142,8 +159,9 @@ $name = '文章';
 						var checked = d.is_allow_comment == 1 ? 'checked' : '';
 						return '<input type="checkbox" lay-filter="filter-is-allow-comment" value="1" data-row_id="'+ d.id +'" lay-skin="switch" lay-text="允许|不允许" '+ checked +' >';
 						}, align: 'center'}
-					, {field: 'created_at', title: '发布时间', width: 180, templet: function (d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
-					, {fixed: 'right', title: '操作', width: 240, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+					, {field: 'created_at', title: '发布时间', width: 145, templet: function (d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
+					, {field: 'updated_at', title: '更新时间', width: 145, templet: function (d) {return util.toDateString(d.created_at * 1000); }, align: 'center'}
+					, {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
 				]]
 				, url: '<?=Yii::$app->urlManager->createUrl("article/get-articles")?>'
 				, method: 'get'
@@ -153,6 +171,8 @@ $name = '文章';
 				, page: {
 					layout: ['prev', 'page', 'next', 'skip', 'count', 'refresh','limit', ]
 				}
+				, size: 'sm' //小尺寸的表格
+				// , skin: 'line'
 				, loading: false
 				, parseData: function (res) { //res 即为原始返回的数据
 					return {
@@ -324,10 +344,10 @@ $name = '文章';
 	<!-- 表格操作按钮集 -->
 	<script type="text/html" id="barOption">
 		<div class="layui-btn-group">
-			<button class="layui-btn layui-btn-sm layui-btn-radius" lay-event="brief-edit">快速编辑</button>
-			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="edit">编辑</button>
-			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger" lay-event="delete">删除</button>
-				<a class="layui-btn layui-btn-sm layui-btn-radius" lay-even="view" target="_blank" href="<?=Yii::$app->userCache->get('setting')['site']['host']['value']?>/article-{{d.id}}.html">查看</a>
+			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-xs" lay-event="brief-edit">快速编辑</button>
+			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal layui-btn-xs" lay-event="edit">编辑</button>
+			<button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+				<a class="layui-btn layui-btn-sm layui-btn-radius layui-btn-xs" lay-even="view" target="_blank" href="<?=Yii::$app->userCache->get('setting')['site']['host']['value']?>/article-{{d.id}}.html">查看</a>
 		</div>
 	</script>
 	<?php $this->endBody() ?>

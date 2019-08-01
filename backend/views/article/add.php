@@ -159,7 +159,7 @@ $name = '发布文章';
 							<div class="layui-form-item">
 								<label class="layui-form-label">发布时间</label>
 								<div class="layui-input-block">
-									<input style="width: 300px" type="text" name="release_time" id="releaseTime" autocomplete="off"  value="" class="layui-input">
+									<input style="width: 300px" type="text" name="release_time" autocomplete="off"  value="" class="layui-input my-input-datetime">
 									<div class="layui-form-mid layui-word-aux"></div>
 								</div>
 							</div>
@@ -218,7 +218,7 @@ $name = '发布文章';
 		});
 		
 		// layui方法
-		layui.use(['form', 'layer', 'upload', 'vip_tab', 'laydate', 'colorpicker'], function () {
+		layui.use(['form', 'layer', 'upload', 'vip_tab', 'colorpicker'], function () {
 			// 操作对象
 			var form = layui.form
 				, layer = layui.layer
@@ -227,12 +227,6 @@ $name = '发布文章';
 				, colorpicker = layui.colorpicker
 				, upload = layui.upload,
 				titleStyle = {};
-			var laydate = layui.laydate;
-
-			laydate.render({
-				elem: '#releaseTime', //指定元素
-				type: 'datetime',
-			});
 
 			colorpicker.render({
 				elem: '#titleStyle',

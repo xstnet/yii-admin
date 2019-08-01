@@ -32,5 +32,23 @@ return [
 				'from'=>['notifications@xstnet.com	' => '徐善通博客']
 			],
 		],
+		
+		//		'cache' => [
+		//			'class' => 'yii\caching\FileCache',
+		//			'cachePath' => '@backend/runtime/cache',
+		//		],
+		'cache' => [
+			'class' => 'yii\redis\Cache',
+		],
+		'userCache' => [
+			'class' => 'common\helpers\Cache',
+		],
+		'redis' => [
+			'class' => 'yii\redis\Connection',
+			'hostname' => '127.0.0.1',
+			'port' => 6379,
+			'database' => 1,
+			'password' => '123456789'
+		],
     ],
 ];

@@ -60,6 +60,7 @@ class ArticleController extends AdminLogController
 		$treeSelect = Helpers::getTreeSelect($categories);
 		return $this->render('index', [
 			'treeSelect' => $treeSelect,
+			'searchFields' => Article::getSearchFieldByAction('index'),
 		]);
 	}
 

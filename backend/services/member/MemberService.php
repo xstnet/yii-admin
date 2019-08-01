@@ -33,7 +33,7 @@ class MemberService extends BaseService implements MemberServiceInterface
 		 * @see listSql()
 		 */
 		$query = AdminUser::find();
-		list ($count, $page) = self::getPage($query);
+		list ($count, $page) = self::getPageAndSearch($query);
 
 		$users = $query->select($field)
 			->leftJoin(['role' => UsersRoles::tableName()], "$userTableName.id = role.user_id")

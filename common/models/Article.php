@@ -183,5 +183,62 @@ class Article extends BaseModel
 		}
 		return  strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '-$1', $titleStyle));
 	}
+	
+	public static function searchFields()
+	{
+		return [
+			'title' => [
+				'name' => '标题',
+				'field' => 'title',
+				'width' => 0,
+				'type' => 'text',
+				'condition' => '=',
+				'format' => ''
+			],
+			'category_id' => [
+				'name' => '分类',
+				'type' => 'select',
+				'format' => 'intval',
+			],
+			'start_at' => [
+				'name' => '开始时间',
+				'field' => 'article.created_at',
+				'type' => 'date',
+				'condition' => '>=',
+			],
+			'end_at' => [
+				'name' => '结束时间',
+				'field' => 'article.created_at',
+				'type' => 'date',
+				'condition' => '<',
+			],
+			'id' => [
+				'field' => 'article.id',
+				'name' => 'ID',
+				'type' => 'number',
+				'condition' => '=',
+			],
+		];
+	}
+	
+	public static function getSearchFieldByAction(string $action) : array
+	{
+		$searchFieldKeyList = [
+			'index' => [
+				'id', 'title', 'category_id', 'start_at', 'end_at',
+			],
+		];
+		$result = [];
+		if (isset($searchFieldKeyList[$action])) {
+			$searchFields = self::searchFields();
+			foreach ($searchFieldKeyList[$action] as $item) {
+				if (isset($searchFields[$item])) {
+					$result[$item] = array_merge(static::$defaultSearchField, $searchFields[$item]);
+				}
+			}
+		}
+		
+		return $result;
+	}
 
 }

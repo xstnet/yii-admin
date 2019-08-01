@@ -27,7 +27,7 @@ class TodoService extends BaseService implements TodoServiceInterface
 			->where(['user_id' => $userId])
 			->andWhere(['<>', 'status', Todolist::STATUS_DELETE]);
 
-		list ($count, $page) = self::getPage($query);
+		list ($count, $page) = self::getPageAndSearch($query);
 
 		$todoList = $query->orderBy(['created_at' => SORT_DESC])
 			->asArray()

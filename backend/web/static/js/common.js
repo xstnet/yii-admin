@@ -15,12 +15,51 @@ layui.config({
 	base: "/static/frame/static/js/" //你存放新模块的目录，注意，不是layui的模块目录
 });
 
-layui.use(['jquery', 'layer'], function() {
+layui.use(['jquery', 'layer', 'table', 'laydate', 'form'], function() {
 	$ = layui.$,
 		layer = layui.layer;
+
+	(function ($) {
+		$.fn.serializeJson = function () {
+			var serializeObj = {};
+			$(this.serializeArray()).each(function () {
+				serializeObj[this.name] = this.value;
+			});
+			return serializeObj;
+		};
+		$('#btn').click(function () {
+			var data = $('#form').serializeJson();// 调用serializeJson方法获取表单内容
+			console.log(data);
+		})
+	})($);
+
 	layer.config({
 		// time: 2000,
 	});
+	var laydate = layui.laydate;
+	var form = layui.form;
+	var table = layui.table;
+
+	laydate.render({
+		elem: '.my-input-date', //指定元素
+		type: 'date',
+	});
+	laydate.render({
+		elem: '.my-input-datetime', //指定元素
+		type: 'datetime',
+	});
+
+	form.on('submit(form-search-form)', function (data) {
+		var data = $('#searchForm').serializeJson();
+		console.log(data);
+		table.reload('dataTable', {
+			where: data,
+		});
+		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+	});
+
+
+
 	var loadIndex,
 		csrfToken = '';
 	if($('#csrfToken').length > 0) {

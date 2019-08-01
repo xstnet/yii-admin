@@ -31,8 +31,8 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		$query = Article::find()
 			->where(['is_delete' => Article::IS_DELETE_NO]);
 
-		list ($count, $page) = self::getPage($query);
-
+		list ($count, $page) = self::getPageAndSearch($query, Article::getSearchFieldByAction('index'));
+		
 		$articles = $query->alias('article')
 			->select(Article::getListField())
 			->leftJoin(['user' => AdminUser::tableName()], 'user.id = article.user_id')
@@ -361,7 +361,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	{
 		$query = ArticleTag::find();
 		
-		list ($count, $page) = self::getPage($query);
+		list ($count, $page) = self::getPageAndSearch($query);
 		
 		$list = $query->orderBy('created_at desc')
 			->asArray()

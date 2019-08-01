@@ -30,7 +30,7 @@ class PermissionService extends BaseService implements PermissionServiceInterfac
 		$query =Permissions::find()
 			->select(Permissions::getListField());
 
-		list ($count, $page) = self::getPage($query);
+		list ($count, $page) = self::getPageAndSearch($query);
 
 		$permissions = $query->asArray()
 			->orderBy(['menu_id' => SORT_ASC, 'created_at' => SORT_DESC])
@@ -121,7 +121,7 @@ class PermissionService extends BaseService implements PermissionServiceInterfac
 	{
 		$query = $roles = Roles::find();
 
-		list ($count, $page) = self::getPage($query);
+		list ($count, $page) = self::getPageAndSearch($query);
 
 		$list = $query->select(Roles::getListField())
 			->orderBy(['sort_value' => SORT_ASC, 'created_at' => SORT_DESC, ])

@@ -19,6 +19,15 @@ class BaseModel extends ActiveRecord
 {
 	const SCENARIO_INSERT = 'insert'; // 新增场景
 	const SCENARIO_UPDATE = 'update'; // 更新场景
+	
+	public static $defaultSearchField = [
+		'name' => 'name',
+		'field' => '',
+		'width' => 0,
+		'type' => 'text',
+		'condition' => '=',
+		'format' => ''
+	];
 
 	public function behaviors()
 	{

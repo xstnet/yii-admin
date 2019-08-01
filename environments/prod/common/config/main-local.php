@@ -8,6 +8,14 @@ return [
 			'password' => 'asd#%3GNldjgeHFVv(*&',
 			'charset' => 'utf8',
 			'tablePrefix' => 'x_',
+			
+			'enableSchemaCache' => true,
+			
+			// Duration of schema cache.
+			'schemaCacheDuration' => 86400,
+			
+			// Name of the cache component used to store schema information
+			'schemaCache' => 'cache',
 		],
 		'mailer' => [
 			'class' => 'yii\swiftmailer\Mailer',
@@ -31,6 +39,24 @@ return [
 				'charset'=>'UTF-8',
 				'from'=>['notifications@xstnet.com	' => '徐善通博客']
 			],
+		],
+		
+//		'cache' => [
+//			'class' => 'yii\caching\FileCache',
+//			'cachePath' => '@backend/runtime/cache',
+//		],
+		'cache' => [
+			'class' => 'yii\redis\Cache',
+		],
+		'userCache' => [
+			'class' => 'common\helpers\Cache',
+		],
+		'redis' => [
+			'class' => 'yii\redis\Connection',
+			'hostname' => '127.0.0.1',
+			'port' => 6379,
+			'database' => 1,
+//			'password' => ''
 		],
     ],
 ];

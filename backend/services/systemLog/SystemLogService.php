@@ -25,7 +25,7 @@ class SystemLogService extends BaseService implements SystemLogServiceInterface
 	{
 		$query = SystemLog::find();
 
-		list ($count, $page) = self::getPage($query);
+		list ($count, $page) = self::getPageAndSearch($query);
 
 		$list = $query->asArray()
 			->orderBy('created_at desc')

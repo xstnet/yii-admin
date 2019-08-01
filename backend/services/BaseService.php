@@ -37,9 +37,10 @@ class BaseService
 	/**
 	 * @Desc: 获取分页
 	 * @param $query \yii\db\ActiveQuery
+	 * @param array $searchFields
 	 * @return array
 	 */
-	public static function getPage($query)
+	public static function getPageAndSearch($query, $searchFields = [])
 	{
 		$defaultPageSie = self::$defaultPageSie;
 		$page = (int) Yii::$app->request->get('page', 1);
@@ -53,7 +54,43 @@ class BaseService
 		$offset = ($page - 1) * $pageSize;
 
 		$query->offset($offset)->limit($pageSize);
+		
+		if (!empty($searchFields)) {
+			$where = self::buildSearchFields($searchFields);
+			$query->andWhere($where);
+		}
 
 		return [$count, $page ];
+	}
+	
+	public static function buildSearchFields(array $searchFields = []) : array
+	{
+		$get = Yii::$app->request->get();
+		$where = [];
+		foreach ($searchFields as $name => $item) {
+			if (isset($get[$name]) && !empty($get[$name])) {
+				$value = $get[$name];
+				$field = $name;
+				if (!empty($item['field'])) {
+					$field = $item['field'];
+				}
+				if ($item['type'] == 'date' || $item['type'] == 'datetime') {
+					$value = strtotime($value);
+					if (empty($value)) {
+						continue;
+					}
+				}
+				if (!empty($field['format'])) {
+					$value = call_user_func($item['format'], $value);
+//					$value = $item['format']($value);
+				}
+				$where[] = [$item['condition'], $field, $value];
+			}
+		}
+		if (!empty($where)) {
+			array_unshift($where, 'and');
+		}
+		
+		return $where;
 	}
 }
