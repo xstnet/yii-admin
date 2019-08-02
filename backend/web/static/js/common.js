@@ -54,6 +54,7 @@ layui.use(['jquery', 'layer', 'table', 'laydate', 'form'], function() {
 		console.log(data);
 		table.reload('dataTable', {
 			where: data,
+			text: '没有找到数据哦!'
 		});
 		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
