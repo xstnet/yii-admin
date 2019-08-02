@@ -10,5 +10,5 @@ use yii\helpers\Html;
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<?= Html::cssFile('@static_backend/frame/layui/css/layui.css')?>
 	<?= Html::cssFile('@static_backend/frame/static/css/style.css')?>
-	<?= Html::cssFile('@static_backend/css/style.css')?>
+	<?= Html::cssFile('@static_backend/css/style.css' . Yii::$app->params['static_file_t'])?>
 	<?= Html::cssFile('@static_backend/frame/static/image/code.png', ['rel' => 'icon'])?>

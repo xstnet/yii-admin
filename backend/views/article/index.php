@@ -27,22 +27,6 @@ $name = '文章';
 			#showTitleImage img { max-width: 460px; max-height: 700px; }
 			/*.layui-layer-page {width: auto !important;}*/
 			
-			.search-fields-wrap {
-				overflow: hidden;
-			}
-			.search-fields-wrap .layui-input-block {
-				margin-left: 0px;
-				min-height: 30px;
-				margin-top: 5px;
-			}
-			.search-fields-wrap input, .search-fields-wrap select {
-				height: 31px;
-				font-size: 14px;
-			}
-			.search-fields-wrap .layui-form-label {
-				width: auto;
-				padding: 5px 11px;
-			}
 		</style>
 	</head>
 	<?php $this->beginBody() ?>
