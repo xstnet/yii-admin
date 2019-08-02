@@ -48,17 +48,17 @@ class BaseService
 
 		$page = $page < 1 ? 1 : $page;
 		$pageSize = $pageSize < 1 ? $defaultPageSie : $pageSize;
+		
+		if (!empty($searchFields)) {
+			$where = self::buildSearchFields($searchFields);
+			$query->andWhere($where);
+		}
 
 		$count = $query->count();
 
 		$offset = ($page - 1) * $pageSize;
 
 		$query->offset($offset)->limit($pageSize);
-		
-		if (!empty($searchFields)) {
-			$where = self::buildSearchFields($searchFields);
-			$query->andWhere($where);
-		}
 
 		return [$count, $page ];
 	}
