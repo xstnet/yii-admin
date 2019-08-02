@@ -29,12 +29,12 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 	public function getArticeList()
 	{
 		$query = Article::find()
+			->alias('article')
 			->where(['is_delete' => Article::IS_DELETE_NO]);
 
 		list ($count, $page) = self::getPageAndSearch($query, Article::getSearchFieldByAction('index'));
 		
-		$articles = $query->alias('article')
-			->select(Article::getListField())
+		$articles = $query->select(Article::getListField())
 			->leftJoin(['user' => AdminUser::tableName()], 'user.id = article.user_id')
 			->leftJoin(['category' => ArticleCategory::tableName()], 'category.id = article.category_id')
 			->orderBy('article.created_at desc')
