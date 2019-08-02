@@ -117,7 +117,7 @@ $name = '菜单';
 
 
 	<?= $this->render('../public/footer_js.php')?>
-	<?= Html::jsFile('@static_backend/js/index.js')?>
+	<?= Html::jsFile('@static_backend/js/index.js?v='. Yii::$app->params['static_file_t'])?>
 	<?= Html::jsFile('@static_backend/js/eleTree.js')?>
 	<script type="text/javascript">
 		// 权限树

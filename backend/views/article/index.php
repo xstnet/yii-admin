@@ -95,7 +95,7 @@ $name = '文章';
 	</div>
 
 	<?= $this->render('../public/footer_js.php')?>
-	<?= Html::jsFile('@static_backend/js/index.js')?>
+	<?= Html::jsFile('@static_backend/js/index.js?v='. Yii::$app->params['static_file_t'])?>
 	<script type="text/javascript">
 		// 权限树
 		var pageName = '<?= $name?>',

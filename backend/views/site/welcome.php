@@ -196,7 +196,7 @@ use yii\helpers\Json;
 	</div>
 </div>
 <?= $this->render('../public/footer_js.php')?>
-<?= Html::jsFile('@static_backend/js/index.js' . Yii::$app->params['static_file_t'])?>
+<?= Html::jsFile('@static_backend/js/index.js?v=' . Yii::$app->params['static_file_t'])?>
 <script type="text/javascript">
 	var todos = <?=Json::encode($todos)?>;
 
