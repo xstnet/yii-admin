@@ -48,6 +48,23 @@ use yii\helpers\Json;
 		.todolist-item {
 			padding: 10px 0 0 5px;
 		}
+		
+		.summary {
+			overflow: hidden;
+		}
+		.summary .layui-card-body {
+			color: #ff5722;
+			font-size: 20px;
+		}
+		.summary > div {
+			background: #f2f2f2;
+		}
+		.summary .layui-card {
+			margin: 5px;
+		}
+		.layui-bg-green {
+			padding: 1px !important;
+		}
 	</style>
 </head>
 <?php $this->beginBody() ?>
@@ -64,73 +81,66 @@ use yii\helpers\Json;
 	</span>
 </blockquote>
 <div class="layui-row layui-col-space10 my-index-main">
-	<div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
-		<div class="my-nav-btn layui-clear" data-href="./demo/btn.html">
-			<div class="layui-col-md5">
-				<button class="layui-btn layui-btn-big layui-btn-danger layui-icon">&#xe756;</button>
+	<div class="summary">
+		<div class="layui-col-sm6 layui-col-md3">
+			<div class="layui-card">
+				<div class="layui-card-header">总访问量</div>
+				<div class="layui-card-body">
+					<?=$summary['total_count']?> +
+				</div>
 			</div>
-			<div class="layui-col-md7 tc">
-				<p class="my-nav-text">40</p>
-				<p class="my-nav-text layui-elip">按钮</p>
+		</div>
+		<div class="layui-col-sm6 layui-col-md3">
+			<div class="layui-card">
+				<div class="layui-card-header">文章数</div>
+				<div class="layui-card-body">
+					<?=$summary['article_count']?> <small>篇</small>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-sm6 layui-col-md3">
+			<div class="layui-card">
+				<div class="layui-card-header">7天内发布</div>
+				<div class="layui-card-body">
+					<?=$summary['article_count_7']?> <small>篇</small>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-sm6 layui-col-md3">
+			<div class="layui-card">
+				<div class="layui-card-header">30天内发布</div>
+				<div class="layui-card-body">
+					<?=$summary['article_count_30']?> <small>篇</small>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
-		<div class="my-nav-btn layui-clear" data-href="./demo/form.html">
-			<div class="layui-col-md5">
-				<button class="layui-btn layui-btn-big layui-btn-warm layui-icon">&#xe735;</button>
-			</div>
-			<div class="layui-col-md7 tc">
-				<p class="my-nav-text">40</p>
-				<p class="my-nav-text layui-elip">表单</p>
+	<hr class="layui-bg-green">
+	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+		<div id="summaryCount" style="height: 320px;"></div>
+		
+	</div>
+	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+		<div id="summaryCategory" style="height: 330px;"></div>
+	</div>
+	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+		<div class="layui-collapse">
+			<div class="layui-colla-item">
+				<h2 class="layui-colla-title">待办事项</h2>
+				<div class="layui-colla-content layui-show">
+					<div>
+						<form class="layui-form" id="todoForm" action="">
+							<div class="add-todo">
+								<input type="text" id="todoName" placeholder="Add new todo, press Enter to submit" autocomplete="off" class="layui-input add-todo-input">
+							</div>
+							<div class="todolist-item" id="todolistItem"></div>
+							<div id="todoPage"></div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
-		<div class="my-nav-btn layui-clear" data-href="./demo/table.html">
-			<div class="layui-col-md5">
-				<button class="layui-btn layui-btn-big layui-icon">&#xe715;</button>
-			</div>
-			<div class="layui-col-md7 tc">
-				<p class="my-nav-text">40</p>
-				<p class="my-nav-text layui-elip">表格</p>
-			</div>
-		</div>
-	</div>
-	<div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
-		<div class="my-nav-btn layui-clear" data-href="./demo/tab-card.html">
-			<div class="layui-col-md5">
-				<button class="layui-btn layui-btn-big layui-btn-normal layui-icon">&#xe705;</button>
-			</div>
-			<div class="layui-col-md7 tc">
-				<p class="my-nav-text">40</p>
-				<p class="my-nav-text layui-elip">选项卡</p>
-			</div>
-		</div>
-	</div>
-	<div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
-		<div class="my-nav-btn layui-clear" data-href="./demo/progress-bar.html">
-			<div class="layui-col-md5">
-				<button class="layui-btn layui-btn-big layui-bg-cyan layui-icon">&#xe6b2;</button>
-			</div>
-			<div class="layui-col-md7 tc">
-				<p class="my-nav-text">40</p>
-				<p class="my-nav-text layui-elip">进度条</p>
-			</div>
-		</div>
-	</div>
-	<div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
-		<div class="my-nav-btn layui-clear" data-href="./demo/folding-panel.html">
-			<div class="layui-col-md5">
-				<button class="layui-btn layui-btn-big layui-bg-black layui-icon">&#xe698;</button>
-			</div>
-			<div class="layui-col-md7 tc">
-				<p class="my-nav-text">40</p>
-				<p class="my-nav-text layui-elip">折叠面板</p>
-			</div>
-		</div>
-	</div>
-
 	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
 		<div class="layui-collapse">
 			<div class="layui-colla-item">
@@ -164,41 +174,131 @@ use yii\helpers\Json;
 			</div>
 		</div>
 	</div>
-	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
-		<div class="layui-collapse">
-			<div class="layui-colla-item">
-				<h2 class="layui-colla-title">表格</h2>
-				<div class="layui-colla-content layui-show">
-
-				</div>
-			</div>
-		</div>
-	</div>
+<!--	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">-->
+<!--		<div class="layui-collapse">-->
+<!--			<div class="layui-colla-item">-->
+<!--				<h2 class="layui-colla-title">表格</h2>-->
+<!--				<div class="layui-colla-content layui-show">-->
+<!---->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
 </div>
-<div class="layui-row layui-col-space10 my-index-main">
-	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
-		<div class="layui-collapse">
-			<div class="layui-colla-item">
-				<h2 class="layui-colla-title">待办事项</h2>
-				<div class="layui-colla-content layui-show">
-					<div>
-						<form class="layui-form" id="todoForm" action="">
-						<div class="add-todo">
-							<input type="text" id="todoName" placeholder="Add new todo, press Enter to submit" autocomplete="off" class="layui-input add-todo-input">
-						</div>
-						<div class="todolist-item" id="todolistItem"></div>
-						<div id="todoPage"></div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<!--<div class="layui-row layui-col-space10 my-index-main">-->
+<!--	-->
+<!--</div>-->
 <?= $this->render('../public/footer_js.php')?>
 <?= Html::jsFile('@static_backend/js/index.js?v=' . Yii::$app->params['static_file_t'])?>
+<?= Html::jsFile('@static_backend/plugins/echarts/echarts.min.js?')?>
 <script type="text/javascript">
 	var todos = <?=Json::encode($todos)?>;
+
+	var myChart = echarts.init(document.getElementById('summaryCount'));
+	var myChartCategory = echarts.init(document.getElementById('summaryCategory'));
+
+	// 指定图表的配置项和数据
+	var option = {
+		title: {
+			text: '7天内访问信息'
+		},
+		tooltip: {},
+		legend: {
+			data:['访问数量', 'IP']
+		},
+		xAxis: {
+			data: <?=Json::encode($chartDayCount['date'])?>
+		},
+		yAxis: {},
+		series: [
+			{
+				name: '访问数量',
+				type: 'bar',
+				data: <?=Json::encode($chartDayCount['day'])?>
+			},
+			{
+				name: 'IP',
+				type: 'bar',
+				data: <?=Json::encode($chartDayCount['ip'])?>
+			}
+		]
+	};
+
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+	var chartCategorydata = <?=Json::encode($chartCategory)?>;
+	console.log(chartCategorydata);
+	var optionCategory = {
+		title : {
+			text: '分类文章数量',
+			subtext: '分类文章占比',
+			x: 'center'
+		},
+		tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+		legend: {
+			type: 'scroll',
+			orient: 'vertical',
+			right: 10,
+			top: 20,
+			bottom: 20,
+			data: chartCategorydata.legendData,
+			selected: chartCategorydata.selected
+		},
+		series : [
+			{
+				name: '分类',
+				type: 'pie',
+				radius : '55%',
+				center: ['40%', '50%'],
+				data: chartCategorydata.seriesData,
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}
+		]
+	};
+	function genData(count) {
+		var nameList = [
+			'赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许', '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章', '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗', '凤', '花', '方', '俞', '任', '袁', '柳', '酆', '鲍', '史', '唐', '费', '廉', '岑', '薛', '雷', '贺', '倪', '汤', '滕', '殷', '罗', '毕', '郝', '邬', '安', '常', '乐', '于', '时', '傅', '皮', '卞', '齐', '康', '伍', '余', '元', '卜', '顾', '孟', '平', '黄', '和', '穆', '萧', '尹', '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞', '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危'
+		];
+		var legendData = [];
+		var seriesData = [];
+		var selected = {};
+		for (var i = 0; i < 10; i++) {
+			name = Math.random() > 0.65
+				? makeWord(4, 1) + '·' + makeWord(3, 0)
+				: makeWord(2, 1);
+			legendData.push(name);
+			seriesData.push({
+				name: name,
+				value: Math.round(Math.random() * 100)
+			});
+			selected[name] = i < 6;
+		}
+
+		return {
+			legendData: legendData,
+			seriesData: seriesData,
+			selected: selected
+		};
+
+		function makeWord(max, min) {
+			var nameLen = Math.ceil(Math.random() * max + min);
+			var name = [];
+			for (var i = 0; i < nameLen; i++) {
+				name.push(nameList[Math.round(Math.random() * nameList.length - 1)]);
+			}
+			return name.join('');
+		}
+	}
+	myChartCategory.setOption(optionCategory);
 
 	layui.use(['element', 'form', 'table', 'layer', 'laypage', 'vip_tab'], function () {
 		var form = layui.form
