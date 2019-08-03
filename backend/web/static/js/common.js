@@ -27,10 +27,6 @@ layui.use(['jquery', 'layer', 'table', 'laydate', 'form'], function() {
 			});
 			return serializeObj;
 		};
-		$('#btn').click(function () {
-			var data = $('#form').serializeJson();// 调用serializeJson方法获取表单内容
-			console.log(data);
-		})
 	})($);
 
 	layer.config({
