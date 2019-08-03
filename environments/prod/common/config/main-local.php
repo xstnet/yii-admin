@@ -46,10 +46,10 @@ return [
 //			'cachePath' => '@backend/runtime/cache',
 //		],
 		'cache' => [
-			'class' => 'yii\redis\Cache',
+			'class' => 'common\helpers\RedisCache',
 		],
 		'userCache' => [
-			'class' => 'common\helpers\Cache',
+			'class' => 'common\helpers\UserCache',
 		],
 		'redis' => [
 			'class' => 'yii\redis\Connection',

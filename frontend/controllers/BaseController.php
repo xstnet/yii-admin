@@ -11,6 +11,16 @@ use yii\data\Pagination;
  */
 class BaseController extends Controller
 {
+	public function init()
+	{
+		parent::init();
+		try {
+			$this->dayCount();
+		} catch (\Exception $e) {
+		
+		}
+	}
+	
 	/**
 	 *
 	 * @param \yii\db\ActiveQuery $query
@@ -62,5 +72,30 @@ class BaseController extends Controller
 			'pages' => $pages,
 			'count' => $count,
 		];
+	}
+	
+	/**
+	 * 统计
+	 */
+	public function dayCount()
+	{
+		/**
+		 * @var $redis \yii\redis\Connection
+		 */
+		$redis = Yii::$app->redis;
+		$userIp = (string) Yii::$app->request->userIP;
+		$redis->select(Yii::$app->params['redis_database']['keep_cache']);
+		
+		$today = date('Y-m-d');
+		
+		$countDayKey = $today . '_day_count';
+		$countIpKey = $today . '_ip_count';
+		$countTotalKey = $today . '_total_count';
+		
+		$redis->incr($countDayKey);
+		$redis->incr($countTotalKey);
+		$redis->hset($countIpKey, $userIp, 1);
+		
+		$redis->select(Yii::$app->params['redis_database']['default']);
 	}
 }

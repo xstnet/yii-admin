@@ -12,10 +12,11 @@ use backend\services\setting\SettingService;
 use common\models\Article;
 use common\models\ArticleCategory;
 use common\models\ArticleTag;
+use common\models\CountTotal;
 use Yii;
 
 
-class Cache
+class UserCache
 {
 	public function get($name)
 	{
@@ -26,13 +27,13 @@ class Cache
 				$ret = $this->$funName();
 			}
 		}
-
+		
 		return $ret;
 	}
 
-	public function set($key, $value)
+	public function set($key, $value, $duration = null, $dependency = null)
 	{
-		Yii::$app->cache->set($key, $value);
+		Yii::$app->cache->set($key, $value, $duration = null, $dependency = null);
 	}
 
 	public function refresh($name)
@@ -147,4 +148,11 @@ class Cache
 		return $list;
 	}
 
+	public function getTotalCount()
+	{
+		$count = (int) CountTotal::find()->max('total_count');
+		$this->set('totalCount', $count, 3600);
+		
+		return $count;
+	}
 }

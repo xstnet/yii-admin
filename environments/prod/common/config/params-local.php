@@ -1,7 +1,9 @@
 <?php
 return [
-
+	'redis_database' => [
+		'default' => 1,
+		'user_cache' => 2,
+		'keep_cache' => 3,
+		'session_cache' => 15,
+	]
 ];
-
-$redis = new Redis();
-$redis->connect('127.0.0.1', 6379);

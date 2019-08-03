@@ -9,6 +9,9 @@
 namespace console\controllers;
 
 use common\models\Config;
+use common\models\CountIp;
+use common\models\CountRecord;
+use common\models\CountTotal;
 use common\models\TaskMail;
 use Yii;
 use common\models\Article;
@@ -102,5 +105,99 @@ class TaskController extends BaseController
 		
 		$this->printf(sprintf('共成功发送%d封邮件', $successCount));
 		$this->printf("结束发送邮件" . PHP_EOL);
+	}
+	
+	public function actionDayCount()
+	{
+		$this->printf('开始每日统计');
+		try {
+			Yii::$app->redis->select(Yii::$app->params['redis_database']['keep_cache']);
+			
+			$this->processDayCount(strtotime('yesterday'));
+			$this->processDayCount(strtotime('today'));
+			
+			Yii::$app->redis->select(Yii::$app->params['redis_database']['default']);
+		} catch (\Exception $e) {
+			$this->printf('每日统计出错, 原因:' . $e->getMessage());
+			$this->printf('Trace:' . $e->getTraceAsString());
+		}
+		
+		$this->printf('结束每日统计');
+	}
+	
+	public function processDayCount($dateAt)
+	{
+		/**
+		 * @var $redis \yii\redis\Connection
+		 */
+		$redis = Yii::$app->redis;
+		
+		$transaction = Yii::$app->db->beginTransaction();
+		
+		try {
+			$countDayKey = date('Y-m-d', $dateAt) . '_day_count';
+			$countIpKey = date('Y-m-d', $dateAt) . '_ip_count';
+			$countTotalKey = date('Y-m-d', $dateAt) . '_total_count';
+			
+			$ipModel = CountIp::findOne(['date_at' => $dateAt]);
+			if (empty($ipModel)) {
+				$ipModel = new CountIp();
+				$ipModel->date_at = $dateAt;
+				$ipModel->count = 0;
+				$ipModel->saveModel($transaction);
+			}
+			
+			$dayModel = CountRecord::findOne(['date_at' => $dateAt]);
+			if (empty($dayModel)) {
+				$dayModel = new CountRecord();
+				$dayModel->date_at = $dateAt;
+				$dayModel->count = 0;
+				$dayModel->saveModel($transaction);
+			}
+			
+			$totalModel = CountTotal::findOne(['date_at' => $dateAt]);
+			if (empty($totalModel)) {
+				$totalModel = new CountTotal();
+				$totalModel->date_at = $dateAt;
+				$totalModel->total_count = (int) CountTotal::find()->max('total_count');
+				$totalModel->saveModel($transaction);
+			}
+			
+			/////////////////////////////////////////////////////////////
+			
+			// 每日Ip统计
+			$ipCount = $redis->hlen($countIpKey);
+			if ($ipCount > 0) {
+				$ipModel->count = $ipCount;
+				$ipModel->saveModel($transaction);
+			}
+			
+			// 每日统计
+			$dayCount = $redis->get($countDayKey);
+			if ($dayCount > 0) {
+				$dayModel->count += $ipCount;
+				$dayModel->saveModel($transaction);
+			}
+			
+			// 总统计
+			$totalCount = $redis->get($countTotalKey);
+			if ($totalCount > 0) {
+				$totalModel->total_count += $ipCount;
+				$totalModel->saveModel($transaction);
+			}
+			
+			if ($dateAt < strtotime('today')) {
+				$redis->del($countDayKey);
+				$redis->del($countIpKey);
+				$redis->del($countTotalKey);
+			} else {
+				$redis->decrby($countTotalKey, (int) $totalCount);
+				$redis->decrby($countDayKey, (int) $dayCount);
+			}
+			$transaction->commit();
+		} catch (\Exception $e) {
+			$transaction->rollBack();
+			throw $e;
+		}
 	}
 }

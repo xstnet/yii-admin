@@ -17,7 +17,7 @@ class Yii
 }
 
 /**
- * @property \common\helpers\Cache  $userCache
+ * @property \common\helpers\UserCache  $userCache
  */
 class MyApplication
 {

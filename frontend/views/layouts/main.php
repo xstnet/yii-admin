@@ -130,7 +130,7 @@ $assetVersion = '1.0003';
 							<hr class="hr margin-0">
 							<div class="margin-t-5">
 								<p>已运行:  <strong><?=ceil((time()-strtotime('2015-12-01'))/86400)?></strong>天</p>
-								<p>访问量: 102343</p>
+								<p>访问量: <?=$userCache->get('totalCount')?></p>
 								<p>在线人数: 1</p>
 								<p>QQ: 792539542</p>
 								<p>邮箱: shantongxu@qq.com</p>

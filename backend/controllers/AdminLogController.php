@@ -22,6 +22,9 @@ class AdminLogController extends BaseController
 	public function init()
 	{
 		if (Yii::$app->user->isGuest) {
+			if (Yii::$app->request->isAjax) {
+				exit(json_encode(self::ajaxReturn('登录已过期, 请重新登录')));
+			}
 			$url = Yii::$app->urlManager->createUrl('login/index');
 			header("Location: $url");
 			die;

@@ -27,7 +27,7 @@ return [
 				'port' => '25',
 				'encryption' => 'tls',
 			],
-			'messageConfig'=>[
+			'messageConfig' => [
 				'charset'=>'UTF-8',
 				'from'=>['notifications@xstnet.com	' => '徐善通博客']
 			],
@@ -38,10 +38,10 @@ return [
 		//			'cachePath' => '@backend/runtime/cache',
 		//		],
 		'cache' => [
-			'class' => 'yii\redis\Cache',
+			'class' => 'common\helpers\RedisCache',
 		],
 		'userCache' => [
-			'class' => 'common\helpers\Cache',
+			'class' => 'common\helpers\UserCache',
 		],
 		'redis' => [
 			'class' => 'yii\redis\Connection',
