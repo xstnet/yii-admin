@@ -80,7 +80,7 @@ class SiteController extends AdminLogController
 		$loginHistory = AdminLoginHistory::find()
 			->where(['user_id' => Yii::$app->user->id])
 			->orderBy('created_at desc')
-			->limit(3)
+			->limit(7)
 			->asArray()
 			->all();
 
@@ -125,7 +125,9 @@ class SiteController extends AdminLogController
 			$chartDayCount['day'][] = $item['count'];
 			$chartDayCount['date'][] = date('m/d', $item['date_at']);
 		}
-		$chartDayCount['ip'] = array_column($ipCount, 'count');
+		$chartDayCount['ip'] = array_reverse(array_column($ipCount, 'count'));
+		$chartDayCount['day'] = array_reverse($chartDayCount['day']);
+		$chartDayCount['date'] = array_reverse($chartDayCount['date']);
 
 		return $this->render('welcome', [
 			'loginHistory' => $loginHistory,
