@@ -113,8 +113,8 @@ class TaskController extends BaseController
 		try {
 			Yii::$app->redis->select(Yii::$app->params['redis_database']['keep_cache']);
 			
-			$this->processDayCount(strtotime('yesterday'));
-			$this->processDayCount(strtotime('today'));
+			$this->processDayCount(strtotime(date('Y-m-d', strtotime('yesterday'))));
+			$this->processDayCount(strtotime(date('Y-m-d', strtotime('today'))));
 			
 			Yii::$app->redis->select(Yii::$app->params['redis_database']['default']);
 		} catch (\Exception $e) {
@@ -186,7 +186,7 @@ class TaskController extends BaseController
 				$totalModel->saveModel($transaction);
 			}
 			
-			if ($dateAt < strtotime('today')) {
+			if ($dateAt < strtotime(date('Y-m-d', strtotime('today')))) {
 				$redis->del($countDayKey);
 				$redis->del($countIpKey);
 				$redis->del($countTotalKey);

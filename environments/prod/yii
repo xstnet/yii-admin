@@ -4,6 +4,11 @@
  * Yii console bootstrap file.
  */
 
+//将时区设置为中国
+date_default_timezone_set("PRC");
+//将时区设置为上海时区
+ini_set('date.timezone','Asia/Shanghai');
+
 defined('YII_DEBUG') or define('YII_DEBUG', false);
 defined('YII_ENV') or define('YII_ENV', 'prod');
 
