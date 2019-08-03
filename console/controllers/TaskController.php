@@ -29,10 +29,6 @@ class TaskController extends BaseController
 	 */
 	public function actionSendMails()
 	{
-		
-		
-		
-		
 		$this->printf('开始发送邮件');
 		
 		$mailList = TaskMail::find()
@@ -46,7 +42,7 @@ class TaskController extends BaseController
 		
 		if (empty($mailList)) {
 			$this->printf("结束发送邮件" . PHP_EOL);
-//			return true;
+			return true;
 		}
 		
 		/**
@@ -62,29 +58,24 @@ class TaskController extends BaseController
 		// 代码中配置的参数
 		$mailParams = Yii::$app->getComponents()['mailer'];
 		
-$newMailerConfig = [
-	'transport' => [
-		'host' => $mailConfig['email_host']['value'],
-		// qq邮箱
-		'username' => $mailConfig['email_username']['value'],
-		//授权码, 什么是授权码， http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
-		'password' => $mailConfig['email_password']['value'],
-		'port' => $mailConfig['email_port']['value'],
-		'encryption' => $mailConfig['email_encryption']['value'],
-	],
-	'messageConfig' => [
-		'from' => ["{$mailConfig['email_from']['value']}" => $mailConfig['email_from_title']['value'],],
-	],
-];
+		$newMailerConfig = [
+			'transport' => [
+				'host' => $mailConfig['email_host']['value'],
+				// qq邮箱
+				'username' => $mailConfig['email_username']['value'],
+				//授权码, 什么是授权码， http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
+				'password' => $mailConfig['email_password']['value'],
+				'port' => $mailConfig['email_port']['value'],
+				'encryption' => $mailConfig['email_encryption']['value'],
+			],
+			'messageConfig' => [
+				'from' => ["{$mailConfig['email_from']['value']}" => $mailConfig['email_from_title']['value'],],
+			],
+		];
 		
 		$newMailerConfig = \yii\helpers\ArrayHelper::merge($mailParams, $newMailerConfig);
 		
-		Yii::$app->setComponents(['mailer' => $newMailerConfig]);
-		
-		$a = Yii::$app->getComponents()['mailer'];
-		
-		print_r($a);die;
-//		Yii::$app->set('mailer', $newMailerConfig);
+		Yii::$app->set('mailer', $newMailerConfig);
 		
 		$mail = Yii::$app->mailer->compose();
 		
