@@ -4,5 +4,5 @@ return [
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
 	'defaultAvatar' => 'static/images/default-head.jpg',
-	'static_file_t' => 15000000007, // 防止静态资源不刷新，需要时每次加一即可
+	'static_file_t' => 15000000010, // 防止静态资源不刷新，需要时每次加一即可
 ];

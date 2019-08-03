@@ -139,6 +139,7 @@ function showDialog(title, params) {
  */
 function uploadImage(params) {
 	layui.use(['upload', 'layer'], function() {
+		var $ = layui.jquery;
 		var upload = layui.upload;
 		var config = $.extend({}, {
 			elem: '.select-image-file',
