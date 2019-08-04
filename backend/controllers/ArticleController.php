@@ -81,13 +81,15 @@ class ArticleController extends AdminLogController
 			'treeSelect' => $treeSelect,
 		]);
 	}
-
+	
 	/**
-	 * @Desc: 编辑文章 页面
+	 * 编辑文章 页面
 	 * @param $id
+	 * @param string $type
 	 * @return string
+	 * @throws \yii\base\InvalidConfigException
 	 */
-	public function actionEdit($id)
+	public function actionEdit($id, $type ='')
 	{
 		$model = Article::findOne($id);
 		if (empty($model)) {
@@ -98,6 +100,9 @@ class ArticleController extends AdminLogController
 		$view = 'edit_html';
 		if (!empty($model->content->markdown_content)) {
 			$view = 'edit_markdown';
+		}
+		if (!empty($type)) {
+			$view = 'edit_' . $type;
 		}
 		return $this->render($view, [
 			'treeSelect' => $treeSelect,

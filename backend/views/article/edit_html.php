@@ -51,6 +51,10 @@ $name = '编辑文章';
 	<div style="padding: 0 20px;">
 		<div class="layui-row layui-col-space15">
 			<div class="layui-col-md12">
+				<div class="layui-bg-green" style="padding: 5px 15px;">
+					正在使用富文本编辑器
+					<button id="useMarkdownEdit" type="button" class="layui-btn layui-btn-primary">使用Markdown编辑器</button>
+				</div>
 				<div class="layui-card">
 					<div class="layui-card-header">
 						<fieldset class="layui-elem-field layui-field-title">
@@ -173,13 +177,14 @@ $name = '编辑文章';
 	<script type="text/javascript">
 		var titleStyleStr = "<?=$model->title_style?>";
 		// layui方法
-		layui.use(['form', 'layer', 'upload', 'colorpicker'], function () {
+		layui.use(['form', 'layer', 'upload', 'colorpicker', 'vip_tab'], function () {
 			// 操作对象
 			var form = layui.form
 				, layer = layui.layer
 				, $ = layui.jquery
 				, colorpicker = layui.colorpicker
-				, upload = layui.upload,
+				, upload = layui.upload
+				, vipTab = layui.vip_tab,
 				titleStyle = {color: ''};
 
 			// 默认选中该文章的分类
@@ -283,6 +288,13 @@ $name = '编辑文章';
 
 				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 			});
+
+			$('#useMarkdownEdit').click(function () {
+
+				var tabId = vipTab.getThisTabId();
+				vipTab.add('', '编辑文章Markdown', '<?=Yii::$app->urlManager->createUrl(["article/edit", 'id'=>$model->id, "type"=>"markdown"])?>');
+				vipTab.del(tabId);
+			})
 
 		});
 

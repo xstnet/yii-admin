@@ -50,6 +50,10 @@ $name = '编辑文章';
 	<div style="padding: 0 20px;">
 		<div class="layui-row layui-col-space15">
 			<div class="layui-col-md12">
+				<div class="layui-bg-green" style="padding: 5px 15px;">
+					正在使用Markdown编辑器
+					<button id="useHtmlEdit" type="button" class="layui-btn layui-btn-primary">使用富文本编辑器</button>
+				</div>
 				<div class="layui-card">
 					<div class="layui-card-header">
 						<fieldset class="layui-elem-field layui-field-title">
@@ -182,6 +186,9 @@ $name = '编辑文章';
 			} catch (e) {
 
 			}
+			mditor.editor.on('paste',function(event){
+				parseImage(event);
+			});
 			
 			// mditor.on('changed', function(a){
 			//
@@ -191,11 +198,12 @@ $name = '编辑文章';
 		
 		var titleStyleStr = "<?=$model->title_style?>";
 		// layui方法
-		layui.use(['form', 'layer', 'upload', 'colorpicker'], function () {
+		layui.use(['form', 'layer', 'upload', 'colorpicker', 'vip_tab'], function () {
 			// 操作对象
 			var form = layui.form
 				, layer = layui.layer
 				, $ = layui.jquery
+				, vipTab = layui.vip_tab
 				, colorpicker = layui.colorpicker
 				, upload = layui.upload,
 				titleStyle = {color: ''};
@@ -304,7 +312,83 @@ $name = '编辑文章';
 				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 			});
 
+			$('#useHtmlEdit').click(function () {
+				var tabId = vipTab.getThisTabId();
+				vipTab.add('', '编辑文章Html', '<?=Yii::$app->urlManager->createUrl(["article/edit", 'id'=>$model->id, "type"=>"html"])?>');
+				vipTab.del(tabId);
+			})
+
 		});
+
+		//document.addEventListener('paste', function (event) {
+		function parseImage (event) {
+			var clipboardData = (event.clipboardData || event.originalEvent.clipboardData);
+			console.log(event);
+			var isChrome = false;
+			if ( event.clipboardData || event.originalEvent ) {
+				//not for ie11  某些chrome版本使用的是event.originalEvent
+				var clipboardData = (event.clipboardData || event.originalEvent.clipboardData);
+				if (clipboardData.items) {
+					// for chrome
+					var items = clipboardData.items,
+						len = items.length,
+						blob = null;
+					isChrome = true;
+
+					//items.length比较有意思，初步判断是根据mime类型来的，即有几种mime类型，长度就是几（待验证）
+					//如果粘贴纯文本，那么len=1，如果粘贴网页图片，len=2, items[0].type = 'text/plain', items[1].type = 'image/*'
+					//如果使用截图工具粘贴图片，len=1, items[0].type = 'image/png'
+					//如果粘贴纯文本+HTML，len=2, items[0].type = 'text/plain', items[1].type = 'text/html'
+					// console.log('len:' + len);
+					// console.log(items[0]);
+					// console.log(items[1]);
+					// console.log( 'items[0] kind:', items[0].kind );
+					// console.log( 'items[0] MIME type:', items[0].type );
+					// console.log( 'items[1] kind:', items[1].kind );
+					// console.log( 'items[1] MIME type:', items[1].type );
+
+					//阻止默认行为即不让剪贴板内容在div中显示出来
+					// event.preventDefault();
+
+					//在items里找粘贴的image,据上面分析,需要循环
+					for (var i = 0; i < len; i++) {
+						if (items[i].type.indexOf("image") !== -1) {
+							//getAsFile() 此方法只是living standard firefox ie11 并不支持
+							blob = items[i].getAsFile();
+							uploadImgFromPaste(blob, 'paste', isChrome);
+						}
+					}
+				}
+			}
+		}
+
+		//调用图片上传接口,将file文件以formData形式上传
+		function uploadImgFromPaste (file, type, isChrome) {
+			var formData = new FormData();
+			formData.append('file', file);
+			formData.append('submission-type', type);
+			formData.append('_csrf_token_backend_xstnet', '<?=Yii::$app->request->csrfToken?>');
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/index.php?r=upload/image-file');
+			xhr.onload = function () {
+				// console.log(xhr.readyState);
+				if ( xhr.readyState === 4 ) {
+					if ( xhr.status === 200 ) {
+						var data = JSON.parse(xhr.responseText);
+						var imageMd = "![alt]("+ (data && data.data.file) +")";
+						mditor.editor.insertBeforeText(imageMd);
+						// mditor.editor.wrapSelectText('before', 'after');
+					} else {
+						console.log( xhr.statusText );
+					}
+				}
+			}
+			xhr.onerror = function (e) {
+				console.log( xhr.statusText );
+			}
+			xhr.send(formData);
+		}
 		
 	</script>
 	<?php $this->endBody() ?>

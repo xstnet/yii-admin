@@ -85,7 +85,7 @@ class BaseController extends Controller
 		}
 		
 		// 不统计搜索引擎的访问
-		foreach (Yii::$app->params['spider'] as $item) {
+		foreach (Yii::$app->params['spider_user_agent'] as $item) {
 			if (stripos(Yii::$app->request->userAgent, $item) !==false ) {
 				return true;
 			}
