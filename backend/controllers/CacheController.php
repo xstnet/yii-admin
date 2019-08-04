@@ -89,6 +89,7 @@ class CacheController extends AdminLogController
 
 	private function renderIndex()
 	{
+		return true;
 		$url = 'https://www.xstnet.com/index.php';
 		if (YII_ENV == 'dev') {
 			$url = 'http://yii-admin.com/index.php';

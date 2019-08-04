@@ -82,8 +82,18 @@ class BaseController extends Controller
 		/**
 		 * @var $redis \yii\redis\Connection
 		 */
-		$redis = Yii::$app->redis;
 		$userIp = (string) Yii::$app->request->userIP;
+		$whiteList = [
+			'127.0.0.1',
+			'101.245.112.48',
+			'106.14.176.24',
+		];
+		if (in_array($userIp, $whiteList)) {
+			return true;
+		}
+		
+		$redis = Yii::$app->redis;
+
 		$redis->select(Yii::$app->params['redis_database']['keep_cache']);
 		
 		$today = date('Y-m-d');
