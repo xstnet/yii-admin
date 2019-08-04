@@ -43,7 +43,13 @@ class SiteController extends BaseController
 				'class' => 'yii\filters\PageCache',
 				'only' => ['index', 'category', 'tag'],
 				'duration' => 3600,
-				'variations' => Yii::$app->request->get(),
+				'variations' => [
+					Yii::$app->request->get('page', 1),
+					Yii::$app->request->get('categoryId', 0),
+					Yii::$app->request->get('s', ''),
+					Yii::$app->request->get('tag', ''),
+					Yii::$app->request->get('debug', 0),
+				],
 				'dependency' => [
 					'class' => 'yii\caching\DbDependency',
 					'sql' => 'SELECT MAX(`updated_at`) FROM x_article',

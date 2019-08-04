@@ -24,10 +24,10 @@ class RssController extends BaseController
 				'only' => ['index'],
 				'duration' => 0,
 				'enabled' => true,
-				'variations' => Yii::$app->request->get(),
+				'variations' => [],
 				'dependency' => [
 					'class' => 'yii\caching\DbDependency',
-					'sql' => "SELECT COUNT(*) FROM x_article",
+					'sql' => "SELECT COUNT(*) FROM x_article where is_delete = 0 and is_show = 1",
 				],
 			],
 		];

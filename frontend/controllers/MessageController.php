@@ -36,7 +36,10 @@ class MessageController extends BaseController
 				'only' => ['index'],
 				'duration' => 0,
 				'enabled' => true,
-				'variations' => Yii::$app->request->get(),
+				'variations' => [
+					Yii::$app->request->get('page', 1),
+					Yii::$app->request->get('debug', 1),
+				],
 				'dependency' => [
 					'class' => 'yii\caching\DbDependency',
 					'sql' => "SELECT COUNT(*) FROM x_messages",

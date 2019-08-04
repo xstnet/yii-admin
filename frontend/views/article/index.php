@@ -53,24 +53,30 @@ $userCache = Yii::$app->userCache;
 	<div class="message">
 		<h2>我有话说</h2>
 		<hr class="hr">
-		<form action="/article/release.html" method="post">
-			<input type="hidden" name="_csrf-avwd" value="<?=Yii::$app->request->csrfToken?>" />
-			<input type="hidden" name="article_id" value="<?=$article->id?>" />
-			<div class="form-group">
-				<label for="exampleInputEmail1">尊姓大名</label>
-				<input type="text" required class="form-control" name="nickname" placeholder="您的尊姓大名">
-			</div>
-			<div class="form-group">
-				<label for="exampleInputEmail1">Email</label>
-				<input type="email" class="form-control" name="email" placeholder="Email(可填)">
-			</div>
-			<div class="form-group">
-				<label for="exampleInputEmail1">内容(不超过255个字符)</label>
-				<textarea required class="form-control" name="content" placeholder="说点什么吧" rows="8"></textarea>
-			</div>
+		<?php if($article->is_allow_comment == \common\models\Article::IS_ALLOW_COMMENT_YES) :?>
+			<form action="/article/release.html" method="post">
+				<input type="hidden" name="_csrf-avwd" value="<?=Yii::$app->request->csrfToken?>" />
+				<input type="hidden" name="article_id" value="<?=$article->id?>" />
+				<div class="form-group">
+					<label for="exampleInputEmail1">尊姓大名</label>
+					<input type="text" required class="form-control" name="nickname" placeholder="您的尊姓大名">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Email</label>
+					<input type="email" class="form-control" name="email" placeholder="Email(可填)">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">内容(不超过255个字符)</label>
+					<textarea required class="form-control" name="content" placeholder="说点什么吧" rows="8"></textarea>
+				</div>
 
-			<button type="submit" class="btn btn-default">提交</button>
-		</form>
+				<button type="submit" class="btn btn-default">提交</button>
+			</form>
+		<?php else :?>
+			<div class="alert alert-danger">
+				本篇文章不支持评论
+			</div>
+		<?php endif;?>
 		<br>
 		<h2>最新回复</h2>
 		<hr class="hr">

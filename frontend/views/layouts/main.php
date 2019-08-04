@@ -82,10 +82,10 @@ $assetVersion = '1.0003';
 						<div class="nav">
 							<ul>
 								<li<?=$this->params['active_menu'] == 'index' ? ' class="active"' : ''?>><a href="/">首页</a></li>
-								<li<?=$this->params['active_menu'] == 'message' ? ' class="active"' : ''?>><a href="/message.html">留言</a></li>
 								<li<?=$this->params['active_menu'] == 'note' ? ' class="active"' : ''?>><a href="/note.html">随笔</a></li>
 								<li<?=$this->params['active_menu'] == 'archive' ? ' class="active"' : ''?>><a href="/archive.html">归档</a></li>
 								<li<?=$this->params['active_menu'] == 'about' ? ' class="active"' : ''?>><a href="/about.html">关于我</a></li>
+								<li<?=$this->params['active_menu'] == 'message' ? ' class="active"' : ''?>><a href="/message.html">留言</a></li>
 								<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.xml">订阅</a></li>
 							</ul>
 						</div>

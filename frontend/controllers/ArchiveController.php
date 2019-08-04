@@ -27,10 +27,14 @@ class ArchiveController extends BaseController
 				'only' => ['index', 'list'],
 				'duration' => 0,
 				'enabled' => true,
-				'variations' => Yii::$app->request->get(),
+				'variations' => [
+					Yii::$app->request->get('year', 1),
+					Yii::$app->request->get('month', 0),
+					Yii::$app->request->get('page', 0),
+				],
 				'dependency' => [
 					'class' => 'yii\caching\DbDependency',
-					'sql' => "SELECT COUNT(*) FROM x_article",
+					'sql' => "SELECT COUNT(*) FROM x_article where is_delete = 0 and is_show = 1",
 				],
 			],
 		];

@@ -30,9 +30,12 @@ class ArticleController extends BaseController
 				'only' => ['index'],
 				'duration' => 3600,
 				'enabled' => true,
-				'variations' => array_merge(Yii::$app->request->get(), [
+				'variations' => [
 					Yii::$app->request->isAjax,
-				]),
+					Yii::$app->request->get('page', 1),
+					Yii::$app->request->get('id', 0),
+					Yii::$app->request->get('debug', 0),
+				],
 				'dependency' => [
 					'class' => 'yii\caching\DbDependency',
 					'sql' => "SELECT `updated_at` FROM x_article where id = :id",
@@ -125,6 +128,9 @@ class ArticleController extends BaseController
 		$article = Article::findOne($articleId);
 		if (empty($article)) {
 			throw new NotFoundHttpException('该文章不存在!');
+		}
+		if ($article->is_allow_comment == Article::IS_DELETE_NO) {
+			exit("<script>alert('该篇文章不支持评论!');history.go(-1)</script>");
 		}
 		
 		$transaction = Yii::$app->db->beginTransaction();
