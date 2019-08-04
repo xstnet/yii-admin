@@ -112,7 +112,7 @@ $userCache = Yii::$app->userCache;
 				commentWrap.innerHTML = '获取失败了, 刷新下试试吧';
 			}
 		});
-	}, 1500)
+	}, 1000)
 </script>
 
 
