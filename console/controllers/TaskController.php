@@ -175,7 +175,7 @@ class TaskController extends BaseController
 			// 每日统计
 			$dayCount = $redis->get($countDayKey);
 			if ($dayCount > 0) {
-				$dayModel->count += $ipCount;
+				$dayModel->count += $dayCount;
 				$dayModel->saveModel($transaction);
 			}
 			

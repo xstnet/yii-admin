@@ -94,7 +94,7 @@ class BaseController extends Controller
 		
 		$redis->incr($countDayKey);
 		$redis->incr($countTotalKey);
-		$redis->hset($countIpKey, $userIp, 1);
+		$redis->hset($countIpKey, $userIp, date('Y-m-d H:i:s'));
 		
 		$redis->select(Yii::$app->params['redis_database']['default']);
 	}
