@@ -79,6 +79,9 @@ class BaseController extends Controller
 	 */
 	public function dayCount()
 	{
+		if (Yii::$app->request->isAjax) {
+			return true;
+		}
 		/**
 		 * @var $redis \yii\redis\Connection
 		 */
