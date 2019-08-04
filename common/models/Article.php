@@ -192,7 +192,7 @@ class Article extends BaseModel
 				'field' => 'title',
 				'width' => 0,
 				'type' => 'text',
-				'condition' => '=',
+				'condition' => 'like',
 				'format' => ''
 			],
 			'category_id' => [
