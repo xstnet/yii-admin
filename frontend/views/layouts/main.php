@@ -21,7 +21,7 @@ if (!isset($this->params['keyword'])) {
 if (!isset($this->params['description'])) {
 	$this->params['description'] = '徐善通的技术笔记,分享一些php问题的解决方案';
 }
-$assetVersion = '1.0003';
+$assetVersion = '1.0004';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -35,8 +35,8 @@ $assetVersion = '1.0003';
 	<meta name="keywords" content="<?=$this->params['keyword']?>"/>
 	<meta name="description" content="<?=$this->params['description']?>"/>
 	<!-- Bootstrap -->
-	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/static/css/style.css?v=<?=$assetVersion?>" rel="stylesheet">
+<!--	<link href="/static/css/bootstrap.min.css" rel="stylesheet">-->
+	<link href="/static/css/style.min.css?v=<?=$assetVersion?>" rel="stylesheet">
 	<script>
 		var _hmt = _hmt || [];
 		(function() {
