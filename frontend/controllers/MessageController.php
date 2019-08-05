@@ -115,4 +115,10 @@ class MessageController extends BaseController
 		return "<script>alert('发布成功');location.href='/message.html'</script>";
 		
 	}
+	
+	public function afterAction($action, $result)
+	{
+		$result = $this->renderContentFilter($result);
+		return parent::afterAction($action, $result);
+	}
 }

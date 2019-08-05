@@ -15,6 +15,12 @@ $userCache = Yii::$app->userCache;
 if (!isset($this->params['active_menu'])) {
 	$this->params['active_menu'] = 'index';
 }
+if (!isset($this->params['keyword'])) {
+	$this->params['keyword'] = '个人博客,php博客,程序员博客,php程序员博客,博客网站,徐善通博客,徐善通的个人博客';
+}
+if (!isset($this->params['description'])) {
+	$this->params['description'] = '徐善通的技术笔记,分享一些php问题的解决方案';
+}
 $assetVersion = '1.0003';
 ?>
 <?php $this->beginPage() ?>
@@ -25,9 +31,9 @@ $assetVersion = '1.0003';
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-	<title><?= Html::encode($this->title) ?> - <?=Yii::$app->userCache->get('setting')['site']['name']['value']?></title>
-	<meta name="Keywords" content="<?=$this->params['keyword'] ?? 'php技术博客'?>"/>
-	<meta name="Description" content="<?=$this->params['description'] ?? 'php技术博客'?>"/>
+	<title><?= $this->title ?Html::encode($this->title) . '-'  : ''?> <?=Yii::$app->userCache->get('setting')['site']['name']['value']?></title>
+	<meta name="keywords" content="<?=$this->params['keyword']?>"/>
+	<meta name="description" content="<?=$this->params['description']?>"/>
 	<!-- Bootstrap -->
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/static/css/style.css?v=<?=$assetVersion?>" rel="stylesheet">
@@ -86,7 +92,7 @@ $assetVersion = '1.0003';
 								<li<?=$this->params['active_menu'] == 'archive' ? ' class="active"' : ''?>><a href="/archive.html">归档</a></li>
 								<li<?=$this->params['active_menu'] == 'about' ? ' class="active"' : ''?>><a href="/about.html">关于我</a></li>
 								<li<?=$this->params['active_menu'] == 'message' ? ' class="active"' : ''?>><a href="/message.html">留言</a></li>
-								<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a href="/rss.xml">订阅</a></li>
+								<li<?=$this->params['active_menu'] == 'rss' ? ' class="active"' : ''?>><a target="_blank" href="/rss.xml">订阅</a></li>
 							</ul>
 						</div>
 					</div>

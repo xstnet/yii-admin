@@ -110,4 +110,10 @@ class ArchiveController extends BaseController
 		
 		return $this->render('//site/index', $data);
 	}
+	
+	public function afterAction($action, $result)
+	{
+		$result = $this->renderContentFilter($result);
+		return parent::afterAction($action, $result);
+	}
 }

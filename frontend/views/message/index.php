@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 
 $this->title =  '留言';
-$this->params['active_menu'] = 'archive';
+$this->params['active_menu'] = 'message';
 
 $userCache = Yii::$app->userCache;
 //?>

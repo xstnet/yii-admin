@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 
-$this->title =  '首页';
+$this->title =  '';
 $userCache = Yii::$app->userCache;
 if (isset($active_menu)) {
 	$this->params['active_menu'] = $active_menu;
