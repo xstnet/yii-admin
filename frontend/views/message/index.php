@@ -16,6 +16,7 @@ $userCache = Yii::$app->userCache;
 		<hr class="hr">
 		<form action="/message/release.html" method="post">
 			<input type="hidden" name="_csrf-avwd" value="<?=Yii::$app->request->csrfToken?>" />
+			<input type="hidden" name="from" value="message" />
 			<div class="form-group">
 				<label for="exampleInputEmail1">尊姓大名</label>
 				<input type="text" required class="form-control" name="nickname" placeholder="您的尊姓大名">

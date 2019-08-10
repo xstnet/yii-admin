@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Article;
+use common\models\Messages;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -203,6 +204,16 @@ class SiteController extends BaseController
 		
 		$data['breadcrumb'] = $breadcrumb;
 		$data['active_menu'] = 'about';
+		
+		$query = Messages::find()->orderBy('id desc');
+		
+		list ($count, $pages) = $this->getPage($query, 30);
+		
+		$messageList = $query->asArray()
+			->all();
+		
+		$data['messageList'] = $messageList;
+		$data['pages'] = $pages;
 		
 		return $this->render('about', $data);
 	}

@@ -54,9 +54,9 @@ class MessageController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$query = Messages::find();
+		$query = Messages::find()->orderBy('id desc');
 		
-		list ($count, $pages) = $this->getPage($query, 20);
+		list ($count, $pages) = $this->getPage($query, 30);
 		
 		$messageList = $query->asArray()
 			->all();
@@ -112,7 +112,8 @@ class MessageController extends BaseController
 			'content' => $content,
 		]);
 		
-		return "<script>alert('发布成功');location.href='/message.html'</script>";
+		$url = $params['from'] == 'message' ? '/message.html' : '/about.html';
+		return "<script>alert('发布成功');location.href='{$url}'</script>";
 		
 	}
 	
