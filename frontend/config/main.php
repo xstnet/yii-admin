@@ -57,6 +57,7 @@ return [
 				'article/get-comments' => '/article/index', // 获取文章评论
 				'/search' => '/site/search', // 搜索
 				'/article/search' => '/site/search',  // 搜索， 兼容老版本
+				'/about' => '/site/about',  // 关于我
 				'/category-<categoryId:\d+>' => '/site/category', // 分类
 				'/archive/<year:20\d\d>/<month:(0|1)\d>' => '/archive/list', // 归档文档列表
 				'/archive' => '/archive/index', // 归档

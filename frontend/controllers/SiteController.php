@@ -54,6 +54,7 @@ class SiteController extends BaseController
 					'class' => 'yii\caching\DbDependency',
 					'sql' => 'SELECT MAX(`updated_at`) FROM x_article',
 				],
+				'enabled' => YII_ENV == 'prod',
 			],
         ];
     }
@@ -185,6 +186,25 @@ class SiteController extends BaseController
 	public function actionCounter()
 	{
 		$this->dayCount();
+	}
+	
+	public function actionAbout()
+	{
+		$breadcrumb = [
+			[
+				'name' => '首页',
+				'href' => '/',
+			],
+			[
+				'name' => '关于我',
+				'href' => '/about.html',
+			]
+		];
+		
+		$data['breadcrumb'] = $breadcrumb;
+		$data['active_menu'] = 'about';
+		
+		return $this->render('about', $data);
 	}
 	
     

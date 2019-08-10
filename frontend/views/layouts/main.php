@@ -109,8 +109,19 @@ $assetVersion = '1.0010';
 					<?= $content?>
 					<div class="col-md-2">
 						<div class="content-right category-list">
+<!--							<div class="margin-t-20"></div>-->
+<!--							<h4>关于我</h4>-->
+<!--							<div class="margin-t-20"></div>-->
+<!--							<hr class="hr margin-0">-->
+							<div class="text-center">
+								<img src="/static/images/head.gif" alt="avatar" class="img-circle">
+								<h3>徐善通</h3>
+								<h5>一枚热爱技术的后端程序猿</h5>
+							</div>
+							<div style="margin-top: 30px"></div>
 							<h4>随笔分类</h4>
 							<hr class="hr margin-0">
+							<div class="margin-t-5"></div>
 							<?= \common\helpers\Helpers::renderCategoryTree($userCache->get('articleCategoryTree'))?>
 							<div class="margin-t-20"></div>
 							<h4>标签</h4>
