@@ -164,6 +164,7 @@ $assetVersion = '1.0010';
 
 
 <?php $this->endBody() ?>
+<script src="/counter.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

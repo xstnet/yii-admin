@@ -181,29 +181,13 @@ class SiteController extends BaseController
 		
 		return $this->render('index', $data);
 	}
-  
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
+	
+	public function actionCounter()
+	{
+		$this->dayCount();
+	}
+	
     
-
-    /**
-     * Displays about page.
-     *
-     * @return mixed
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 	
     public function afterAction($action, $result)
 	{

@@ -14,11 +14,12 @@ class BaseController extends Controller
 	public function init()
 	{
 		parent::init();
-		try {
-			$this->dayCount();
-		} catch (\Exception $e) {
-		
-		}
+		// 改为js异步统计
+//		try {
+//			$this->dayCount();
+//		} catch (\Exception $e) {
+//
+//		}
 	}
 	
 	/**
@@ -79,11 +80,6 @@ class BaseController extends Controller
 	 */
 	public function dayCount()
 	{
-		// 不统计ajax的访问
-		if (Yii::$app->request->isAjax) {
-			return true;
-		}
-		
 		// 不统计搜索引擎的访问
 		foreach (Yii::$app->params['spider_user_agent'] as $item) {
 			if (stripos(Yii::$app->request->userAgent, $item) !==false ) {

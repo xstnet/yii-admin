@@ -74,6 +74,11 @@ return [
 					'route' => '/rss/index',
 					'suffix' => '.xml',
 				],
+				[
+					'pattern' => '/counter',
+					'route' => '/site/counter',
+					'suffix' => '.js',
+				],
 			],
 		],
 
