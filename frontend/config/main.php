@@ -77,7 +77,7 @@ return [
 				[
 					'pattern' => '/counter',
 					'route' => '/site/counter',
-					'suffix' => '.js',
+					'suffix' => '.html',
 				],
 			],
 		],
