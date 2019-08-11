@@ -21,7 +21,7 @@ if (!isset($this->params['keyword'])) {
 if (!isset($this->params['description'])) {
 	$this->params['description'] = '徐善通的技术笔记,分享一些php问题的解决方案';
 }
-$assetVersion = '1.0010';
+$assetVersion = '1.0011';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -124,7 +124,7 @@ $assetVersion = '1.0010';
 							<div class="margin-t-5"></div>
 							<?= \common\helpers\Helpers::renderCategoryTree($userCache->get('articleCategoryTree'))?>
 							<div class="margin-t-20"></div>
-							<h4>标签</h4>
+							<h4>标签云</h4>
 							<hr class="hr margin-0">
 							<div class="tag-list margin-t-5">
 								<?php
