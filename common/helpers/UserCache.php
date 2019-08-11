@@ -65,7 +65,7 @@ class UserCache
 	public function getArticleCategory() : array
 	{
 		$categoryList = ArticleCategory::find()
-			->select(['id', 'category_name', 'parent_id'])
+			->select(['id', 'category_name', 'parent_id', 'parents'])
 			->orderBy(['sort_value' => SORT_ASC])
 			->indexBy('id')
 			->asArray()

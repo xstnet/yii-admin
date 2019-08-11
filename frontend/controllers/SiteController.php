@@ -95,18 +95,17 @@ class SiteController extends BaseController
 	 */
 	public function actionCategory(int $categoryId)
 	{
+		$parents = Yii::$app->userCache->get('articleCategory')[$categoryId]['parents'];
+//		$data = $this->getArticleList("find_in_set(category_id, '$parents')");
 		$data = $this->getArticleList(['category_id' => $categoryId]);
 		
-		$breadcrumb = [
+		$breadcrumb = array_merge([
 			[
 				'name' => '首页',
 				'href' => '/',
-			],
-			[
-				'name' => Yii::$app->userCache->getArticleCategoryNameById($categoryId),
-				'href' => "/category-$categoryId.html",
-			],
-		];
+			]
+		], $this->getAllCategoryBreadcrumb($categoryId)
+		);
 		
 		$data['breadcrumb'] = $breadcrumb;
 		$data['active_menu'] = '';

@@ -115,4 +115,24 @@ class BaseController extends Controller
 		
 		$redis->select(Yii::$app->params['redis_database']['default']);
 	}
+	
+	public function getAllCategoryBreadcrumb($categoryId) : array
+	{
+		$userCache = Yii::$app->userCache;
+		$categoryList = $userCache->get('articleCategory');
+		$parents = $categoryList[$categoryId]['parents'];
+		$categoryItems = array_reverse(explode(',', $parents));
+		$breadcrumb = [];
+		foreach ($categoryItems as $categoryId) {
+			$categoryName = $categoryList[$categoryId]['category_name'] ?? '';
+			if (empty($categoryList)) {
+				continue;
+			}
+			$breadcrumb[] = [
+				'name' => $categoryName,
+				'href' => "/category-{$categoryId}.html",
+			];
+		}
+		return $breadcrumb;
+	}
 }

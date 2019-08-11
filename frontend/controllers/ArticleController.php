@@ -29,7 +29,7 @@ class ArticleController extends BaseController
 				'class' => '\common\helpers\ArticlePageCache',
 				'only' => ['index'],
 				'duration' => 3600,
-				'enabled' => true,
+				'enabled' => YII_ENV == 'prod',
 				'variations' => [
 					Yii::$app->request->isAjax,
 					Yii::$app->request->get('page', 1),
@@ -70,20 +70,7 @@ class ArticleController extends BaseController
 		
 		Yii::$app->db->createCommand()->update(Article::tableName(), ['hits' => $article->hits+1], 'id='.$article->id)->execute();
 		
-		$breadcrumb = [
-			[
-				'name' => '首页',
-				'href' => '/',
-			],
-			[
-				'name' => Yii::$app->userCache->getArticleCategoryNameById($article->category_id),
-				'href' => "/category-{$article->category_id}.html",
-			],
-			[
-				'name' => $article->title,
-				'href' => "/article-{$article->id}.html",
-			],
-		];
+		$breadcrumb = $this->getArticleBreadcrumb($article);
 		
 		// 上一条数据
 		$prevArticle = Article::find()
@@ -186,5 +173,28 @@ class ArticleController extends BaseController
 			'commentList' => $commentList,
 			'pages' => $pages,
 		]));
+	}
+	
+	/**
+	 *
+	 * @param Article $article
+	 * @return array
+	 */
+	private function getArticleBreadcrumb($article)
+	{
+		
+		return array_merge([
+			[
+				'name' => '首页',
+				'href' => '/',
+			]
+		], $this->getAllCategoryBreadcrumb($article->category_id),
+			[
+				[
+					'name' => $article->title,
+					'href' => "/article-{$article->id}.html",
+				],
+			]
+		);
 	}
 }
