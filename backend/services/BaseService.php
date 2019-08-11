@@ -44,7 +44,7 @@ class BaseService
 	{
 		$defaultPageSie = self::$defaultPageSie;
 		$page = (int) Yii::$app->request->get('page', 1);
-		$pageSize = (int) Yii::$app->request->get('pageSize', $defaultPageSie);
+		$pageSize = (int) max(Yii::$app->request->get('limit', self::$defaultPageSie), Yii::$app->request->get('pageSize', $defaultPageSie));
 
 		$page = $page < 1 ? 1 : $page;
 		$pageSize = $pageSize < 1 ? $defaultPageSie : $pageSize;
