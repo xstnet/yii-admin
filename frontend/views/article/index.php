@@ -9,6 +9,8 @@ $this->params['keyword'] = $article->keyword;
 $this->params['description'] = $article->description;
 $this->params['active_menu'] = '';
 
+$this->params['article_directory'] = $article->content->directory;
+
 $isMarkdown = !empty($article->content->markdown_content) ? 1 : 0;
 $contentClass = $isMarkdown ? 'markdown-content' : 'html-content';
 $userCache = Yii::$app->userCache;

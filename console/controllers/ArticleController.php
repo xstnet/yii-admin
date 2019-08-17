@@ -8,6 +8,8 @@
  */
 namespace console\controllers;
 
+use common\helpers\Helpers;
+use common\models\ArticleContents;
 use Yii;
 use common\models\Article;
 use common\models\ArticleTag;
@@ -42,5 +44,29 @@ class ArticleController extends BaseController
 		}
 		
 		echo '初始化标签完成' . PHP_EOL;
+	}
+	
+	/**
+	 * 生成文章目录
+	 * php yii article/create-directory
+	 */
+	public function actionCreateDirectory()
+	{
+		$articleContents = ArticleContents::find()
+//			->where(['directory' => ''])
+			->batch(30);
+		
+		/**
+		 * @var $item ArticleContents
+		 */
+		foreach ($articleContents as $items) {
+			foreach ($items as $item) {
+				list ($directory, $text) = Helpers::createArticleDirectory($item->id, $item->content);
+				$item->directory = $directory;
+				$item->content = $text;
+				$item->saveModel();
+			}
+		}
+
 	}
 }

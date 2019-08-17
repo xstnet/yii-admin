@@ -55,6 +55,7 @@ class ArticleController extends BaseController
 	 */
 	public function actionIndex(int $id)
 	{
+		$this->layout = 'article-main';
 		// 获取评论
 		if (Yii::$app->request->isAjax) {
 			$page = Yii::$app->request->get('page', 0);
@@ -87,6 +88,10 @@ class ArticleController extends BaseController
 			->limit(1)
 			->asArray()
 			->one();
+		
+		if (empty($article->content->directory))  {
+			$this->layout = 'main';
+		}
 		
 		return $this->render('index', [
 			'article' => $article,

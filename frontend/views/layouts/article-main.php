@@ -46,7 +46,7 @@ $assetVersion = '1.0013';
 			s.parentNode.insertBefore(hm, s);
 		})();
 	</script>
-
+	
 	<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 	<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
 	<!--[if lt IE 9]>
@@ -119,39 +119,18 @@ $assetVersion = '1.0013';
 								<h5>一枚热爱技术的后端程序猿</h5>
 							</div>
 							<div style="margin-top: 30px"></div>
-							<h4>随笔分类</h4>
-							<hr class="hr margin-0">
-							<div class="margin-t-5"></div>
-							<?= \common\helpers\Helpers::renderCategoryTree($userCache->get('articleCategoryTree'))?>
-							<div class="margin-t-20"></div>
-							<h4>标签云</h4>
-							<hr class="hr margin-0">
-							<div class="tag-list margin-t-5">
-								<?php
-								$tagMap = ['default', 'success', 'info', 'warning', 'danger'];
-								foreach ($userCache->get('tagList') as $k => $tag) {
-									echo "<a href=\"/tag/{$tag['name']}.html\"><span class=\"label label-{$tagMap[$k%5]}\">{$tag['name']}</span></a> ";
-								}
-								?>
-							</div>
-							<div class="margin-t-20"></div>
-							<h4>最新文章</h4>
-							<hr class="hr margin-0">
-							<div>
-								<?php foreach ($userCache->get('latestArticle') as $item) :?>
-								<h5><a href="/article-<?=$item['id']?>.html"><?=$item['title']?></a></h5>
-								<?php endforeach;?>
-							</div>
-							<div class="margin-t-20"></div>
-							<h4>关于</h4>
-							<hr class="hr margin-0">
-							<div class="margin-t-5">
-								<p>已运行:  <strong><?=ceil((time()-strtotime('2015-12-01'))/86400)?></strong>天</p>
-								<p>访问量: <?=$userCache->get('totalCount')?></p>
-								<p>在线人数: 1</p>
-								<p>QQ: 792539542</p>
-								<p>邮箱: shantongxu@qq.com</p>
-								<p><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=MUJZUF9FXl9WSURxQEAfUl5c" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_01.png"/></a></p>
+							<div id="articleDirectory">
+								<h4>文章目录</h4>
+								<hr class="hr margin-0">
+								<div class="margin-t-5"></div>
+								<?=$this->params['article_directory']?>
+								<?php if (substr_count($this->params['article_directory'], '<li') <= 10) :?>
+								<div class="margin-t-20"></div>
+								<h4>随笔分类</h4>
+								<hr class="hr margin-0">
+								<div class="margin-t-5"></div>
+								<?= \common\helpers\Helpers::renderCategoryTree($userCache->get('articleCategoryTree'))?>
+								<?php endif;?>
 							</div>
 						</div>
 					</div>
@@ -178,6 +157,15 @@ $assetVersion = '1.0013';
 <?php $this->endBody() ?>
 <script src="/counter.html"></script>
 <script>
+	var articleDirectory = document.getElementById('articleDirectory');
+	window.addEventListener('scroll', function(){
+		var t = document.documentElement.scrollTop;
+		if (t > 360) {
+			articleDirectory.className = 'affix-active';
+		} else {
+			articleDirectory.className = '';
+		}
+	});
 	var toTop = document.getElementById("toTop");
 	toTop.onclick = function(){
 		document.documentElement.scrollTop = document.body.scrollTop =0;
