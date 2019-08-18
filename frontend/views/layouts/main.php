@@ -21,7 +21,7 @@ if (!isset($this->params['keyword'])) {
 if (!isset($this->params['description'])) {
 	$this->params['description'] = '徐善通的技术笔记,分享一些php问题的解决方案';
 }
-$assetVersion = '1.0014';
+$assetVersion = '1.0015';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

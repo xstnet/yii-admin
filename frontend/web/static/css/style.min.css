@@ -13,6 +13,8 @@ code[class*="language-"],pre[class*="language-"]{color:black;background:0;text-s
 	.affix-active {
 		position: fixed;
 		top: 0;
+		overflow-y: scroll;
+		max-height: 90%;
 	}
 }
 #toTop {
