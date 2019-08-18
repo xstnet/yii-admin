@@ -108,7 +108,7 @@ class Helpers
 		$result = [
 			'', $text,
 		];
-		$pattern = '/<h(\d) (.*)>(.*)<\/h\d>/i';
+		$pattern = '/<h(\d)(.*?)>(.*?)<\/h\d>/i';
 		preg_match_all($pattern, $text, $match);
 		//		print_r($match);
 		if (empty($match[0])) {
@@ -123,7 +123,7 @@ class Helpers
 				'id' => $id,
 				'parent_id' => 0, // 上下级关系, 默认都为一级目录
 				'level' => $level, // 等级, 对应 h [1,2,3,4,5,6]
-				'name' => $match[3][$i], // 标题名字
+				'name' => trim(strip_tags($match[3][$i])), // 标题名字
 			];
 			$id ++;
 		}
@@ -167,7 +167,14 @@ class Helpers
 		$treeList = self::getTree($treeList);
 		$directoryHtml = self::renderArticleDirectory($treeList);
 		
-		$text = preg_replace($pattern, '<h${1} name="${3}" id="${3}">${3}</h${1}>', $text);
+		$text = preg_replace_callback(
+			$pattern,
+			function ($m) {
+				$name = trim(strip_tags($m[3]));
+				return "<h$m[1] name='$name' id='$name'>" . $m[3] . "</h$m[1]>";
+			},
+			$text
+		);
 		
 		return [$directoryHtml, $text];
 	}
