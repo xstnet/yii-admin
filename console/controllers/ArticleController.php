@@ -61,7 +61,7 @@ class ArticleController extends BaseController
 		 */
 		foreach ($articleContents as $items) {
 			foreach ($items as $item) {
-				list ($directory, $text) = Helpers::createArticleDirectory($item->id, $item->content);
+				list ($directory, $text) = Helpers::createArticleDirectory($item->content);
 				$item->directory = $directory;
 				$item->content = $text;
 				$item->saveModel();

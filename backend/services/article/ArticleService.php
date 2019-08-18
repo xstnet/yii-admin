@@ -75,6 +75,11 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$content->id = $article->id;
 			$content->content = $params['content'];
 			$content->markdown_content = $params['markdown_content'] ?? '';
+			// 生成文章目录, 并为目录添加锚点
+			list ($directory, $content) = Helpers::createArticleDirectory($content->content);
+			$content->content = $content;
+			$content->directory = $directory;
+			
 			$content->saveModel($transaction);
 			// 添加标签
 			if (!empty($article->keyword)) {
@@ -124,6 +129,10 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			// 保存文章内容
 			$article->content->content = $params['content'];
 			$article->content->markdown_content = $params['markdown_content'] ?? '';
+			
+			list ($directory, $content) = Helpers::createArticleDirectory($article->content->content);
+			$article->content->content = $content;
+			$article->content->directory = $directory;
 			$article->content->saveModel($transaction);
 			
 			// 更新标签
