@@ -76,8 +76,8 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 			$content->content = $params['content'];
 			$content->markdown_content = $params['markdown_content'] ?? '';
 			// 生成文章目录, 并为目录添加锚点
-			list ($directory, $content) = Helpers::createArticleDirectory($content->content);
-			$content->content = $content;
+			list ($directory, $articleContent) = Helpers::createArticleDirectory($content->content);
+			$content->content = $articleContent;
 			$content->directory = $directory;
 			
 			$content->saveModel($transaction);
