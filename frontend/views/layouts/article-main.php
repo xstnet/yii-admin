@@ -107,7 +107,7 @@ $assetVersion = '1.0014';
 			<div class="col-md-12">
 				<div class="row">
 					<?= $content?>
-					<div class="col-md-2">
+					<div class="col-md-3">
 						<div class="content-right category-list">
 <!--							<div class="margin-t-20"></div>-->
 <!--							<h4>关于我</h4>-->
