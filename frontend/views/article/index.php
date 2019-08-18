@@ -49,8 +49,14 @@ $userCache = Yii::$app->userCache;
 		<span>声明： 除非本文有注明出处，否则转载请注明本文地址</span>
 	</div>
 	<hr class="hr">
-	<p>上一篇： <a style="margin-right: 50px" href="<?=empty($prevArticle) ? '/' : "article-{$prevArticle['id']}.html"?>"><?=empty($prevArticle) ? '返回首页' : $prevArticle['title']?></a>
-		下一篇： <a href="<?=empty($nextArticle) ? '/' : "article-{$nextArticle['id']}.html"?>"><?=empty($nextArticle) ? '返回首页' : $nextArticle['title']?></a></p>
+	<div class="row">
+		<div class="col-md-6">
+			上一篇： <a style="margin-right: 50px" href="<?=empty($prevArticle) ? '/' : "article-{$prevArticle['id']}.html"?>"><?=empty($prevArticle) ? '返回首页' : $prevArticle['title']?></a>
+		</div>
+		<div class="col-md-6">
+			下一篇： <a href="<?=empty($nextArticle) ? '/' : "article-{$nextArticle['id']}.html"?>"><?=empty($nextArticle) ? '返回首页' : $nextArticle['title']?></a>
+		</div>
+	</div>
 	<br>
 	<div class="message">
 		<h2>我有话说</h2>
