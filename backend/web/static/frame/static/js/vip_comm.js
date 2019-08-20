@@ -36,7 +36,7 @@ layui.use(['layer', 'element', 'util'], function () {
     function navHide(t, st) {
         var time = t ? t : 50;
         st ? localStorage.log = 1 : localStorage.log = 0;
-        side.animate({'left': -200}, time);
+        side.animate({'left': -150}, time);
         body.animate({'left': 0}, time);
         footer.animate({'left': 0}, time);
     }
@@ -46,8 +46,8 @@ layui.use(['layer', 'element', 'util'], function () {
         var time = t ? t : 50;
         st ? localStorage.log = 0 : localStorage.log = 1;
         side.animate({'left': 0}, time);
-        body.animate({'left': 200}, time);
-        footer.animate({'left': 200}, time);
+        body.animate({'left': 150}, time);
+        footer.animate({'left': 150}, time);
     }
 
     // 监听导航栏收缩
