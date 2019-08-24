@@ -13,6 +13,7 @@ namespace backend\controllers;
 use backend\services\article\ArticleService;
 use common\helpers\Helpers;
 use common\models\Article;
+use common\models\ArticleComment;
 use yii\filters\VerbFilter;
 use Yii;
 
@@ -45,6 +46,7 @@ class ArticleController extends AdminLogController
 						'change-tag-status' => ['post'],
 						'delete-tags' => ['post'],
 						'add-tags' => ['post'],
+						'comment' => ['get'],
 					],
 				],
 			]
@@ -320,5 +322,32 @@ class ArticleController extends AdminLogController
 		$params = self::postParams();
 		ArticleService::instance()->addTag($params);
 		return self::ajaxSuccess('添加成功');
+	}
+	
+	public function actionComment()
+	{
+		return $this->render('comment');
+	}
+	
+	public function actionGetComments()
+	{
+		$result = ArticleService::instance()->getCommentList();
+		return self::ajaxSuccess(self::AJAX_MESSAGE_SUCCESS, $result);
+	}
+	
+	public function actionCommentReadAll()
+	{
+		$affectedRows = ArticleComment::updateAll(['is_read' => ArticleComment::IS_READ_YES], ['is_read' => ArticleComment::IS_DELETE_NO]);
+		if ($affectedRows !== false) {
+			return self::ajaxSuccess('操作成功');
+		}
+		return self::ajaxReturn('操作失败');
+	}
+	
+	public function actionDeleteComments()
+	{
+		$ids = self::postParams('ids', 0);
+		ArticleService::instance()->deleteComments($ids);
+		return self::ajaxSuccess('删除成功');
 	}
 }

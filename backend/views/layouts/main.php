@@ -38,6 +38,7 @@ $userCache = Yii::$app->userCache;
 					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/index')?>">文章管理</a></dd>
 					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/category')?>">分类管理</a></dd>
 					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/tags')?>">标签管理</a></dd>
+					<dd><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/comment')?>">评论管理</a></dd>
 				</dl>
 			</li>
 			<li class="layui-nav-item"><a href="javascript:;" href-url="<?=Yii::$app->urlManager->createUrl('article/add')?>"><i class="layui-icon layui-icon-add-1"></i>发布文章</a></li>

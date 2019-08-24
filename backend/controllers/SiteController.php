@@ -5,9 +5,11 @@ use backend\services\setting\SettingService;
 use backend\services\todo\TodoService;
 use common\models\AdminLoginHistory;
 use common\models\Article;
+use common\models\ArticleComment;
 use common\models\CountIp;
 use common\models\CountRecord;
 use common\models\CountTotal;
+use common\models\TaskMail;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -128,6 +130,10 @@ class SiteController extends AdminLogController
 		$chartDayCount['ip'] = array_reverse(array_column($ipCount, 'count'));
 		$chartDayCount['day'] = array_reverse($chartDayCount['day']);
 		$chartDayCount['date'] = array_reverse($chartDayCount['date']);
+		
+		// 新评论和待发发邮件
+		$commentCount = ArticleComment::find()->where(['is_read' => ArticleComment::IS_READ_NO])->count();
+		$emailCount = TaskMail::find()->where(['is_send' => TaskMail::IS_SEND_FALSE])->count();
 
 		return $this->render('welcome', [
 			'loginHistory' => $loginHistory,
@@ -135,6 +141,8 @@ class SiteController extends AdminLogController
 			'summary' => $summary,
 			'chartCategory' => $chartCategory,
 			'chartDayCount' => $chartDayCount,
+			'commentCount' => $commentCount,
+			'emailCount' => $emailCount,
 		]);
 	}
 

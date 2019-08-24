@@ -4,6 +4,7 @@
 /* @var $article \common\models\Article */
 use yii\helpers\Html;
 
+$deleteText = '<span style="color: #FF5722">该评论已被删除!</span>'
 //?>
 <ul class="media-list">
 	<?php if (!empty($commentList)) :?>
@@ -16,7 +17,7 @@ use yii\helpers\Html;
 			</div>
 			<div class="media-body">
 				<h4 class="media-heading text-primary"><?=Html::encode($item['nickname']) . (!empty($item['email']) ? "(" .Html::encode($item['email']).")" : '')?></h4>
-				<div class="message-content" style="margin-bottom: 5px"><?=Html::encode($item['content'])?></div>
+				<div class="message-content" style="margin-bottom: 5px"><?=$item['is_delete'] == 1 ? $deleteText : Html::encode($item['content'])?></div>
 				<p class="text-muted margin-0">发布于: <?=date('Y-m-d H:i', $item['created_at'])?></p>
 			</div>
 			<hr class="hr">

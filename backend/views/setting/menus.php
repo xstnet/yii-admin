@@ -85,7 +85,10 @@ $name = '菜单';
 								<div class="layui-form-item">
 									<label class="layui-form-label">图标</label>
 									<div class="layui-input-inline">
-										<input type="text" name="icon" value="" placeholder="图标" autocomplete="off" class="layui-input">
+										<input type="text" name="icon" value="" placeholder="图标 class" autocomplete="off" class="layui-input">
+										<div class="layui-form-mid layui-word-aux">
+											<a href="https://www.layui.com/doc/element/icon.html" target="_blank">参考 https://www.layui.com/doc/element/icon.html</a>
+										</div>
 									</div>
 								</div>
 								<div class="layui-form-item" pane>

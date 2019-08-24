@@ -21,7 +21,7 @@ use yii\helpers\Json;
 		}
 		.notice-text {
 			color: #3e8f3e;
-			font-size: 16px;
+			font-size: 14px;
 		}
 		.layui-form-checkbox[lay-skin=primary] {
 			margin: 6px 5px;
@@ -70,16 +70,23 @@ use yii\helpers\Json;
 <?php $this->beginBody() ?>
 <body class="body">
 <span id="csrfToken"><?=Yii::$app->request->csrfToken?></span>
-<blockquote class="layui-elem-quote">
-	<span class="layui-bg-gray">
+<p class="layui-bg-gray" style="padding: 10px; font-size: 14px">
 		欢迎你，<span class="notice-text"><?=Yii::$app->user->identity->nickname?>！</span>
 		现在是： <span class="notice-text"><?=date('Y年m月d日 H时i分s秒')?></span>,
 		本次登录时间为： <span class="notice-text"><?=date('Y-m-d H:i:s', Yii::$app->user->identity->login_at)?></span>,
 		上次登录时间为： <span class="notice-text"><?=date('Y-m-d H:i:s', Yii::$app->user->identity->last_login_at)?></span>，
 		本次登录IP为： <span class="notice-text"><?=Yii::$app->user->identity->login_ip?></span>，
 		上次登录IP为： <span class="notice-text"><?=Yii::$app->user->identity->last_login_ip?></span>
-	</span>
-</blockquote>
+</p>
+<p class="layui-bg-gray" style="padding: 0 0 5px 10px; color: #009688 !important;">
+	您有 <b style="color: #FF5722"><?=$emailCount?></b> 封邮件待发送
+</p>
+<p class="layui-bg-gray" style="padding: 0 0 5px 10px; color: #009688 !important;">
+	收到 <b style="color: #FF5722"><?=$commentCount?></b> 条新评论
+</p>
+<!--<p class="layui-bg-red">有 0 封邮件待发送</p>-->
+<!--<p class="layui-bg-red">有 0 条新评论</p>-->
+<hr class="layui-bg-green">
 <div class="layui-row layui-col-space10 my-index-main">
 	<div class="summary">
 		<div class="layui-col-sm6 layui-col-md3">
@@ -123,6 +130,7 @@ use yii\helpers\Json;
 	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
 		<div id="summaryCategory" style="height: 330px;"></div>
 	</div>
+	<hr class="layui-bg-green">
 	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
 		<div class="layui-collapse">
 			<div class="layui-colla-item">

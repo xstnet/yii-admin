@@ -16,6 +16,7 @@ use common\helpers\Helpers;
 use common\models\AdminUser;
 use common\models\Article;
 use common\models\ArticleCategory;
+use common\models\ArticleComment;
 use common\models\ArticleContents;
 use common\models\ArticleTag;
 use Yii;
@@ -383,6 +384,30 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		];
 	}
 	
+	/**
+	 * 获取标签列表
+	 * @return array
+	 */
+	public function getCommentList()
+	{
+		$query = ArticleComment::find();
+		
+		list ($count, $page) = self::getPageAndSearch($query);
+		
+		$list = $query->orderBy('created_at desc')
+			->alias('comment')
+			->select('comment.*, article.title as article_name')
+			->leftJoin(['article' => Article::tableName()], 'article.id = comment.article_id')
+			->asArray()
+			->all();
+		
+		return [
+			'total' => $count,
+			'list' => $list,
+			'page' => $page,
+		];
+	}
+	
 	
 	/**
 	 * Update Tag Is show
@@ -429,6 +454,15 @@ class ArticleService extends BaseService implements ArticleServiceInterface
 		$result = $tag->save();
 		if ($result == false) {
 			throw new DatabaseException(DatabaseException::INSERT_ERROR, '添加失败');
+		}
+		Yii::$app->userCache->refresh('tagList');
+	}
+	
+	public function deleteComments($ids)
+	{
+		$affectedRows = ArticleComment::updateAll(['is_delete' => ArticleComment::IS_DELETE_YES, 'is_read' => ArticleComment::IS_READ_YES], ['id' => $ids]);
+		if ($affectedRows === false) {
+			throw new ParameterException(ParameterException::INVALID, '删除失败');
 		}
 		Yii::$app->userCache->refresh('tagList');
 	}
