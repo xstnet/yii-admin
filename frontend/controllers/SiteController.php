@@ -12,6 +12,9 @@ use yii\filters\AccessControl;
  */
 class SiteController extends BaseController
 {
+	// 关于我的文章ID
+	const ABOUT_ARTICLE_ID = 10;
+	
     /**
      * {@inheritdoc}
      */
@@ -213,6 +216,7 @@ class SiteController extends BaseController
 		
 		$data['messageList'] = $messageList;
 		$data['pages'] = $pages;
+		$data['article'] = Article::findOne(static::ABOUT_ARTICLE_ID);
 		
 		return $this->render('about', $data);
 	}
