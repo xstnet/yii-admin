@@ -23,3 +23,6 @@ code[class*="language-"],pre[class*="language-"]{color:black;background:0;text-s
 	bottom: 50px;
 	cursor: pointer;
 }
+blockquote code {
+    background-color: #bbb;
+}
