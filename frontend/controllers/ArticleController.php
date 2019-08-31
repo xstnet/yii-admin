@@ -76,16 +76,20 @@ class ArticleController extends BaseController
 		// 上一条数据
 		$prevArticle = Article::find()
 			->select(['id', 'title'])
-			->where(['>', 'id', $article->id])
-			->limit(1)
+			->where(['>', 'created_at', $article->created_at])
+            ->andWhere(['is_delete' => Article::IS_DELETE_NO, 'is_show' => Article::IS_SHOW_YES])
+            ->limit(1)
+            ->orderBy('created_at desc')
 			->asArray()
 			->one();
 		
 		// 下一条数据
 		$nextArticle = Article::find()
 			->select(['id', 'title'])
-			->where(['<', 'id', $article->id])
+            ->where(['<', 'created_at', $article->created_at])
+            ->andWhere(['is_delete' => Article::IS_DELETE_NO, 'is_show' => Article::IS_SHOW_YES])
 			->limit(1)
+            ->orderBy('created_at desc')
 			->asArray()
 			->one();
 		
