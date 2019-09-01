@@ -237,6 +237,10 @@ footer {
 	margin-top: 5px;
 	margin-bottom: 16px;
 }
+.markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+	margin-top: 15px !important;
+	margin-bottom: 15px !important;
+}
 blockquote code {
     background-color: #bbb;
 }

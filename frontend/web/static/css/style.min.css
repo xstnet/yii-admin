@@ -26,3 +26,7 @@ code[class*="language-"],pre[class*="language-"]{color:black;background:0;text-s
 blockquote code {
     background-color: #bbb;
 }
+.markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+	margin-top: 15px !important;
+	margin-bottom: 15px !important;
+}
