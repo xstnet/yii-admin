@@ -37,6 +37,7 @@ $assetVersion = '1.0019';
 	<!-- Bootstrap -->
 <!--	<link href="/static/css/bootstrap.min.css" rel="stylesheet">-->
 	<link href="/static/css/style.min.css?v=<?=$assetVersion?>" rel="stylesheet">
+    <?php if (YII_ENV == 'prod'):?>
 	<script>
 		var _hmt = _hmt || [];
 		(function() {
@@ -46,6 +47,7 @@ $assetVersion = '1.0019';
 			s.parentNode.insertBefore(hm, s);
 		})();
 	</script>
+    <?php endif;?>
 
 	<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 	<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
