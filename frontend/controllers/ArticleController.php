@@ -111,6 +111,10 @@ class ArticleController extends BaseController
 	 */
 	public function actionRelease()
 	{
+		if (strpos(Yii::$app->request->userIP, '5.188') !== false) {
+			exit("<script>alert('发布成功');location.href='/'</script>");
+		}
+		
 		// 验证留言间隔, 1分钟内只能发一次
 		$session = Yii::$app->session;
 		$session->open();

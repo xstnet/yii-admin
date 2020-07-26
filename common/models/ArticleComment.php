@@ -46,7 +46,7 @@ class ArticleComment extends BaseModel
 			['ip', 'string'],
             [['nickname'], 'string', 'min' => 1, 'max' => 30, 'tooLong' => '名称不能超过30个字符', 'tooShort' => '名称不能小于1个字符'],
             [['email', 'avatar'], 'string', 'max' => 100, 'tooLong' => '邮箱不能超过100个字符'],
-            [['content'], 'string', 'min' => 2, 'max' => 255, 'tooLong' => '内容不能超过255个字符', 'tooShort' => '内容不能小于2个字符'],
+            [['content'], 'string', 'min' => 2, 'max' => 255, 'tooLong' => '内容不能超过65535个字符', 'tooShort' => '内容不能小于2个字符'],
             [['is_read', 'is_delete'], 'default', 'value' => 0],
         ];
     }
