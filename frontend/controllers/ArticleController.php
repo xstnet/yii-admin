@@ -141,6 +141,10 @@ class ArticleController extends BaseController
 			$comment->nickname = HtmlPurifier::process(trim($params['nickname'] ?? ''));
 			$comment->email = HtmlPurifier::process(trim($params['email'] ?? ''));
 			$comment->content = trim($params['content'] ?? '');
+            $comment->content = str_replace("\n", '[br]', $comment->content);
+            $comment->content = str_replace("<br>", '[br]', $comment->content);
+            $comment->content = str_replace("<br/>", '[br]', $comment->content);
+
 			$comment->ip = Yii::$app->request->userIP;
 			
 			if (!$comment->save()) {
@@ -149,12 +153,12 @@ class ArticleController extends BaseController
 			}
 			
 			$article->comment_count ++;
-			$article->scenario = 'update-comment_count';
-			if (!$article->save()) {
-				throw new ParameterException(ParameterException::INVALID, '发布失败');
-			}
-			
-			$transaction->commit();
+            $article->scenario = 'update-comment_count';
+            if (!$article->save()) {
+                throw new ParameterException(ParameterException::INVALID, '发布失败');
+            }
+
+            $transaction->commit();
 		} catch (\Exception $e) {
 			$transaction->rollBack();
 			exit("<script>alert('". $e->getMessage() ."');history.go(-1)</script>");
