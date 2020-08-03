@@ -74,7 +74,7 @@ class CacheController extends AdminLogController
 	 */
 	public function actionClearAll()
 	{
-		Yii::$app->cache->useDefault();
+		//Yii::$app->cache->useDefault();
 		Yii::$app->cache->flush();
 		
 		$dir = Yii::getAlias('@backend/runtime/cache');
