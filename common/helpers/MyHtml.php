@@ -9,6 +9,7 @@
 namespace common\helpers;
 
 
+use common\models\ArticleComment;
 use yii\helpers\Html;
 
 class MyHtml extends Html
@@ -17,6 +18,6 @@ class MyHtml extends Html
     {
         $str = parent::encode($content, $doubleEncode);
 
-        return str_replace('[br]', '<br/>', $str);
+        return str_replace(['[br]', ArticleComment::CUSTOM_HTML_BEGIN_TAG, ArticleComment::CUSTOM_HTML_END_TAG, ArticleComment::CUSTOM_HTML_QUOTE], ['<br/>', '<', '>', '"'], $str);
     }
 }

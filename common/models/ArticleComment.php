@@ -10,6 +10,8 @@ use Yii;
  * @property integer $id
  * @property integer $article_id
  * @property string $nickname
+ * @property string $reply_comment_ids
+ * @property integer $reply_comment_id
  * @property string $email
  * @property string $avatar
  * @property string $content
@@ -26,7 +28,14 @@ class ArticleComment extends BaseModel
 	
 	const IS_DELETE_YES = 1;
 	const IS_DELETE_NO = 0;
-	
+
+	const CUSTOM_HTML_BEGIN_TAG = 'n!#a';
+	const CUSTOM_HTML_END_TAG = 'a!#n';
+	const CUSTOM_HTML_QUOTE = 'Y!#Y';
+
+	// 最大回复层级
+	const MAX_REPLY_LEVEL = 5;
+
     /**
      * @inheritdoc
      */
@@ -41,13 +50,15 @@ class ArticleComment extends BaseModel
     public function rules()
     {
         return [
-            [['created_at', 'updated_at', 'article_id', 'is_delete', 'is_read'], 'integer'],
+            [['created_at', 'updated_at', 'article_id', 'is_delete', 'is_read', 'reply_comment_id'], 'integer'],
 			['nickname', 'required', 'message' => '名称不能为空!'],
+			['content', 'required', 'message' => '内容不能为空!'],
 			['ip', 'string'],
+			['reply_comment_ids', 'string'],
             [['nickname'], 'string', 'min' => 1, 'max' => 30, 'tooLong' => '名称不能超过30个字符', 'tooShort' => '名称不能小于1个字符'],
             [['email', 'avatar'], 'string', 'max' => 100, 'tooLong' => '邮箱不能超过100个字符'],
             [['content'], 'string', 'min' => 2, 'max' => 65535, 'tooLong' => '内容不能超过65535个字符', 'tooShort' => '内容不能小于2个字符'],
-            [['is_read', 'is_delete'], 'default', 'value' => 0],
+            [['is_read', 'is_delete', 'reply_comment_id'], 'default', 'value' => 0],
         ];
     }
 
@@ -65,5 +76,15 @@ class ArticleComment extends BaseModel
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public static function getCustomTag($content, $tag, $class = '')
+    {
+        return self::CUSTOM_HTML_BEGIN_TAG
+            . $tag . (empty($class) ? '' : ' class=' . self::CUSTOM_HTML_QUOTE . $class . self::CUSTOM_HTML_QUOTE)
+            . self::CUSTOM_HTML_END_TAG
+            . $content
+            . self::CUSTOM_HTML_BEGIN_TAG . '/' . $tag
+            . self::CUSTOM_HTML_END_TAG;
     }
 }

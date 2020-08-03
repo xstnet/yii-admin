@@ -62,20 +62,20 @@ $userCache = Yii::$app->userCache;
 		<h2>我有话说</h2>
 		<hr class="hr">
 		<?php if($article->is_allow_comment == \common\models\Article::IS_ALLOW_COMMENT_YES) :?>
-			<form action="/article/release.html" method="post">
+			<form action="/article/release.html" onsubmit="beforeComment()" method="post">
 				<input type="hidden" name="_csrf-avwd" value="<?=Yii::$app->request->csrfToken?>" />
 				<input type="hidden" name="article_id" value="<?=$article->id?>" />
 				<div class="form-group">
-					<label for="exampleInputEmail1">尊姓大名</label>
-					<input type="text" required class="form-control" name="nickname" placeholder="您的尊姓大名">
+					<label for="commentNickname">尊姓大名</label>
+					<input type="text" id="commentNickname" required class="form-control" name="nickname" placeholder="您的尊姓大名">
 				</div>
 				<div class="form-group">
-					<label for="exampleInputEmail1">Email</label>
-					<input type="email" class="form-control" name="email" placeholder="Email(可填)">
+					<label for="commentEmail">Email</label>
+					<input type="email" id="commentEmail" class="form-control" name="email" placeholder="Email(可填)">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">内容(不超过255个字符)</label>
-					<textarea required class="form-control" name="content" placeholder="说点什么吧" rows="8"></textarea>
+					<textarea id="commentContent" required class="form-control" name="content" placeholder="说点什么吧" rows="8"></textarea>
 				</div>
 
 				<button type="submit" class="btn btn-default">提交</button>
@@ -107,8 +107,10 @@ $userCache = Yii::$app->userCache;
 		prettyPrint();
 	</script>
 <?php endif; ?>
+<script src="/static/js/index.js"></script>
 
 <script language="JavaScript">
+    window.onload = setParams();
 	setTimeout(function () {
 		var commentWrap = document.getElementById('latestComment');
 		$.ajax({

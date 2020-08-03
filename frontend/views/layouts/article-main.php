@@ -16,10 +16,10 @@ if (!isset($this->params['active_menu'])) {
 	$this->params['active_menu'] = 'index';
 }
 if (!isset($this->params['keyword'])) {
-	$this->params['keyword'] = '个人博客,php博客,程序员博客,php程序员博客,博客网站,徐善通博客,徐善通的个人博客';
+	$this->params['keyword'] = '个人博客,php博客,程序员博客,php程序员博客,博客网站,程序员,徐善通博客,徐善通的个人博客,分享一些php问题的解决方案, 一些心得, 计算机网络, 技术文章, 干货, 个人经验, 数据结构与算法, c语言, yii2框架等';
 }
 if (!isset($this->params['description'])) {
-	$this->params['description'] = '徐善通的技术笔记,分享一些php问题的解决方案';
+	$this->params['description'] = '徐善通的技术笔记,分享一些php问题的解决方案, 一些心得, 计算机网络, 技术文章, 干货, 个人经验, 数据结构与算法, c语言, yii2框架等,个人博客,php博客,程序员博客,php程序员博客,博客网站,徐善通博客,徐善通的个人博客';
 }
 $assetVersion = '1.0019';
 ?>

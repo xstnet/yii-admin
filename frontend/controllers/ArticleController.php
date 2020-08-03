@@ -11,6 +11,7 @@ namespace frontend\controllers;
 
 
 use common\exceptions\ParameterException;
+use common\helpers\Helpers;
 use common\models\Article;
 use common\models\ArticleComment;
 use Yii;
@@ -112,6 +113,7 @@ class ArticleController extends BaseController
 	public function actionRelease()
 	{
 		if (strpos(Yii::$app->request->userIP, '5.188') !== false) {
+		    Yii::info("5.188...........");
 			exit("<script>alert('发布成功');location.href='/'</script>");
 		}
 		
@@ -141,12 +143,29 @@ class ArticleController extends BaseController
 			$comment->nickname = HtmlPurifier::process(trim($params['nickname'] ?? ''));
 			$comment->email = HtmlPurifier::process(trim($params['email'] ?? ''));
 			$comment->content = trim($params['content'] ?? '');
-            $comment->content = str_replace("\n", '[br]', $comment->content);
-            $comment->content = str_replace("<br>", '[br]', $comment->content);
-            $comment->content = str_replace("<br/>", '[br]', $comment->content);
+			if (empty($comment->content)) {
+                throw new ParameterException(ParameterException::INVALID, "请输入文章内容!");
+            }
+			if (mb_strlen($comment->content) < 2) {
+                throw new ParameterException(ParameterException::INVALID, "最少输入2个文字!");
+            }
+			// 处理评论内容
+			$this->processContent($comment);
+            $comment->ip = Yii::$app->request->userIP; // set ip
+            // 查询是否回复, 有的话就使用同一个头像
+            $prevComment =
+                ArticleComment::find()
+                    ->where([
+                            'article_id' => $articleId,
+                            'email' => $comment->email,
+                            'nickname' => $comment->nickname]
+                    )
+                    ->one();
+            if ($prevComment) {
+                $comment->avatar = $prevComment->avatar;
+            }
+            unset($prevComment);
 
-			$comment->ip = Yii::$app->request->userIP;
-			
 			if (!$comment->save()) {
 				$error = current($comment->getFirstErrors());
 				throw new ParameterException(ParameterException::INVALID, $error);
@@ -178,21 +197,73 @@ class ArticleController extends BaseController
 		$this->layout = false;
 		
 		$articleId = (int) Yii::$app->request->get('id', 0);
-		
+
 		$query = ArticleComment::find()->where(['article_id' => $articleId]);
 		
-		list ($count, $pages) = $this->getPage($query, 30);
+		list ($count, $pages) = $this->getPage($query, 200);
 		
 		$commentList = $query->asArray()
+            ->indexBy('id')
 			->all();
 
+		$commentTree = Helpers::getTree($commentList, 'reply_comment_id');
+
 		return $this->renderContentFilter($this->render('get-comments', [
-			'commentList' => $commentList,
+			'commentList' => $commentTree,
 			'pages' => $pages,
 		]));
 	}
-	
-	/**
+
+    /**
+     * 处理评论内容
+     *
+     * @param $comment ArticleComment
+     */
+	public function processContent($comment)
+    {
+        $content = strip_tags($comment->content,'<br>');
+        $content = str_replace(["\n", "<br>", "<br/>"], '[br]', $content);
+
+        // 处理 @
+        $isMatched = preg_match('/\[@.*?(?=#\d+])#(\d+)]/m', $content, $matches);
+        if ($isMatched) {
+            $replacement = ArticleComment::getCustomTag('$1', 'span', 'replay-to');
+            $content = preg_replace('/\[(@.*?(?=#\d+]))#(\d+)]/m', $replacement, $content);
+
+            $replyId = (int) $matches[1];
+            $replyModel = ArticleComment::findOne($replyId);
+            if (!empty($replyModel)) {
+                $comment->reply_comment_id = $replyId;
+                $comment->reply_comment_ids = ltrim($replyModel->reply_comment_ids . ',' . $replyId, ',');
+
+                // 如果回复的层级超过最大层级, 使该回复 同被评论的上级
+                if (count(explode(',', $replyModel->reply_comment_ids)) >= ArticleComment::MAX_REPLY_LEVEL) {
+                    $comment->reply_comment_id = $replyModel->reply_comment_id;
+                }
+
+                // 查询上层中是否有自已的回复, 有的话就在本级
+                if ($replyModel->reply_comment_ids != '') {
+                    $hasComment =
+                        ArticleComment::find()
+                        ->where([
+                            'id' => explode(',', $replyModel->reply_comment_ids),
+                            'email' => $comment->email,
+                            'nickname' => $comment->nickname]
+                        )
+                        ->exists();
+                    if ($hasComment) {
+                        $comment->reply_comment_id = $replyModel->reply_comment_id;
+                    }
+                }
+            }
+        }
+
+        // todo send email
+
+        $comment->content = $content;
+    }
+
+    /**
 	 *
 	 * @param Article $article
 	 * @return array
