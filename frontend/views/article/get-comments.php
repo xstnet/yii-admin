@@ -62,7 +62,7 @@ ETO;
         margin-left: 35px;
     }
     .replay-to {
-        color: #fe3d01;
+        color: #3c763d;
         font-weight: bold;
         padding-right: 8px;
         font-size: 15px;

@@ -12,14 +12,19 @@ namespace frontend\controllers;
 
 use common\exceptions\ParameterException;
 use common\helpers\Helpers;
+use common\helpers\MyHtml;
 use common\models\Article;
 use common\models\ArticleComment;
+use common\models\TaskMail;
 use Yii;
+use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use yii\web\NotFoundHttpException;
 
 class ArticleController extends BaseController
 {
+    public $articleTitle;
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -149,6 +154,8 @@ class ArticleController extends BaseController
 			if (mb_strlen($comment->content) < 2) {
                 throw new ParameterException(ParameterException::INVALID, "最少输入2个文字!");
             }
+
+			$this->articleTitle = $article->title;
 			// 处理评论内容
 			$this->processContent($comment);
             $comment->ip = Yii::$app->request->userIP; // set ip
@@ -180,7 +187,7 @@ class ArticleController extends BaseController
             $transaction->commit();
 		} catch (\Exception $e) {
 			$transaction->rollBack();
-			exit("<script>alert('". $e->getMessage() ."');history.go(-1)</script>");
+			exit("<script>alert('". htmlspecialchars($e->getMessage()) ."');history.go(-1)</script>");
 		}
 		
 		$session->set('comment_last_pub_at', time());
@@ -218,17 +225,20 @@ class ArticleController extends BaseController
      * 处理评论内容
      *
      * @param $comment ArticleComment
+     * @throws \common\exceptions\DatabaseException
      */
 	public function processContent($comment)
     {
-        $content = strip_tags($comment->content,'<br>');
-        $content = str_replace(["\n", "<br>", "<br/>"], '[br]', $content);
+        $comment->content = strip_tags($comment->content,'<br>');
+        $comment->content = str_replace(["\n", "<br>", "<br/>"], '[br]', $comment->content);
+        $content = $comment->content;
 
+        $replyModel = null;
         // 处理 @
         $isMatched = preg_match('/\[@.*?(?=#\d+])#(\d+)]/m', $content, $matches);
         if ($isMatched) {
-            $replacement = ArticleComment::getCustomTag('$1', 'span', 'replay-to');
-            $content = preg_replace('/\[(@.*?(?=#\d+]))#(\d+)]/m', $replacement, $content);
+            $replacement = '回复 ' . ArticleComment::getCustomTag('$1 : ', 'span', 'replay-to');
+            $content = preg_replace('/\[@(.*?(?=#\d+]))#(\d+)]/m', $replacement, $content);
 
             $replyId = (int) $matches[1];
             $replyModel = ArticleComment::findOne($replyId);
@@ -239,28 +249,69 @@ class ArticleController extends BaseController
                 // 如果回复的层级超过最大层级, 使该回复 同被评论的上级
                 if (count(explode(',', $replyModel->reply_comment_ids)) >= ArticleComment::MAX_REPLY_LEVEL) {
                     $comment->reply_comment_id = $replyModel->reply_comment_id;
-                }
-
-                // 查询上层中是否有自已的回复, 有的话就在本级
-                if ($replyModel->reply_comment_ids != '') {
-                    $hasComment =
-                        ArticleComment::find()
-                        ->where([
-                            'id' => explode(',', $replyModel->reply_comment_ids),
-                            'email' => $comment->email,
-                            'nickname' => $comment->nickname]
-                        )
-                        ->exists();
-                    if ($hasComment) {
-                        $comment->reply_comment_id = $replyModel->reply_comment_id;
+                } else {
+                    // 查询上层中是否有自已的回复, 有的话就在本级
+                    if ($replyModel->reply_comment_ids != '') {
+                        $hasComment =
+                            ArticleComment::find()
+                                ->where([
+                                        'id' => explode(',', $replyModel->reply_comment_ids),
+                                        'email' => $comment->email,
+                                        'nickname' => $comment->nickname]
+                                )
+                                ->exists();
+                        if ($hasComment) {
+                            $comment->reply_comment_id = $replyModel->reply_comment_id;
+                        }
                     }
                 }
             }
         }
 
-        // todo send email
+        $this->writeEmailQueue($replyModel, $comment);
 
         $comment->content = $content;
+
+    }
+
+    /**
+     * @param $replyModel ArticleComment
+     * @param $comment ArticleComment
+     * @throws \common\exceptions\DatabaseException
+     */
+    protected function writeEmailQueue($replyModel, $comment)
+    {$this->layout = false;
+        $mailTask = new TaskMail();
+        // 先发给我, 再发给被回复人
+        $mailTask->subject = sprintf("文章收到新的评论, 请即时查看");
+
+        $contentParams = [
+            'toOwner' => 1,
+            'username' => Html::encode($comment->nickname),
+            'replyContent' => preg_replace('/\[(@.*?(?=#\d+]))#(\d+)]/m', '', MyHtml::encode($comment->content)),
+            'articleId' => $comment->article_id,
+            'articleTitle' => $this->articleTitle,
+        ];
+        $mailTask->content = ($this->renderContentFilter($this->render('/template/replyEmailTpl', $contentParams)));
+        //echo '<pre>';
+        //print_r($mailTask->getAttributes());
+        //die;
+        $mailTask->is_html = TaskMail::IS_HTML_YES;
+        $mailTask->to_mail = "shantongxu@qq.com";
+        $mailTask->saveModel();
+
+        if ($replyModel) {
+            $pattern = '/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/';
+            if (preg_match($pattern, $replyModel->email)) {
+                $mailTask->id = null;
+                $mailTask->subject = sprintf("回复: %s 回复了您的留言", $comment->nickname);
+                $mailTask->isNewRecord = true;
+                $mailTask->to_mail = $replyModel->email;
+                $contentParams['toOwner'] = 0;
+                $mailTask->content = ($this->renderContentFilter($this->render('/template/replyEmailTpl', $contentParams)));
+                $mailTask->saveModel();
+            }
+        }
     }
 
     /**
