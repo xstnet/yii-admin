@@ -37,7 +37,7 @@ return [
 			],
 			'messageConfig'=>[
 				'charset'=>'UTF-8',
-				'from'=>['notifications@xstnet.com	' => '徐善通博客']
+				'from'=>['notifications@xstnet.com	' => '徐善通的博客']
 			],
 		],
 		
