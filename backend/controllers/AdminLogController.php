@@ -21,6 +21,7 @@ class AdminLogController extends BaseController
 
 	public function init()
 	{
+	    parent::init();
 		if (Yii::$app->user->isGuest) {
 			if (Yii::$app->request->isAjax) {
 				exit(json_encode(self::ajaxReturn('登录已过期, 请重新登录')));
