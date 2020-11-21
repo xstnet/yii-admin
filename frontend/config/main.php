@@ -61,6 +61,7 @@ return [
 				'/category-<categoryId:\d+>' => '/site/category', // 分类
 				'/archive/<year:20\d\d>/<month:(0|1)\d>' => '/archive/list', // 归档文档列表
 				'/archive' => '/archive/index', // 归档
+				'/note' => '/note/index',  // 笔记
 				'/tag/<tag:.*+>' => '/site/tag', // 标签
 				'/message/release' => '/message/release', // 发布留言
 				// site map
