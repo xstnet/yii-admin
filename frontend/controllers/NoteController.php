@@ -11,6 +11,7 @@ namespace frontend\controllers;
 
 
 use Yii;
+use yii\filters\AccessControl;
 
 class NoteController extends BaseController
 {
