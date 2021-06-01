@@ -20,7 +20,7 @@
 #### 使用说明
 
 1. build.sql 只包含表。 数据库在common/config/main-local中配置
-2. demo http://yii-admin.xstnet.com/admin.php  账号密码：guest 123456
+2. demo http://yii-admin.xstnet.com/admin  账号密码：guest 123456
 
 #### 参与贡献
 
