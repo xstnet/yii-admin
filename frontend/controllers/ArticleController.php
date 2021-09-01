@@ -131,6 +131,11 @@ class ArticleController extends BaseController
 			exit("<script>alert('1分钟内只能发布一次哦!');history.go(-1)</script>");
 		}
 		$params = Yii::$app->request->post();
+
+		if (!preg_match("/([\x81-\xfe][\x40-\xfe])/", $params['content'], $match)) {
+			exit("<script>alert('内容必须含有汉字！');history.go(-1)</script>");
+		}
+
 		$articleId = (int) ($params['article_id'] ?? 0);
 		$article = Article::findOne($articleId);
 		if (empty($article)) {
