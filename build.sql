@@ -614,3 +614,35 @@ CREATE TABLE `x_count_total` (
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
+
+ CREATE TABLE `x_article_comment` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `article_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '文章ID',
+  `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '留言人昵称',
+  `reply_comment_ids` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '回复的所有评论id',
+  `reply_comment_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '回复的留言ID',
+  `email` varchar(100) NOT NULL DEFAULT '' COMMENT '邮箱',
+  `avatar` varchar(100) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '随机头像',
+  `ip` varchar(15) NOT NULL DEFAULT '' COMMENT 'ip',
+  `content` text CHARACTER SET utf8mb4 NOT NULL COMMENT '留言内容',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否被删除, 1:是, 0:否',
+  `is_read` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已读, 1:是, 0:否, 针对博主的',
+  `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
+  `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COMMENT='留言表'
+
+
+CREATE TABLE `x_task_mail` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `to_mail` varchar(100) NOT NULL,
+  `subject` varchar(100) NOT NULL,
+  `content` text NOT NULL,
+  `is_html` tinyint(1) NOT NULL DEFAULT '1',
+  `is_send` tinyint(1) NOT NULL DEFAULT '0',
+  `send_at` int(10) NOT NULL,
+  `call_count` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '调用次数, 暂定5次之后未成功不执行',
+  `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
+  `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8
