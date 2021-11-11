@@ -33,13 +33,13 @@ return [
 			],
 		],
 		
-		//		'cache' => [
-		//			'class' => 'yii\caching\FileCache',
-		//			'cachePath' => '@backend/runtime/cache',
-		//		],
 		'cache' => [
-			'class' => 'common\helpers\RedisCache',
+			'class' => 'yii\caching\FileCache',
+			'cachePath' => '@backend/runtime/cache',
 		],
+		// 'cache' => [
+		// 	'class' => 'common\helpers\RedisCache',
+		// ],
 		'userCache' => [
 			'class' => 'common\helpers\UserCache',
 		],
