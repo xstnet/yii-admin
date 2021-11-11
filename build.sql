@@ -586,3 +586,31 @@ CREATE TABLE `x_system_log` (
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=686 DEFAULT CHARSET=utf8 COMMENT='系统日志';
+
+-- 2021-11-11新增
+CREATE TABLE `x_count_total` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `date_at` int(10) NOT NULL DEFAULT '0' COMMENT '统计日期',
+  `total_count` int(10) NOT NULL DEFAULT '0' COMMENT '截止日期的访问总次数',
+  `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
+  `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=347 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
+
+ CREATE TABLE `x_count_record` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `date_at` int(10) NOT NULL DEFAULT '0' COMMENT '统计日期',
+  `count` int(10) NOT NULL DEFAULT '0' COMMENT '令日时实访问次数',
+  `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
+  `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=348 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
+
+ CREATE TABLE `x_count_ip` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `date_at` int(10) NOT NULL DEFAULT '0' COMMENT '统计日期',
+  `count` int(10) NOT NULL DEFAULT '0' COMMENT '令日时实访问次数',
+  `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
+  `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
