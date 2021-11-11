@@ -127,9 +127,9 @@ class SiteController extends AdminLogController
 			$chartDayCount['day'][] = $item['count'];
 			$chartDayCount['date'][] = date('m/d', $item['date_at']);
 		}
-		$chartDayCount['ip'] = array_reverse(array_column($ipCount, 'count'));
-		$chartDayCount['day'] = array_reverse($chartDayCount['day']);
-		$chartDayCount['date'] = array_reverse($chartDayCount['date']);
+		$chartDayCount['ip'] = array_reverse(array_column($ipCount, 'count') ?? []);
+		$chartDayCount['day'] = array_reverse($chartDayCount['day'] ?? []);
+		$chartDayCount['date'] = array_reverse($chartDayCount['date'] ?? []);
 		
 		// 新评论和待发发邮件
 		$commentCount = ArticleComment::find()->where(['is_read' => ArticleComment::IS_READ_NO])->count();
