@@ -595,7 +595,7 @@ CREATE TABLE `x_count_total` (
   `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=347 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
+) ENGINE=InnoDB AUTO_INCREMENT=347 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数';
 
  CREATE TABLE `x_count_record` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
@@ -604,7 +604,7 @@ CREATE TABLE `x_count_total` (
   `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=348 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
+) ENGINE=InnoDB AUTO_INCREMENT=348 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数';
 
  CREATE TABLE `x_count_ip` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
@@ -613,7 +613,7 @@ CREATE TABLE `x_count_total` (
   `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数'
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='访问统计，按天计数';
 
  CREATE TABLE `x_article_comment` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
@@ -630,7 +630,7 @@ CREATE TABLE `x_count_total` (
   `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COMMENT='留言表'
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COMMENT='留言表';
 
 
 CREATE TABLE `x_task_mail` (
@@ -645,4 +645,4 @@ CREATE TABLE `x_task_mail` (
   `created_at` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间，时间戳',
   `updated_at` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间，时间戳',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8;
