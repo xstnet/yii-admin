@@ -10,17 +10,19 @@
 
 #### 安装教程
 
-1. git clone https://gitee.com/xstnet/yii-admin.git
+1. git clone https://github.com/xstnet/yii-admin.git
 2. cd yii-admin
-3. composer install
-4. php init
-5. query build.sql
-6. Configure database connection
+3. git checkout 1.0
+4. composer install
+5. php init
+6. query build.sql
+7. Configure database connection
+8. Configure nginx 
 
 #### 使用说明
 
 1. build.sql 只包含表。 数据库在common/config/main-local中配置
-2. demo http://yii-admin.xstnet.com/admin.php  账号密码：guest 123456
+2. demo https://yii-admin.xstnet.com/  账号密码：guest 123456
 
 #### 参与贡献
 
